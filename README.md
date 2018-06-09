@@ -1,20 +1,21 @@
-# Qxlnt
- Use xlnt on Qt. xlnt is xlsx library that using C++14.
+## Qxlnt
+- Use xlnt on Qt. Qt :heavy_plus_sign: xlnt
+- xlnt is xlsx library that using C++14.
 
 * Why did you make it?
-- xlnt is a great library for creating Excel files. 
+- xlnt is a great library for creating Excel files. :+1: 
 - I was looking for a way to make it easy to use in Qt. Of course, cmake is compatible with Qt, but it is not convenient to use. 
 - So I created Qxlnt.
 
 * Test 
-- I am currently in alpha testing, now.
+- :construction: I am currently in alpha testing, now. 
 
-* To Do
+* :beginner: To Do
 - Run xlnt test using Qxlnt.
 - Test on Visual C++ and other C++ compilers.
 
 * License
-- MIT Licenses
+- MIT License
 - Qxlnt, j2doll, https://github.com/j2doll/Qxlnt
 - xlnt, Thomas Fussell, https://github.com/tfussell/xlnt
 - libstudxml, Code Synthesis Tools https://www.codesynthesis.com/projects/libstudxml/
