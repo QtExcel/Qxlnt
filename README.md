@@ -1,5 +1,5 @@
-## Qxlnt
-- Use xlnt on Qt. Qt :heavy_plus_sign: xlnt
+# Qxlnt
+- Qxlnt is a helper project that allows xlnt to be used in Qt.
 - xlnt is xlsx library that using C++14.
 
 ### Why did you make it?
@@ -7,8 +7,13 @@
 - I was looking for a way to make it easy to use in Qt. Of course, cmake is compatible with Qt, but it is not convenient to use. 
 - So I created Qxlnt.
 
-### Test 
-- :construction: I am currently in alpha testing, now. 
+### Note
+- C++14 or higher version is required. gcc 4.x is not supported.
+- Current(2018) gcc version is 7.x.
+- If you use Visual C++, then use VS 2017 or higher version.
+
+### Test
+- :construction: I am currently in alpha testing, now.
 
 ### :beginner: To Do
 - Run xlnt test using Qxlnt.
