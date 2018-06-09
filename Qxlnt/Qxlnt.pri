@@ -8,6 +8,13 @@
 # MIT License
 
 ########################################
+# NOTE:
+# Check your compiler version. we need c++14 or higher version.
+# GCC has full support for the previous revision of the C++ standard, which was published in 2014.
+# https://gcc.gnu.org/projects/cxx-status.html
+CONFIG += c++14
+
+########################################
 # xlnt
 
 isEmpty(QXLNT_PARENTPATH) {
