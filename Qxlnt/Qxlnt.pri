@@ -375,6 +375,27 @@ HEADERS += \
 $${LIBSTUDXML_HEADERPATH}xml/details/genx/genx.h
 
 ########################################
+# utfcpp
+
+isEmpty(UTFCPP_HEADERPATH) {
+    message( 'UTFCPP_HEADERPATH is empty. use default value.' )
+    UTFCPP_HEADERPATH = ../xlnt/third-party/utfcpp/
+} else {
+    message( 'UTFCPP_HEADERPATH :' )
+    message( $${UTFCPP_HEADERPATH} )
+}
+
+INCLUDEPATH += $${UTFCPP_HEADERPATH}
+
+HEADERS += \
+$${UTFCPP_HEADERPATH}utf8.h \
+$${UTFCPP_HEADERPATH}utf8/checked.h \
+$${UTFCPP_HEADERPATH}utf8/core.h \
+$${UTFCPP_HEADERPATH}utf8/unchecked.h
+
+
+
+
 
 
 
