@@ -17,22 +17,13 @@ int main(int argc, char **argv)
     QCoreApplication a(argc, argv); // It is a Qt code.
 
     xlnt::workbook wb;
-	wb.load("./test.xlsx"); 
-    // It is a xlnt code. There are two kinds of codes together!
-	
-	auto ws = wb.active_sheet();     
-	
-	std::clog << "Processing spread sheet" << std::endl;     
-	
-	for (auto row : ws.rows(false))     
-	{         
-		for (auto cell : row) 
-		{    
-			std::clog << cell.to_string() << std::endl; 
-		}     
-	}     
-	
-	std::clog << "Processing complete" << std::endl;     
+    xlnt::worksheet ws = wb.active_sheet();
+    ws.cell("A1").value(5);
+    ws.cell("B2").value("string data");
+    ws.cell("C3").formula("=RAND()");
+    ws.merge_cells("C3:C4");
+    ws.freeze_panes("B2");
+    wb.save("example.xlsx");
 	
 	return 0; // return a.exec();
 }
