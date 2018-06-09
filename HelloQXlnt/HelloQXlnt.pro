@@ -1,11 +1,15 @@
 #
+# xlnt https://github.com/tfussell/xlnt
+# Qxlnt https://github.com/j2doll/Qxlnt
+#
+# MIT License
+#
 # HelloQXlnt.pro
 
 TARGET = HelloQxlnt
 
-QT -= gui
-
-CONFIG += c++11 console
+# QT -= gui
+CONFIG += console
 CONFIG -= app_bundle
 
 # The following define makes your compiler emit warnings if you use
@@ -19,17 +23,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+# Set environment values for Qxlnt. You may use default values.
+#
 # QXLNT_PARENTPATH = ../xlnt/
 # QXLNT_HEADERPATH = ../xlnt/include/
 # QXLNT_SOURCEPATH = ../xlnt/source/
 # LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
 # LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
 # LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
-include(../Qxlnt.pri)
+include(../Qxlnt/Qxlnt.pri)
 
 SOURCES += main.cpp
-
-
-
-
 

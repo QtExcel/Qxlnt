@@ -1,16 +1,24 @@
+//
+// xlnt https://github.com/tfussell/xlnt
+// Qxlnt https://github.com/j2doll/Qxlnt
+//
+// MIT License
+//
 // main.cpp
 
 #include <iostream> 
+
 #include <xlnt/xlnt.hpp> 
 
 #include <QCoreApplication>
 
 int main(int argc, char **argv) 
 {     
-    QCoreApplication a(argc, argv);
+    QCoreApplication a(argc, argv); // It is a Qt code.
 
-	xlnt::workbook wb;     
+    xlnt::workbook wb;
 	wb.load("./test.xlsx"); 
+    // It is a xlnt code. There are two kinds of codes together!
 	
 	auto ws = wb.active_sheet();     
 	
