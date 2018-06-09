@@ -9,7 +9,7 @@
 TARGET = Qxlnt
 
 TEMPLATE = lib
-# TEMPLATE = staticlib
+CONFIG += staticlib
 
 # DEFINES += ...
 
