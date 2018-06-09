@@ -20,7 +20,7 @@
 - Test on Visual C++ and other C++ compilers.
 - Testing in various Qt environments.
 
-### License
+### License and links
 - MIT License
 - Qxlnt, j2doll, https://github.com/j2doll/Qxlnt
 - xlnt, Thomas Fussell, https://github.com/tfussell/xlnt
