@@ -11,6 +11,29 @@
 - xlnt는 xlsx Excel 파일을 사용하기에 훌륭한 라이브러리입니다. :+1: 
 - 그래서 xlnt를 Qt에서 사용하기 쉬운 방법을 찾고 있었습니다. 물론 cmake는 Qt와 호환되지만 사용하기가 쉽지 않습니다. 그래서 Qxlnt를 만들었습니다.
 
+### 헬로우 월드
+```cpp
+#include <iostream> 
+#include <xlnt/xlnt.hpp> 
+#include <QCoreApplication>
+
+int main(int argc, char **argv) 
+{     
+    QCoreApplication a(argc, argv); // Qt 코드입니다.
+
+    xlnt::workbook wb; // xlnt 코드입니다. 다같이 섞어서 쓰세요! 
+    xlnt::worksheet ws = wb.active_sheet();
+    ws.cell("A1").value(5);
+    ws.cell("B2").value("string data");
+    ws.cell("C3").formula("=RAND()");
+    ws.merge_cells("C3:C4");
+    ws.freeze_panes("B2");
+    wb.save("example.xlsx");
+	
+	return 0;
+}
+```
+
 ### 주의
 - C++14 이상 버전이 필요합니다. 
 	- gcc 4.x (4.8 이하)는 지원되지 않습니다. 현재 (2018) gcc 버전은 7.x입니다.
