@@ -42,11 +42,15 @@ int main(int argc, char **argv)
 ### 테스트
 - :construction: 나는 현재 알파 테스트 중입니다.
 
-#### 빌드 환경
+#### 테스트 빌드 환경
 - 성공 케이스 1
 	- Linux 3.10.0-693.17.1.el7.x86_64
 	- gcc (GCC) 7.3.1 20180303 (Red Hat 7.3.1-5)
 	- Qt 5.9.2 (x64), qmake 3.1
+- 성공 케이스 2
+	- Qt 5.9.5 (x86/32bit), MingW 5.3.0, qmake 3.1
+	- gcc 5.3.0 (i686-posix-dwarf-rev0, Built by MinGW-W64 project)
+	- Microsoft Windows 10 x64
 
 ### :beginner: 할 일
 - Qxlnt를 사용하여 xlnt 테스트를 실행 하기
@@ -61,4 +65,4 @@ int main(int argc, char **argv)
 - utfcpp, Nemanja Trifunovic http://utfcpp.sourceforge.net/
 
 ### 연락처
-- 제게 이슈를 남겨주세요. https://github.com/j2doll/Qxlnt
+- 제게 이슈를 남겨주세요. https://github.com/j2doll/Qxlnt/issues

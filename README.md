@@ -42,11 +42,15 @@ int main(int argc, char **argv)
 ### Test
 - :construction: I am currently in alpha testing, now.
 
-#### Build Envorinment
+#### Build Test Environment
 - Success Case 1
 	- Linux 3.10.0-693.17.1.el7.x86_64
-	- gcc (GCC) 7.3.1 20180303 (Red Hat 7.3.1-5)
-	- Qt 5.9.2 (x64), qmake 3.1
+	- gcc 7.3.1 20180303 (Red Hat 7.3.1-5)
+	- Qt 5.9.2 (x64/64bit), qmake 3.1
+- Success Case 2
+	- Qt 5.9.5 (x86/32bit), MingW 5.3.0, qmake 3.1
+	- gcc 5.3.0 (i686-posix-dwarf-rev0, Built by MinGW-W64 project)
+	- Microsoft Windows 10 x64
 
 ### :beginner: To Do
 - Run xlnt test using Qxlnt.
@@ -61,5 +65,5 @@ int main(int argc, char **argv)
 - utfcpp, Nemanja Trifunovic http://utfcpp.sourceforge.net/
 
 ### Contact
-- Please leave an issue to me. https://github.com/j2doll/Qxlnt
+- Please leave an issue to me. https://github.com/j2doll/Qxlnt/issues
 - Hi! I'm j2doll (aka Jay Two). My native language is not English and my English is not fluent. Please, use EASY English. :-)
