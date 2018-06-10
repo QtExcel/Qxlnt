@@ -2,6 +2,8 @@
 
 > *Read this in other languages: [English](README.md), :kr: [한국어](README.ko.md)*
 
+![](markdown-data/Concept-QXlnt.jpg)
+
 - Qxlnt is a helper project that allows xlnt to be used in Qt.
 - xlnt is xlsx library that using C++14. See License and links.
 
@@ -35,6 +37,6 @@
 - libstudxml, Code Synthesis Tools https://www.codesynthesis.com/projects/libstudxml/
 - utfcpp, Nemanja Trifunovic http://utfcpp.sourceforge.net/
 
-### Contacts
+### Contact
 - Please leave an issue to me. https://github.com/j2doll/Qxlnt
 - Hi! I'm j2doll (aka Jay Two). My native language is not English and my English is not fluent. Please, use EASY English. :-)
