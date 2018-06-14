@@ -33,6 +33,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/
 include(../Qxlnt/Qxlnt.pri)
 
+# set XLNT_TEST_DATA_DIR value for test data
+DEFINES += \
+XLNT_TEST_DATA_DIR=../xlnt/tests/data/
+
+# default include path fo test
 INCLUDEPATH += \
 ../xlnt/tests/
 
