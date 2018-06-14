@@ -5,7 +5,7 @@
 ![](markdown-data/Concept-QXlnt.jpg)
 
 - Qxlnt is a helper project that allows xlnt to be used in Qt.
-- xlnt is xlsx library that using C++14. See License and links.
+- xlnt is xlsx library that using C++14. See 'License and links' for more information.
 
 ### Why did you make it?
 - xlnt is a excellent library for usinf xlsx Excel files. :+1: 
@@ -34,7 +34,7 @@ int main(int argc, char **argv)
 }
 ```
 
-### Notice
+### :notebook: Notice
 - C++14 or higher version is required. 
 	- gcc 4.x(4.8 or below) is not supported. Current(2018) gcc version is 7.x.
 	- If you use Visual C++, then use VS 2017 or higher version.
@@ -53,17 +53,17 @@ int main(int argc, char **argv)
 	- Microsoft Windows 10 x64
 
 ### :beginner: To Do
-- Run xlnt test using Qxlnt.
-- Test on Visual C++ and other C++ compilers.
-- Testing in various Qt environments.
+- :umbrella: Test on Visual C++ and other C++ compilers.
+- :cloud: Testing in various Qt environments.
+- :zap: Unicode Test (filename, file path, data value)
 
-### License and links
+### :link: License and links
 - MIT License
 - Qxlnt, j2doll, https://github.com/j2doll/Qxlnt
 - xlnt, Thomas Fussell, https://github.com/tfussell/xlnt
 - libstudxml, Code Synthesis Tools https://www.codesynthesis.com/projects/libstudxml/
 - utfcpp, Nemanja Trifunovic http://utfcpp.sourceforge.net/
 
-### Contact
+### :mailbox: Contact
 - Please leave an issue to me. https://github.com/j2doll/Qxlnt/issues
 - Hi! I'm j2doll (aka Jay Two). My native language is not English and my English is not fluent. Please, use EASY English. :-)

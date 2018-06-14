@@ -5,7 +5,7 @@
 ![](markdown-data/Concept-QXlnt.jpg)
 
 - Qxlnt는 xlnt가 Qt에서 사용될 수있게 해주는 도우미 프로젝트입니다.
-- xlnt는 C++14를 사용하는 xlsx 라이브러리입니다. 라이센스 및 링크를 참조하십시오.
+- xlnt는 C++14를 사용하는 xlsx 라이브러리입니다. 자세한 정보는 '라이센스 및 링크'를 참조하십시오.
 
 ### 왜 만들었는가?
 - xlnt는 xlsx Excel 파일을 사용하기에 훌륭한 라이브러리입니다. :+1: 
@@ -53,16 +53,16 @@ int main(int argc, char **argv)
 	- Microsoft Windows 10 x64
 
 ### :beginner: 할 일
-- Qxlnt를 사용하여 xlnt 테스트를 실행 하기
-- Visual C++ 및 기타 C++ 컴파일러에서 테스트하십시오.
-- 다양한 Qt 환경에서 테스트
+- :umbrella: Visual C++ 및 기타 C++ 컴파일러에서 테스트
+- :cloud: 다양한 Qt 환경에서 테스트
+- :zap: 유니코드 테스트 (파일명, 경로명, 자료)
 
-### 라이센스 및 링크
+### :link: 라이센스 및 링크
 - MIT 라이센스
 - Qxlnt, j2doll, https://github.com/j2doll/Qxlnt
 - xlnt, Thomas Fussell, https://github.com/tfussell/xlnt
 - libstudxml, Code Synthesis Tools https://www.codesynthesis.com/projects/libstudxml/
 - utfcpp, Nemanja Trifunovic http://utfcpp.sourceforge.net/
 
-### 연락처
+### :mailbox: 연락처
 - 제게 이슈를 남겨주세요. https://github.com/j2doll/Qxlnt/issues
