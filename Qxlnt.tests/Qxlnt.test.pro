@@ -35,7 +35,7 @@ include(../Qxlnt/Qxlnt.pri)
 
 # set XLNT_TEST_DATA_DIR value for test data
 DEFINES += \
-XLNT_TEST_DATA_DIR=../xlnt/tests/data/
+XLNT_TEST_DATA_DIR=$$PWD/../xlnt/tests/data/
 
 # default include path fo test
 INCLUDEPATH += \
