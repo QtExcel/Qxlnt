@@ -43,16 +43,7 @@ int main(int argc, char **argv)
 - :construction: 나는 현재 알파 테스트 중입니다.
 
 #### 테스트 빌드 환경
-- 케이스 1
-	- Linux 3.10.0-693.17.1.el7.x86_64
-	- gcc (GCC) 7.3.1 20180303 (Red Hat 7.3.1-5)
-	- Qt 5.9.2 (x64), qmake 3.1
-  - Qxlnt.test 완벽함. 문제 없음.
-- 케이스 2
-	- Qt 5.9.5 (x86/32bit), MingW 5.3.0, qmake 3.1
-	- gcc 5.3.0 (i686-posix-dwarf-rev0, Built by MinGW-W64 project)
-	- Microsoft Windows 10 x64
-  - Qxlnt.test가 유니코드 오류가 있음. xlnt의 [이슈](https://github.com/tfussell/xlnt/issues/251)에서 언급하였음.
+- [테스트 환경](BuildEnv.ko.md)을 참조하세요.
 
 ### :beginner: 할 일
 - :umbrella: Visual C++ 및 기타 C++ 컴파일러에서 테스트

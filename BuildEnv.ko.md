@@ -15,4 +15,9 @@
 - Microsoft Windows 10 x64
 - Qxlnt.test가 유니코드 오류가 있음. xlnt의 [이슈](https://github.com/tfussell/xlnt/issues/251)에서 언급하였음.
 
-
+## 케이스 3
+- MSYS2 64bit  
+	- MSYS_NT-10.0 DESKTOP-AGOCCFS 2.10.0(0.325/5/3) 2018-02-09 15:25 x86_64 Msys
+- Microsoft Windows 10 x64
+- Qt 5.10.1, QMake version 3.1
+- Qxlnt.test 완벽함. 문제 없음.
