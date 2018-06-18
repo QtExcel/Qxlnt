@@ -30,7 +30,7 @@ int main(int argc, char **argv)
     ws.freeze_panes("B2");
     wb.save("example.xlsx");
 
-	return 0;
+    return 0;
 }
 ```
 
@@ -39,10 +39,10 @@ int main(int argc, char **argv)
 	- gcc 4.x (4.8 이하)는 지원되지 않습니다. 현재 (2018) gcc 버전은 7.x입니다.
 	- Visual C++를 사용하는 경우 VS 2017 이상의 버전을 사용하십시오.
 
-### 테스트
-- :construction: 나는 현재 알파 테스트 중입니다.
+### :cop: 테스트
+- :construction: 현재 알파 테스트 중입니다.
 
-#### 테스트 빌드 환경
+#### 테스트 환경
 - [테스트 환경](BuildEnv.ko.md)을 참조하세요.
 
 ### :beginner: 할 일

@@ -30,7 +30,7 @@ int main(int argc, char **argv)
     ws.freeze_panes("B2");
     wb.save("example.xlsx");
 
-	return 0;
+    return 0;
 }
 ```
 
@@ -39,10 +39,10 @@ int main(int argc, char **argv)
 	- gcc 4.x(4.8 or below) is not supported. Current(2018) gcc version is 7.x.
 	- If you use Visual C++, then use VS 2017 or higher version.
 
-### Test
-- :construction: I am currently in alpha testing, now.
+### :cop: Test
+- :construction: Currently in alpha testing, now.
 
-#### Build Test Environment
+#### Test Environment
 - See [Test Environment](BuildEnv.md)
 
 ### :beginner: To Do
