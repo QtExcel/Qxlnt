@@ -8,7 +8,7 @@
 - xlnt is xlsx library that using C++14. See 'License and links' for more information.
 
 ### Why did you make it?
-- xlnt is a excellent library for usinf xlsx Excel files. :+1:
+- xlnt is a excellent library for using xlsx Excel files. :+1:
 - I was looking for a way to make it easy to use in Qt. Of course, cmake is compatible with Qt, but it is not convenient to use. So I created Qxlnt.
 
 ### Hello World
