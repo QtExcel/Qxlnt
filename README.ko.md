@@ -62,7 +62,7 @@ int main(int argc, char **argv)
 ### :mailbox: 연락처
 - 제게 이슈를 남겨주세요. https://github.com/j2doll/Qxlnt/issues
 
-### 내가 진행하는 유사한 프로젝트
+### :star: 진행중인 유사한 프로젝트
 - QXlsx [https://github.com/j2doll/QXlsx](https://github.com/j2doll/QXlsx)
 	- QXlsx는 엑셀 파일(*.xlsx)을 읽고 쓰는 라이브러리입니다.
 		- QtXlsx가 더이상 지원되지 않기 때문에(2014), QtXlsx에 기반한 새로운 프로젝트를 만들었습니다. (2017-)
