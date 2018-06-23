@@ -4,11 +4,13 @@
 
 ![](markdown-data/Concept-QXlnt.jpg)
 
+[![Built-with-Qt5-Badge](https://img.shields.io/badge/Built%20with-Qt5-green.svg)](https://www.qt.io/) [![Built-with-cpp-Badge](https://img.shields.io/badge/Built%20with-C%2B%2B14-green.svg)](https://isocpp.org/) [![Xlsx-Badge](https://img.shields.io/badge/Library-xlsx-blue.svg)](https://www.ecma-international.org/publications/standards/Ecma-376.htm)
+
 - Qxlnt is a helper project that allows xlnt to be used in Qt.
 - xlnt is xlsx library that using C++14. See 'License and links' for more information.
 
 ### Why did you make it?
-- xlnt is a excellent library for usinf xlsx Excel files. :+1:
+- xlnt is a excellent library for using xlsx Excel files. :+1:
 - I was looking for a way to make it easy to use in Qt. Of course, cmake is compatible with Qt, but it is not convenient to use. So I created Qxlnt.
 
 ### Hello World
@@ -45,7 +47,7 @@ int main(int argc, char **argv)
 #### Test Environment
 - See [Test Environment](BuildEnv.md)
 
-### :beginner: To Do
+### :hammer: To Do
 - :umbrella: Test on Visual C++ and other C++ compilers.
 - :cloud: Testing in various Qt environments.
 - :zap: Unicode Test (filename, file path, data value)
@@ -61,7 +63,7 @@ int main(int argc, char **argv)
 - Please leave an issue to me. https://github.com/j2doll/Qxlnt/issues
 - Hi! I'm j2doll (aka Jay Two). My native language is not English and my English is not fluent. Please, use EASY English. :-)
 
-### Similar projects I'm going on
+### :star: Similar projects going on
 - QXlsx [https://github.com/j2doll/QXlsx](https://github.com/j2doll/QXlsx)
 	- QXlsx is excel file(*.xlsx) reader/writer library.
 		- Because QtXlsx is no longer supported(2014), I created a new project that is based on QtXlsx. (2017-)
