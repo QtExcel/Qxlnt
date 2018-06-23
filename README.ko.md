@@ -47,7 +47,7 @@ int main(int argc, char **argv)
 #### 테스트 환경
 - [테스트 환경](BuildEnv.ko.md)을 참조하세요.
 
-### :beginner: 할 일
+### :hammer: 할 일
 - :umbrella: Visual C++ 및 기타 C++ 컴파일러에서 테스트
 - :cloud: 다양한 Qt 환경에서 테스트
 - :zap: 유니코드 테스트 (파일명, 경로명, 자료)

@@ -47,7 +47,7 @@ int main(int argc, char **argv)
 #### Test Environment
 - See [Test Environment](BuildEnv.md)
 
-### :beginner: To Do
+### :hammer: To Do
 - :umbrella: Test on Visual C++ and other C++ compilers.
 - :cloud: Testing in various Qt environments.
 - :zap: Unicode Test (filename, file path, data value)
