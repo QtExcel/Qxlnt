@@ -53,10 +53,9 @@ int main(int argc, char **argv)
 - :zap: Unicode Test (filename, file path, data value)
 
 ### :link: License and links
-- MIT License
-- Qxlnt, j2doll, https://github.com/j2doll/Qxlnt
-- xlnt, Thomas Fussell, https://github.com/tfussell/xlnt
-- libstudxml, Code Synthesis Tools https://www.codesynthesis.com/projects/libstudxml/
+- ![](https://img.shields.io/badge/license-MIT-blue.svg) Qxlnt, j2doll, https://github.com/j2doll/Qxlnt
+- ![](https://img.shields.io/badge/license-MIT-blue.svg) xlnt, Thomas Fussell, https://github.com/tfussell/xlnt
+- ![](https://img.shields.io/badge/license-MIT-blue.svg) libstudxml, Code Synthesis Tools https://www.codesynthesis.com/projects/libstudxml/
 - utfcpp, Nemanja Trifunovic http://utfcpp.sourceforge.net/
 
 ### :mailbox: Contact
