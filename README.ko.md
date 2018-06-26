@@ -4,7 +4,7 @@
 
 ![](markdown-data/Concept-QXlnt.jpg)
 
-[![Built-with-Qt5-Badge](https://img.shields.io/badge/Built%20with-Qt5-green.svg)](https://www.qt.io/) [![Built-with-cpp-Badge](https://img.shields.io/badge/Built%20with-C%2B%2B14-green.svg)](https://isocpp.org/) [![Xlsx-Badge](https://img.shields.io/badge/Library-xlsx-blue.svg)](https://www.ecma-international.org/publications/standards/Ecma-376.htm)
+![](markdown-data/qxlnt-badge1.png)
 
 - Qxlnt는 xlnt가 Qt에서 사용될 수있게 해주는 도우미 프로젝트입니다.
 - xlnt는 C++14를 사용하는 xlsx 라이브러리입니다. 자세한 정보는 '라이센스 및 링크'를 참조하십시오.
@@ -36,33 +36,33 @@ int main(int argc, char **argv)
 }
 ```
 
-### 주의
+### :zap: 주의
 - C++14 이상 버전이 필요합니다.
 	- gcc 4.x (4.8 이하)는 지원되지 않습니다. 현재 (2018) gcc 버전은 7.x입니다.
 	- Visual C++를 사용하는 경우 VS 2017 이상의 버전을 사용하십시오.
 
-### :cop: 테스트
+### 테스트
 - :construction: 현재 알파 테스트 중입니다.
 
 #### 테스트 환경
 - [테스트 환경](BuildEnv.ko.md)을 참조하세요.
 
-### :hammer: 할 일
-- :umbrella: Visual C++ 및 기타 C++ 컴파일러에서 테스트
-- :cloud: 다양한 Qt 환경에서 테스트
-- :zap: 유니코드 테스트 (파일명, 경로명, 자료)
+### 할 일
+- Visual C++ 및 기타 C++ 컴파일러에서 테스트 :umbrella:
+- 다양한 Qt 환경에서 테스트 :cloud:
+- 유니코드 테스트 (파일명, 경로명, 자료) :zap:
 
-### :link: 라이센스 및 링크
-- ![](https://img.shields.io/badge/license-MIT-blue.svg) Qxlnt, j2doll, https://github.com/j2doll/Qxlnt
-- ![](https://img.shields.io/badge/license-MIT-blue.svg) xlnt, Thomas Fussell, https://github.com/tfussell/xlnt
-- ![](https://img.shields.io/badge/license-MIT-blue.svg) libstudxml, Code Synthesis Tools https://www.codesynthesis.com/projects/libstudxml/
-- utfcpp, Nemanja Trifunovic http://utfcpp.sourceforge.net/
+### 라이센스 및 링크
+- ![](markdown-data/mit-license.png) Qxlnt, j2doll, https://github.com/j2doll/Qxlnt
+- ![](markdown-data/mit-license.png) xlnt, Thomas Fussell, https://github.com/tfussell/xlnt
+- ![](markdown-data/mit-license.png) libstudxml, Code Synthesis Tools https://www.codesynthesis.com/projects/libstudxml/
+- ![](markdown-data/boost-license.png) utfcpp, Nemanja Trifunovic http://utfcpp.sourceforge.net/
 
 ### :mailbox: 연락처
 - 제게 이슈를 남겨주세요. https://github.com/j2doll/Qxlnt/issues
 
-### :star: 진행중인 유사한 프로젝트
-- QXlsx [https://github.com/j2doll/QXlsx](https://github.com/j2doll/QXlsx)
+### 진행중인 유사한 프로젝트
+- :star: QXlsx [https://github.com/j2doll/QXlsx](https://github.com/j2doll/QXlsx)
 	- QXlsx는 엑셀 파일(*.xlsx)을 읽고 쓰는 라이브러리입니다.
 		- QtXlsx가 더이상 지원되지 않기 때문에(2014), QtXlsx에 기반한 새로운 프로젝트를 만들었습니다. (2017-)
 		- QXlsx는 개발언어로 C++를 사용합니다. (Qt 5.x 사용)

@@ -4,7 +4,7 @@
 
 ![](markdown-data/Concept-QXlnt.jpg)
 
-[![Built-with-Qt5-Badge](https://img.shields.io/badge/Built%20with-Qt5-green.svg)](https://www.qt.io/) [![Built-with-cpp-Badge](https://img.shields.io/badge/Built%20with-C%2B%2B14-green.svg)](https://isocpp.org/) [![Xlsx-Badge](https://img.shields.io/badge/Library-xlsx-blue.svg)](https://www.ecma-international.org/publications/standards/Ecma-376.htm)
+![](markdown-data/qxlnt-badge1.png)
 
 - Qxlnt is a helper project that allows xlnt to be used in Qt.
 - xlnt is xlsx library that using C++14. See 'License and links' for more information.
@@ -36,34 +36,34 @@ int main(int argc, char **argv)
 }
 ```
 
-### :notebook: Notice
+### :zap: Notice
 - C++14 or higher version is required.
 	- gcc 4.x(4.8 or below) is not supported. Current(2018) gcc version is 7.x.
 	- If you use Visual C++, then use VS 2017 or higher version.
 
-### :cop: Test
+### Test
 - :construction: Currently in alpha testing, now.
 
 #### Test Environment
 - See [Test Environment](BuildEnv.md)
 
-### :hammer: To Do
-- :umbrella: Test on Visual C++ and other C++ compilers.
-- :cloud: Testing in various Qt environments.
-- :zap: Unicode Test (filename, file path, data value)
+### To Do
+- Test on Visual C++ and other C++ compilers. :umbrella:
+- Testing in various Qt environments. :cloud:
+- Unicode Test (filename, file path, data value) :umbrella:
 
-### :link: License and links
-- ![](https://img.shields.io/badge/license-MIT-blue.svg) Qxlnt, j2doll, https://github.com/j2doll/Qxlnt
-- ![](https://img.shields.io/badge/license-MIT-blue.svg) xlnt, Thomas Fussell, https://github.com/tfussell/xlnt
-- ![](https://img.shields.io/badge/license-MIT-blue.svg) libstudxml, Code Synthesis Tools https://www.codesynthesis.com/projects/libstudxml/
-- utfcpp, Nemanja Trifunovic http://utfcpp.sourceforge.net/
+### License and links
+- ![](markdown-data/mit-license.png) Qxlnt, j2doll, https://github.com/j2doll/Qxlnt
+- ![](markdown-data/mit-license.png) xlnt, Thomas Fussell, https://github.com/tfussell/xlnt
+- ![](markdown-data/mit-license.png) libstudxml, Code Synthesis Tools https://www.codesynthesis.com/projects/libstudxml/
+- ![](markdown-data/boost-license.png) utfcpp, Nemanja Trifunovic http://utfcpp.sourceforge.net/
 
 ### :mailbox: Contact
 - Please leave an issue to me. https://github.com/j2doll/Qxlnt/issues
 - Hi! I'm j2doll (aka Jay Two). My native language is not English and my English is not fluent. Please, use EASY English. :-)
 
-### :star: Similar projects going on
-- QXlsx [https://github.com/j2doll/QXlsx](https://github.com/j2doll/QXlsx)
+### Similar projects going on
+- :star: QXlsx [https://github.com/j2doll/QXlsx](https://github.com/j2doll/QXlsx)
 	- QXlsx is excel file(*.xlsx) reader/writer library.
 		- Because QtXlsx is no longer supported(2014), I created a new project that is based on QtXlsx. (2017-)
 		- Development language of QXlsx is C++. (with Qt 5.x)
