@@ -36,23 +36,23 @@ int main(int argc, char **argv)
 }
 ```
 
-### :notebook: Notice
+### :zap: Notice
 - C++14 or higher version is required.
 	- gcc 4.x(4.8 or below) is not supported. Current(2018) gcc version is 7.x.
 	- If you use Visual C++, then use VS 2017 or higher version.
 
-### :cop: Test
+### Test
 - :construction: Currently in alpha testing, now.
 
 #### Test Environment
 - See [Test Environment](BuildEnv.md)
 
-### :hammer: To Do
+### To Do
 - Test on Visual C++ and other C++ compilers. :umbrella:
 - Testing in various Qt environments. :cloud:
 - Unicode Test (filename, file path, data value) :umbrella:
 
-### :link: License and links
+### License and links
 - ![](markdown-data/mit-license.png) Qxlnt, j2doll, https://github.com/j2doll/Qxlnt
 - ![](markdown-data/mit-license.png) xlnt, Thomas Fussell, https://github.com/tfussell/xlnt
 - ![](markdown-data/mit-license.png) libstudxml, Code Synthesis Tools https://www.codesynthesis.com/projects/libstudxml/

@@ -36,23 +36,23 @@ int main(int argc, char **argv)
 }
 ```
 
-### 주의
+### :zap: 주의
 - C++14 이상 버전이 필요합니다.
 	- gcc 4.x (4.8 이하)는 지원되지 않습니다. 현재 (2018) gcc 버전은 7.x입니다.
 	- Visual C++를 사용하는 경우 VS 2017 이상의 버전을 사용하십시오.
 
-### :cop: 테스트
+### 테스트
 - :construction: 현재 알파 테스트 중입니다.
 
 #### 테스트 환경
 - [테스트 환경](BuildEnv.ko.md)을 참조하세요.
 
-### :hammer: 할 일
+### 할 일
 - Visual C++ 및 기타 C++ 컴파일러에서 테스트 :umbrella:
 - 다양한 Qt 환경에서 테스트 :cloud:
 - 유니코드 테스트 (파일명, 경로명, 자료) :zap:
 
-### :link: 라이센스 및 링크
+### 라이센스 및 링크
 - ![](markdown-data/mit-license.png) Qxlnt, j2doll, https://github.com/j2doll/Qxlnt
 - ![](markdown-data/mit-license.png) xlnt, Thomas Fussell, https://github.com/tfussell/xlnt
 - ![](markdown-data/mit-license.png) libstudxml, Code Synthesis Tools https://www.codesynthesis.com/projects/libstudxml/
