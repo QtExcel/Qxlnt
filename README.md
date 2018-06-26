@@ -62,8 +62,8 @@ int main(int argc, char **argv)
 - Please leave an issue to me. https://github.com/j2doll/Qxlnt/issues
 - Hi! I'm j2doll (aka Jay Two). My native language is not English and my English is not fluent. Please, use EASY English. :-)
 
-### :star: Similar projects going on
-- QXlsx [https://github.com/j2doll/QXlsx](https://github.com/j2doll/QXlsx)
+### Similar projects going on
+- :star: QXlsx [https://github.com/j2doll/QXlsx](https://github.com/j2doll/QXlsx)
 	- QXlsx is excel file(*.xlsx) reader/writer library.
 		- Because QtXlsx is no longer supported(2014), I created a new project that is based on QtXlsx. (2017-)
 		- Development language of QXlsx is C++. (with Qt 5.x)
