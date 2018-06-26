@@ -48,9 +48,9 @@ int main(int argc, char **argv)
 - See [Test Environment](BuildEnv.md)
 
 ### :hammer: To Do
-- :umbrella: Test on Visual C++ and other C++ compilers.
-- :cloud: Testing in various Qt environments.
-- :zap: Unicode Test (filename, file path, data value)
+- Test on Visual C++ and other C++ compilers. :umbrella:
+- Testing in various Qt environments. :cloud:
+- Unicode Test (filename, file path, data value) :umbrella:
 
 ### :link: License and links
 - ![](markdown-data/mit-license.png) Qxlnt, j2doll, https://github.com/j2doll/Qxlnt
