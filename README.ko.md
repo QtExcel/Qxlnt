@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 - ![](markdown-data/mit-license.png) Qxlnt, j2doll, https://github.com/j2doll/Qxlnt
 - ![](markdown-data/mit-license.png) xlnt, Thomas Fussell, https://github.com/tfussell/xlnt
 - ![](markdown-data/mit-license.png) libstudxml, Code Synthesis Tools https://www.codesynthesis.com/projects/libstudxml/
-- [![Boost Software License badge](https://img.shields.io/badge/Boost%20Software-License-blue.svg)](https://shields.io/) utfcpp, Nemanja Trifunovic http://utfcpp.sourceforge.net/
+- [![Boost Software License badge](https://img.shields.io/badge/License-Boost%20Software-blue.svg)](https://shields.io/) utfcpp, Nemanja Trifunovic http://utfcpp.sourceforge.net/
 
 ### :mailbox: 연락처
 - 제게 이슈를 남겨주세요. https://github.com/j2doll/Qxlnt/issues
