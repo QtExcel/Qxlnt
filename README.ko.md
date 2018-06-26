@@ -4,7 +4,7 @@
 
 ![](markdown-data/Concept-QXlnt.jpg)
 
-[![Built-with-Qt5-Badge](https://img.shields.io/badge/Built%20with-Qt5-green.svg)](https://www.qt.io/) [![Built-with-cpp-Badge](https://img.shields.io/badge/Built%20with-C%2B%2B14-green.svg)](https://isocpp.org/) [![Xlsx-Badge](https://img.shields.io/badge/Library-xlsx-blue.svg)](https://www.ecma-international.org/publications/standards/Ecma-376.htm)
+![](markdown-data/qxlnt-badge1.png)
 
 - Qxlnt는 xlnt가 Qt에서 사용될 수있게 해주는 도우미 프로젝트입니다.
 - xlnt는 C++14를 사용하는 xlsx 라이브러리입니다. 자세한 정보는 '라이센스 및 링크'를 참조하십시오.
@@ -53,10 +53,10 @@ int main(int argc, char **argv)
 - :zap: 유니코드 테스트 (파일명, 경로명, 자료)
 
 ### :link: 라이센스 및 링크
-- ![](https://img.shields.io/badge/license-MIT-blue.svg) Qxlnt, j2doll, https://github.com/j2doll/Qxlnt
-- ![](https://img.shields.io/badge/license-MIT-blue.svg) xlnt, Thomas Fussell, https://github.com/tfussell/xlnt
-- ![](https://img.shields.io/badge/license-MIT-blue.svg) libstudxml, Code Synthesis Tools https://www.codesynthesis.com/projects/libstudxml/
-- utfcpp, Nemanja Trifunovic http://utfcpp.sourceforge.net/
+- ![](markdown-data/mit-license.png) Qxlnt, j2doll, https://github.com/j2doll/Qxlnt
+- ![](markdown-data/mit-license.png) xlnt, Thomas Fussell, https://github.com/tfussell/xlnt
+- ![](markdown-data/mit-license.png) libstudxml, Code Synthesis Tools https://www.codesynthesis.com/projects/libstudxml/
+- [![Boost Software License badge](https://img.shields.io/badge/Boost%20Software-License-blue.svg)](https://shields.io/) utfcpp, Nemanja Trifunovic http://utfcpp.sourceforge.net/
 
 ### :mailbox: 연락처
 - 제게 이슈를 남겨주세요. https://github.com/j2doll/Qxlnt/issues
