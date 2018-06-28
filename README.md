@@ -68,3 +68,7 @@ int main(int argc, char **argv)
 		- Because QtXlsx is no longer supported(2014), I created a new project that is based on QtXlsx. (2017-)
 		- Development language of QXlsx is C++. (with Qt 5.x)
 		- You don't need to use static library or dynamic shared object using QXlsx.
+
+- :star: Qlibxlsxwriter [https://github.com/j2doll/Qlibxlsxwriter](https://github.com/j2doll/Qlibxlsxwriter)
+    - Qlibxlsxwriter is a helper project that allows libxlsxwriter to be used in Qt.
+    - libxlsxwriter is a C library for creating Excel XLSX files.
