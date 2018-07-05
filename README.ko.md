@@ -2,7 +2,7 @@
 
 > *Read this in other languages: [English](README.md), :kr: [한국어](README.ko.md)*
 
-![](markdown-data/Concept-QXlnt.jpg)
+<p align="center"><img src="https://github.com/j2doll/Qxlnt/raw/master/markdown-data/Concept-QXlnt.jpg"></p>
 
 ![](markdown-data/qxlnt-badge1.png)
 
@@ -46,7 +46,7 @@ int main(int argc, char **argv)
 
 ## 테스트
 
-- :construction: 현재 알파 테스트 중입니다.
+- 현재 테스트 중입니다.
 
 ### 테스트 환경
 
@@ -60,13 +60,13 @@ int main(int argc, char **argv)
 
 ## 라이센스 및 링크
 
-- ![](markdown-data/mit-license.png) Qxlnt, j2doll, https://github.com/j2doll/Qxlnt
-- ![](markdown-data/mit-license.png) xlnt, Thomas Fussell, https://github.com/tfussell/xlnt
-- ![](markdown-data/mit-license.png) libstudxml, Code Synthesis Tools https://www.codesynthesis.com/projects/libstudxml/
-- ![](markdown-data/boost-license.png) utfcpp, Nemanja Trifunovic http://utfcpp.sourceforge.net
+- ![](markdown-data/mit-license.png) Qxlnt는 MIT 라이센스입니다. (https://github.com/j2doll/Qxlnt)[https://github.com/j2doll/Qxlnt] 
+- ![](markdown-data/mit-license.png) xlnt는 MIT 라이센스입니다. (https://github.com/tfussell/xlnt)[https://github.com/tfussell/xlnt] 
+- ![](markdown-data/mit-license.png) libstudxml는 MIT 라이센스입니다. (https://www.codesynthesis.com/projects/libstudxml/)[https://www.codesynthesis.com/projects/libstudxml/]
+- ![](markdown-data/boost-license.png) utfcpp는 Boost 소프트웨어 라이센스입니다. [http://utfcpp.sourceforge.net](http://utfcpp.sourceforge.net)
 
 ## :mailbox: 연락처
-- 제게 이슈를 남겨주세요. https://github.com/j2doll/Qxlnt/issues
+- 제게 이슈를 남겨주세요. [https://github.com/j2doll/Qxlnt/issues](https://github.com/j2doll/Qxlnt/issues)
 
 ## 진행중인 유사한 프로젝트
 

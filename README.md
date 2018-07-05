@@ -45,9 +45,9 @@ int main(int argc, char **argv)
 	- If you use Visual C++, then use VS 2017 or higher version.
 
 ## Test
-- :construction: Currently in alpha testing, now.
+- Currently in testing now.
 
-## Test Environment
+### Test Environment
 - See [Test Environment](BuildEnv.md)
 
 ## To Do
@@ -56,13 +56,13 @@ int main(int argc, char **argv)
 - Unicode Test (filename, file path, data value) :umbrella:
 
 ## License and links
-- ![](markdown-data/mit-license.png) Qxlnt, j2doll, https://github.com/j2doll/Qxlnt
-- ![](markdown-data/mit-license.png) xlnt, Thomas Fussell, https://github.com/tfussell/xlnt
-- ![](markdown-data/mit-license.png) libstudxml, Code Synthesis Tools https://www.codesynthesis.com/projects/libstudxml/
-- ![](markdown-data/boost-license.png) utfcpp, Nemanja Trifunovic http://utfcpp.sourceforge.net
+- ![](markdown-data/mit-license.png) Qxlnt is under MIT License. [https://github.com/j2doll/Qxlnt](https://github.com/j2doll/Qxlnt)
+- ![](markdown-data/mit-license.png) xlnt is under MIT License. [https://github.com/tfussell/xlnt](https://github.com/tfussell/xlnt) 
+- ![](markdown-data/mit-license.png) libstudxml under MIT License. Code Synthesis Tools [https://www.codesynthesis.com/projects/libstudxml/](https://www.codesynthesis.com/projects/libstudxml/)
+- ![](markdown-data/boost-license.png) utfcpp under Boost Software License. [http://utfcpp.sourceforge.net](http://utfcpp.sourceforge.net)
 
 ## :mailbox: Contact
-- Please leave an issue to me. https://github.com/j2doll/Qxlnt/issues
+- Please leave an issue to me. [https://github.com/j2doll/Qxlnt/issues](https://github.com/j2doll/Qxlnt/issues) 
 - Hi! I'm j2doll (aka Jay Two). My native language is not English and my English is not fluent. Please, use EASY English. :-)
 
 ## Similar projects going on
