@@ -58,8 +58,8 @@ int main(int argc, char **argv)
 ## License and links
 - ![](markdown-data/mit-license.png) Qxlnt is under MIT License. [https://github.com/j2doll/Qxlnt](https://github.com/j2doll/Qxlnt)
 - ![](markdown-data/mit-license.png) xlnt is under MIT License. [https://github.com/tfussell/xlnt](https://github.com/tfussell/xlnt) 
-- ![](markdown-data/mit-license.png) libstudxml under MIT License. Code Synthesis Tools [https://www.codesynthesis.com/projects/libstudxml/](https://www.codesynthesis.com/projects/libstudxml/)
-- ![](markdown-data/boost-license.png) utfcpp under Boost Software License. [http://utfcpp.sourceforge.net](http://utfcpp.sourceforge.net)
+- ![](markdown-data/mit-license.png) libstudxml is under MIT License. [https://www.codesynthesis.com/projects/libstudxml/](https://www.codesynthesis.com/projects/libstudxml/)
+- ![](markdown-data/boost-license.png) utfcpp is under Boost Software License. [http://utfcpp.sourceforge.net](http://utfcpp.sourceforge.net)
 
 ## :mailbox: Contact
 - Please leave an issue to me. [https://github.com/j2doll/Qxlnt/issues](https://github.com/j2doll/Qxlnt/issues) 
