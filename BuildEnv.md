@@ -21,4 +21,4 @@
 - Microsoft Windows 10 x64
 - Qt 5.10.1, QMake version 3.1
 - Qxlnt.test is perfect! No fault. :smiley:
-	- If you use gcc on Windows, use MSYS2 istead of MingW.
+	- If you use gcc on Windows, use MSYS2 instead of MingW.
