@@ -1,12 +1,10 @@
-# Test Environment
-
-> *Read this in other languages: [English](BuildEnv.md), :kr: [한국어](BuildEnv.ko.md)*
+# Tested Environment
 
 ## Case 1
 - Linux 3.10.0-693.17.1.el7.x86_64
 - gcc 7.3.1 20180303 (Red Hat 7.3.1-5)
 - Qt 5.9.2 (x64/64bit), qmake 3.1 
-	- Actually Qt shared object is not needed. (type 'ldd Qxlnt.test')
+- Actually Qt shared object is not needed. (type 'ldd Qxlnt.test')
 - Qxlnt.test is perfect! No fault. :smiley:
 
 ## Case 2
@@ -17,8 +15,34 @@
 
 ## Case 3
 - MSYS2 64bit  
-	- MSYS_NT-10.0 DESKTOP-AGOCCFS 2.10.0(0.325/5/3) 2018-02-09 15:25 x86_64 Msys
+- MSYS_NT-10.0 DESKTOP-AGOCCFS 2.10.0(0.325/5/3) 2018-02-09 15:25 x86_64 Msys
 - Microsoft Windows 10 x64
 - Qt 5.10.1, QMake version 3.1
 - Qxlnt.test is perfect! No fault. :smiley:
-	- If you use gcc on Windows, use MSYS2 instead of MingW.
+- If you use gcc on Windows, Use MSYS2 instead of MingW. 
+
+## Case 4
+- Mac OS
+```sh
+uname -a
+Darwin tentia.local 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017; root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64
+
+
+gcc --version
+Configured with: --prefix=/Applications/Xcode.app/Contents/Developer/usr --with-gxx-include-dir=/usr/include/c++/4.2.1
+Apple LLVM version 7.0.2 (clang-700.1.81)
+Target: x86_64-apple-darwin15.6.0
+Thread model: posix
+
+qmake --version
+QMake version 3.0
+Using Qt version 5.6.0 in /Users/j2doll/Qt5.6.0/5.6/clang_64/lib
+```
+- Qt 5.6.0 (qmake 3.0)
+- Qxlnt.test has unicode error. 
+```
+$ ./Qxlnt.test 
+.....................................................................................................................................................*..........*.....................................................................................................
+stest_read_unicode_filename failed
+stest_round_trip_rw_unicode failed
+```
