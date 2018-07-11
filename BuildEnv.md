@@ -23,11 +23,10 @@
 - If you use gcc on Windows, Use MSYS2 instead of MingW. 
 
 ## Case 4
-- Mac OS
+- Mac OS (old mac)
 ```sh
 uname -a
 Darwin tentia.local 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017; root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64
-
 
 gcc --version
 Configured with: --prefix=/Applications/Xcode.app/Contents/Developer/usr --with-gxx-include-dir=/usr/include/c++/4.2.1
@@ -39,11 +38,5 @@ qmake --version
 QMake version 3.0
 Using Qt version 5.6.0 in /Users/j2doll/Qt5.6.0/5.6/clang_64/lib
 ```
-- Success to build. :smiley:
-- Qxlnt.test has unicode error. :rage:
-```
-$ ./Qxlnt.test 
-.....................................................................................................................................................*..........*.....................................................................................................
-stest_read_unicode_filename failed
-stest_round_trip_rw_unicode failed
-```
+- Success to build. Qxlnt.test is perfect! No fault. :smiley:
+
