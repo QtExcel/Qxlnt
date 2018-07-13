@@ -25,7 +25,7 @@
 ## Case 4
 - Mac OS (old mac)
 
-```sh
+```
 uname -a
 Darwin tentia.local 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017; root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64
 

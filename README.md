@@ -46,9 +46,7 @@ int main(int argc, char **argv)
 
 ## Test
 - Currently in testing now.
-
-### Test Environment
-- See [Test Environment](BuildEnv.md)
+- See [Tested Environments](BuildEnv.md)
 
 ## To Do
 - Test on Visual C++ and other C++ compilers. :umbrella:

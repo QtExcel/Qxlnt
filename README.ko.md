@@ -47,9 +47,6 @@ int main(int argc, char **argv)
 ## 테스트
 
 - 현재 테스트 중입니다.
-
-### 테스트 환경
-
 - [테스트 환경](BuildEnv.md)을 참조하세요.
 
 ## 할 일
