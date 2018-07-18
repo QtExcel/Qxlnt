@@ -6,12 +6,11 @@
 # 
 # MIT License
 
-TARGET = Qxlnt
+TARGET=Qxlnt
 
-TEMPLATE = lib
-CONFIG += staticlib
-
-# DEFINES += ...
+TEMPLATE=lib
+gcc:CONFIG+=staticlib
+msvc:DEFINES+=XLNT_EXPORT
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings

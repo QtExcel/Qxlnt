@@ -34,8 +34,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 include(../Qxlnt/Qxlnt.pri)
 
 # set XLNT_TEST_DATA_DIR value for test data
-DEFINES += \
-XLNT_TEST_DATA_DIR=$$PWD/../xlnt/tests/data/
+XLNT_TEST_DATA_DIR=../xlnt/tests/data/
+
+QXLNT_ROOT = ../Qxlnt/
+
+msvc{
+DEFINES+=XLNT_IMPORT
+CONFIG(debug, debug|release) {
+    LIBS+=$${QXLNT_ROOT}debug/QXlnt.lib
+} else {
+    LIBS+=$${QXLNT_ROOT}release/QXlnt.lib
+}
+}
+
 
 # default include path fo test
 INCLUDEPATH += \
