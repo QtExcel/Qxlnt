@@ -15,7 +15,7 @@ int main(int argc, char **argv)
 {     
     QCoreApplication a(argc, argv); // It is a Qt code.
 
-    xlnt::workbook wb;i // It's a xlnt code. Let's mix them together!
+    xlnt::workbook wb; // It's a xlnt code. Let's mix them together!
     xlnt::worksheet ws = wb.active_sheet();
     ws.cell("A1").value(5);
     ws.cell("B2").value("string data");

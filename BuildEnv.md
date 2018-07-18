@@ -64,6 +64,6 @@ Microsoft Windows 10 x64
 ```
 
 - Success to build to Qxlnt.dll
-- 
-
+- Success to build to HelloWorld
+- Qxlnt.test is not built. :rage:
 

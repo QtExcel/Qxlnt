@@ -24,29 +24,40 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 # Set environment values for Qxlnt. You may use default values.
-#
+
+gcc{
 # QXLNT_PARENTPATH = ../xlnt/
 # QXLNT_HEADERPATH = ../xlnt/include/
 # QXLNT_SOURCEPATH = ../xlnt/source/
 # LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
-# LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/
-# LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/
-include(../Qxlnt/Qxlnt.pri)
+# LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
+# LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
+include(../Qxlnt/Qxlnt.pri)	
+}
+
+msvc{
+QXLNT_ROOT = ../Qxlnt/
+QXLNT_PARENTPATH = ../xlnt/
+QXLNT_HEADERPATH = ../xlnt/include/
+QXLNT_SOURCEPATH = ../xlnt/source/
+LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
+LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
+LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
+UTFCPP_HEADERPATH = ../xlnt/third-party/utfcpp/
+INCLUDEPATH += $${QXLNT_HEADERPATH}
+INCLUDEPATH += $${LIBSTUDXML_HEADERPATH}
+INCLUDEPATH += $${QXLNT_SOURCEPATH}
+INCLUDEPATH += $${UTFCPP_HEADERPATH}
+DEFINES+=XLNT_IMPORT
+CONFIG(debug, debug|release) {
+	LIBS+=$${QXLNT_ROOT}debug/QXlnt.lib
+} else {
+	LIBS+=$${QXLNT_ROOT}release/QXlnt.lib
+}
+}
 
 # set XLNT_TEST_DATA_DIR value for test data
 XLNT_TEST_DATA_DIR=../xlnt/tests/data/
-
-QXLNT_ROOT = ../Qxlnt/
-
-msvc{
-DEFINES+=XLNT_IMPORT
-CONFIG(debug, debug|release) {
-    LIBS+=$${QXLNT_ROOT}debug/QXlnt.lib
-} else {
-    LIBS+=$${QXLNT_ROOT}release/QXlnt.lib
-}
-}
-
 
 # default include path fo test
 INCLUDEPATH += \

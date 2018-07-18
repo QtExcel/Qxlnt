@@ -25,13 +25,38 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 # Set environment values for Qxlnt. You may use default values.
 #
+
+gcc{
 # QXLNT_PARENTPATH = ../xlnt/
 # QXLNT_HEADERPATH = ../xlnt/include/
 # QXLNT_SOURCEPATH = ../xlnt/source/
 # LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
 # LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
 # LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
-include(../Qxlnt/Qxlnt.pri)
+include(../Qxlnt/Qxlnt.pri)	
+}
 
-SOURCES += main.cpp
+msvc{
+QXLNT_ROOT = ../Qxlnt/
+QXLNT_PARENTPATH = ../xlnt/
+QXLNT_HEADERPATH = ../xlnt/include/
+QXLNT_SOURCEPATH = ../xlnt/source/
+LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
+LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
+LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
+UTFCPP_HEADERPATH = ../xlnt/third-party/utfcpp/
+INCLUDEPATH += $${QXLNT_HEADERPATH}
+INCLUDEPATH += $${LIBSTUDXML_HEADERPATH}
+INCLUDEPATH += $${QXLNT_SOURCEPATH}
+INCLUDEPATH += $${UTFCPP_HEADERPATH}
+DEFINES+=XLNT_IMPORT
+CONFIG(debug, debug|release) {
+	LIBS+=$${QXLNT_ROOT}debug/QXlnt.lib
+} else {
+	LIBS+=$${QXLNT_ROOT}release/QXlnt.lib
+}
+}
+
+SOURCES += \
+main.cpp
 
