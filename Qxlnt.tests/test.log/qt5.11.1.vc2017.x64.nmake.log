@@ -1,0 +1,40 @@
+qt5.11.1.vc2017.x64.nmake.log
+
+**********************************************************************
+** Visual Studio 2017 Developer Command Prompt v15.7.5
+** Copyright (c) 2017 Microsoft Corporation
+**********************************************************************
+[vcvarsall.bat] Environment initialized for: 'x64'
+
+C:\Program Files (x86)\Microsoft Visual Studio\2017\Community>cd C:\workspace\github\Qxlnt\Qxlnt.tests
+
+C:\workspace\github\Qxlnt\Qxlnt.tests>nmake
+
+Microsoft(R) Program Maintenance Utility 버전 14.14.26433.0
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+        "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.14.26428\bin\HostX64\x64\nmake.exe" -f Makefile.Release
+
+Microsoft(R) Program Maintenance Utility 버전 14.14.26433.0
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+        cl -c -nologo -Zc:wchar_t -FS -Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -O2 -MD -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -wd4467 -EHsc -DUNICODE -D_UNICODE -DWIN32 -DWIN64 -DQT_DEPRECATED_WARNINGS -DXLNT_IMPORT -DXLNT_TEST_DATA_DIR=C:/workspace/github/Qxlnt/Qxlnt.tests/../xlnt/tests/data/ -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DNDEBUG -I. -I..\xlnt\include -I..\xlnt\third-party\libstudxml -I..\xlnt\source -I..\xlnt\third-party\utfcpp -I..\xlnt\tests -I..\..\..\..\Qt\Qt5.11.1\5.11.1\msvc2017_64\include -I..\..\..\..\Qt\Qt5.11.1\5.11.1\msvc2017_64\include\QtGui -I..\..\..\..\Qt\Qt5.11.1\5.11.1\msvc2017_64\include\QtANGLE -I..\..\..\..\Qt\Qt5.11.1\5.11.1\msvc2017_64\include\QtCore -Irelease -I\include -I..\..\..\..\Qt\Qt5.11.1\5.11.1\msvc2017_64\mkspecs\win32-msvc -Forelease\ @C:\Users\wjj\AppData\Local\Temp\nmA6CE.tmp
+runner.cpp
+..\xlnt\tests\helpers/path_helper.hpp(29): warning C4100: 'append': 참조되지 않은 정식 매개 변수입니다.
+..\xlnt\tests\helpers/path_helper.hpp(40): warning C4100: 'append': 참조되지 않은 정식 매개 변수입니다.
+..\xlnt\tests\helpers/path_helper.hpp(51): warning C4100: 'append': 참조되지 않은 정식 매개 변수입니다.
+..\xlnt\source\detail/external/include_libstudxml.hpp(25): warning C4068: 알 수 없는 pragma입니다.
+..\xlnt\source\detail/external/include_libstudxml.hpp(26): warning C4068: 알 수 없는 pragma입니다.
+..\xlnt\source\detail/external/include_libstudxml.hpp(27): warning C4068: 알 수 없는 pragma입니다.
+..\xlnt\source\detail/external/include_libstudxml.hpp(28): warning C4068: 알 수 없는 pragma입니다.
+..\xlnt\source\detail/external/include_libstudxml.hpp(33): warning C4068: 알 수 없는 pragma입니다.
+        link /NOLOGO /DYNAMICBASE /NXCOMPAT /INCREMENTAL:NO /SUBSYSTEM:CONSOLE "/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" /MANIFEST:embed /OUT:release\Qxlnt.test.exe @C:\Users\wjj\AppData\Local\Temp\nmDACF.tmp
+runner.obj : error LNK2019: "public: __cdecl xml::parser::~parser(void)" (??1parser@xml@@QEAA@XZ) 외부 기호(참조 위치: "public: static bool __cdecl xml_helper::compare_xml_exact(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,bool)" (?compare_xml_exact@xml_helper@@SA_NAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0_N@Z) 함수)에서 확인하지 못했습니다.
+runner.obj : error LNK2019: "public: enum xml::parser::event_type __cdecl xml::parser::next(void)" (?next@parser@xml@@QEAA?AW4event_type@12@XZ) 외부 기호(참조 위치: "public: static bool __cdecl xml_helper::compare_xml_exact(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,bool)" (?compare_xml_exact@xml_helper@@SA_NAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0_N@Z) 함수)에서 확인하지 못했습니다.
+runner.obj : error LNK2019: "private: void __cdecl xml::parser::init(void)" (?init@parser@xml@@AEAAXXZ) 외부 기호(참조  위치: "public: __cdecl xml::parser::parser(void const *,unsigned __int64,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,unsigned short)" (??0parser@xml@@QEAA@PEBX_KAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@G@Z) 함수)에서 확인하지 못했습니다.
+runner.obj : error LNK2019: "private: struct xml::parser::element_entry const * __cdecl xml::parser::get_element_(void)const " (?get_element_@parser@xml@@AEBAPEBUelement_entry@12@XZ) 외부 기호(참조 위치: "public: static bool __cdecl xml_helper::compare_xml_exact(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,bool)" (?compare_xml_exact@xml_helper@@SA_NAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0_N@Z) 함수)에서 확인하지 못했습니다.
+release\Qxlnt.test.exe : fatal error LNK1120: 4개의 확인할 수 없는 외부 참조입니다.
+NMAKE : fatal error U1077: '"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.14.26428\bin\HostX64\x64\link.EXE"' : '0x460' 반환 코드입니다.
+Stop.
+NMAKE : fatal error U1077: '"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.14.26428\bin\HostX64\x64\nmake.exe"' : '0x2' 반환 코드입니다.
+Stop.

@@ -58,9 +58,10 @@ QMake version 3.0
 Using Qt version 5.6.0 in /Users/j2doll/Qt5.6.0/5.6/clang_64/lib
 ```
 
-- Success to build. :smiley:
-- Success to run hello world. :smiley:
-- Success to run Qxlnt.test. :smiley:
+- Testing now...
+	- Build :alien:
+	- Hello world :alien:
+	- Qxlnt.test :alien:
 
 ## Case 5
 
@@ -70,8 +71,8 @@ Qt 5.11.1
 Microsoft Windows 10 x64
 ```
 
-- Make and use DLL of Qxlnt for Visual C++.
-- Success to build to Qxlnt.dll :smiley:
-- Success to build to HelloWorld :smiley:
--  Qxlnt.test is ...
+- Testing now...
+	- Build :smiley:
+	- Hello world :smiley:
+	- Qxlnt.test is failed to qmake. :rage:
 
