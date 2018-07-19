@@ -70,6 +70,7 @@ Qt 5.11.1
 Microsoft Windows 10 x64
 ```
 
+- Make and use DLL of Qxlnt for Visual C++.
 - Success to build to Qxlnt.dll :smiley:
 - Success to build to HelloWorld :smiley:
 -  Qxlnt.test is ...
