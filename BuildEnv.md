@@ -11,7 +11,7 @@ Qt 5.9.2 (x64/64bit), qmake 3.1
 - Actually Qt shared object is not needed. (type 'ldd Qxlnt.test')
 - Success to build. :smiley:
 - Success to run hello world. :smiley:
-- Qxlnt.test has problems. :rage:
+- Success to run Qxlnt.test. :smiley:
 
 ## Case 2
 - MingW
@@ -23,7 +23,6 @@ gcc 5.3.0 (i686-posix-dwarf-rev0, Built by MinGW-W64 project)
 ```
 
 - Success to build. :smiley:
-- Qxlnt.test has problems. :rage:
 - Qxlnt.test has unicode error. :rage: This is mentioned in the xlnt [issue](https://github.com/tfussell/xlnt/issues/251).
 
 ## Case 3
@@ -37,7 +36,7 @@ Qt 5.10.1, QMake version 3.1
 
 - Success to build. :smiley:
 - Success to run hello world. :smiley:
-- Qxlnt.test has problems. :rage:
+- Success to run Qxlnt.test. :smiley:
 - If you use gcc on Windows, Use MSYS2 instead of MingW. 
 
 ## Case 4
@@ -60,7 +59,7 @@ Using Qt version 5.6.0 in /Users/j2doll/Qt5.6.0/5.6/clang_64/lib
 
 - Success to build. :smiley:
 - Success to run hello world. :smiley:
-- Qxlnt.test has problems. :rage:
+- Success to run Qxlnt.test. :smiley:
 
 ## Case 5
 
@@ -72,5 +71,5 @@ Microsoft Windows 10 x64
 
 - Success to build to Qxlnt.dll :smiley:
 - Success to build to HelloWorld :smiley:
-- Qxlnt.test is not built. :rage:
+- Success to run Qxlnt.test. :smiley:
 
