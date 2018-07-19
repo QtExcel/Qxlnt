@@ -14,7 +14,7 @@
 - xlnt는 xlsx Excel 파일을 사용하기에 훌륭한 라이브러리입니다. :+1:
 - 그래서 xlnt를 Qt에서 사용하기 쉬운 방법을 찾고 있었습니다. 물론 cmake는 Qt와 호환되지만 사용하기가 쉽지 않습니다. 그래서 Qxlnt를 만들었습니다.
 
-## 헬로우 월드
+## 헬로우 월드 (HelloQXlnt)
 
 ```cpp
 #include <iostream>
