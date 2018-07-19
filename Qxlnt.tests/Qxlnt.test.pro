@@ -25,24 +25,27 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 # Set environment values for Qxlnt. You may use default values.
 
+include(../Qxlnt/Qxlnt.pri)	
+
 gcc{
+message('Current conpiler is gcc')
 # QXLNT_PARENTPATH = ../xlnt/
 # QXLNT_HEADERPATH = ../xlnt/include/
 # QXLNT_SOURCEPATH = ../xlnt/source/
 # LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
 # LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
 # LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
-include(../Qxlnt/Qxlnt.pri)	
+# include(../Qxlnt/Qxlnt.pri)	
 }
-
 msvc{
+message('Current conpiler is Visual C++')
 QXLNT_ROOT = ../Qxlnt/
-QXLNT_PARENTPATH = ../xlnt/
-QXLNT_HEADERPATH = ../xlnt/include/
-QXLNT_SOURCEPATH = ../xlnt/source/
-LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
-LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
-LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
+# QXLNT_PARENTPATH = ../xlnt/
+# QXLNT_HEADERPATH = ../xlnt/include/
+# QXLNT_SOURCEPATH = ../xlnt/source/
+# LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
+# LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
+# LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
 UTFCPP_HEADERPATH = ../xlnt/third-party/utfcpp/
 INCLUDEPATH += $${QXLNT_HEADERPATH}
 INCLUDEPATH += $${LIBSTUDXML_HEADERPATH}
@@ -57,7 +60,7 @@ CONFIG(debug, debug|release) {
 }
 
 # set XLNT_TEST_DATA_DIR value for test data
-XLNT_TEST_DATA_DIR=../xlnt/tests/data/
+XLNT_TEST_DATA_DIR = ../xlnt/tests/data/
 
 # default include path fo test
 INCLUDEPATH += \

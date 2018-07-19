@@ -27,6 +27,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #
 
 gcc{
+message('Current conpiler is gcc')
 # QXLNT_PARENTPATH = ../xlnt/
 # QXLNT_HEADERPATH = ../xlnt/include/
 # QXLNT_SOURCEPATH = ../xlnt/source/
@@ -35,8 +36,8 @@ gcc{
 # LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
 include(../Qxlnt/Qxlnt.pri)	
 }
-
 msvc{
+message('Current conpiler is Visual C++')
 QXLNT_ROOT = ../Qxlnt/
 QXLNT_PARENTPATH = ../xlnt/
 QXLNT_HEADERPATH = ../xlnt/include/
