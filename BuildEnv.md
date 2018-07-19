@@ -32,6 +32,7 @@ gcc 5.3.0 (i686-posix-dwarf-rev0, Built by MinGW-W64 project)
 MSYS_NT-10.0 DESKTOP-AGOCCFS 2.10.0(0.325/5/3) 2018-02-09 15:25 x86_64 Msys
 Microsoft Windows 10 x64
 Qt 5.10.1, QMake version 3.1
+gcc 7.3
 ```
 
 - Success to build. :smiley:
