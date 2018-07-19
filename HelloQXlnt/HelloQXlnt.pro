@@ -8,7 +8,6 @@
 
 TARGET = HelloQxlnt
 
-# QT -= gui
 CONFIG += console
 CONFIG -= app_bundle
 
@@ -27,7 +26,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #
 
 gcc{
-message('Current conpiler is gcc')
+message('Current compiler is gcc')
 # QXLNT_PARENTPATH = ../xlnt/
 # QXLNT_HEADERPATH = ../xlnt/include/
 # QXLNT_SOURCEPATH = ../xlnt/source/
@@ -37,14 +36,14 @@ message('Current conpiler is gcc')
 include(../Qxlnt/Qxlnt.pri)	
 }
 msvc{
-message('Current conpiler is Visual C++')
-QXLNT_ROOT = ../Qxlnt/
-QXLNT_PARENTPATH = ../xlnt/
-QXLNT_HEADERPATH = ../xlnt/include/
-QXLNT_SOURCEPATH = ../xlnt/source/
-LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
-LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
-LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
+message('Current compiler is Visual C++')
+# QXLNT_ROOT = ../Qxlnt/
+# QXLNT_PARENTPATH = ../xlnt/
+# QXLNT_HEADERPATH = ../xlnt/include/
+# QXLNT_SOURCEPATH = ../xlnt/source/
+# LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
+# LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/
+# LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/
 UTFCPP_HEADERPATH = ../xlnt/third-party/utfcpp/
 INCLUDEPATH += $${QXLNT_HEADERPATH}
 INCLUDEPATH += $${LIBSTUDXML_HEADERPATH}
