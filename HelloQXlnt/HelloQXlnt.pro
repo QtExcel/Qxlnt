@@ -37,7 +37,7 @@ include(../Qxlnt/Qxlnt.pri)
 }
 msvc{
 message('Current compiler is Visual C++')
-# QXLNT_ROOT = ../Qxlnt/
+QXLNT_ROOT = ../Qxlnt/
 # QXLNT_PARENTPATH = ../xlnt/
 # QXLNT_HEADERPATH = ../xlnt/include/
 # QXLNT_SOURCEPATH = ../xlnt/source/
