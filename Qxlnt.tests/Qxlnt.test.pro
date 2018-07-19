@@ -25,8 +25,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 # Set environment values for Qxlnt. You may use default values.
 
-include(../Qxlnt/Qxlnt.pri)	
-
 gcc{
 message('Current conpiler is gcc')
 # QXLNT_PARENTPATH = ../xlnt/
@@ -35,7 +33,7 @@ message('Current conpiler is gcc')
 # LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
 # LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
 # LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
-# include(../Qxlnt/Qxlnt.pri)	
+include(../Qxlnt/Qxlnt.pri)	
 }
 msvc{
 message('Current conpiler is Visual C++')
