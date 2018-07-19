@@ -72,5 +72,5 @@ Microsoft Windows 10 x64
 
 - Success to build to Qxlnt.dll :smiley:
 - Success to build to HelloWorld :smiley:
-- Success to run Qxlnt.test. :smiley:
+-  Qxlnt.test is ...
 
