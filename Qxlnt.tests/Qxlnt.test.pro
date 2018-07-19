@@ -60,7 +60,8 @@ CONFIG(debug, debug|release) {
 }
 
 # set XLNT_TEST_DATA_DIR value for test data
-XLNT_TEST_DATA_DIR = ../xlnt/tests/data/
+DEFINES += \
+XLNT_TEST_DATA_DIR=$$PWD/../xlnt/tests/data/
 
 # default include path fo test
 INCLUDEPATH += \
