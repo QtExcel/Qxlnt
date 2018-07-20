@@ -74,5 +74,5 @@ Microsoft Windows 10 x64
 - Testing now...
 	- Build :smiley:
 	- Hello world :smiley:
-	- Qxlnt.test is failed to qmake. :rage:
+	- Qxlnt.test is failed to make. :rage:
 
