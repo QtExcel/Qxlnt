@@ -27,12 +27,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 gcc{
 message('Current compiler is gcc')
-# QXLNT_PARENTPATH = ../xlnt/
-# QXLNT_HEADERPATH = ../xlnt/include/
-# QXLNT_SOURCEPATH = ../xlnt/source/
-# LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
-# LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
-# LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
+QXLNT_PARENTPATH = ../xlnt/
+QXLNT_HEADERPATH = ../xlnt/include/
+QXLNT_SOURCEPATH = ../xlnt/source/
+LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
+LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
+LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
 include(../Qxlnt/Qxlnt.pri)	
 }
 msvc{
