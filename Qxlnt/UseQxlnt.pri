@@ -17,6 +17,16 @@ message('Current compiler is gcc')
 # LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
 include(../Qxlnt/Qxlnt.pri)	
 }
+clang++{
+message('Current compiler is clang')
+# QXLNT_PARENTPATH = ../xlnt/
+# QXLNT_HEADERPATH = ../xlnt/include/
+# QXLNT_SOURCEPATH = ../xlnt/source/
+# LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
+# LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
+# LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
+include(../Qxlnt/Qxlnt.pri)	
+}
 msvc{
 message('Current compiler is Visual C++')
 QXLNT_ROOT = ../Qxlnt/
