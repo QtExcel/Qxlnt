@@ -17,7 +17,7 @@ message('Current compiler is gcc')
 # LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
 include(../Qxlnt/Qxlnt.pri)	
 }
-clang++{
+linux-clang{
 message('Current compiler is clang')
 # QXLNT_PARENTPATH = ../xlnt/
 # QXLNT_HEADERPATH = ../xlnt/include/
