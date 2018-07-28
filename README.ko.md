@@ -45,13 +45,10 @@ int main(int argc, char **argv)
 	- Visual C++를 사용하는 경우 VS 2017 이상의 버전을 사용하십시오.
 
 ## 테스트
-
 - 현재 테스트 중입니다.
 - [테스트 환경](BuildEnv.md)을 참조하세요.
 
 ## 할 일
-
-- Visual C++ 및 기타 C++ 컴파일러에서 테스트 :umbrella:
 - 다양한 Qt 환경에서 테스트 :cloud:
 - 유니코드 테스트 (파일명, 경로명, 자료) :zap:
 

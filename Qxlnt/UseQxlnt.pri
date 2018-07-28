@@ -1,11 +1,11 @@
-#
+########################################
 # UseQxlnt.pri
-#
+########################################
 # xlnt https://github.com/tfussell/xlnt
 # Qxlnt https://github.com/j2doll/Qxlnt
-#
+########################################
 # MIT License
-#
+########################################
 
 gcc{
 message('Current compiler is gcc')
@@ -18,7 +18,7 @@ message('Current compiler is gcc')
 include(../Qxlnt/Qxlnt.pri)	
 }
 linux-clang{
-message('Current compiler is clang')
+message('Current compiler is linux-clang')
 # QXLNT_PARENTPATH = ../xlnt/
 # QXLNT_HEADERPATH = ../xlnt/include/
 # QXLNT_SOURCEPATH = ../xlnt/source/

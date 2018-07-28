@@ -49,7 +49,6 @@ int main(int argc, char **argv)
 - See [Tested Environments](BuildEnv.md)
 
 ## To Do
-- Test on Visual C++ and other C++ compilers. :umbrella:
 - Testing in various Qt environments. :cloud:
 - Unicode Test (filename, file path, data value) :umbrella:
 

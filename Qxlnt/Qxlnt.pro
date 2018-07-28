@@ -1,15 +1,17 @@
-#
+########################################
 # Qxlnt.pro
-#
+########################################
 # xlnt https://github.com/tfussell/xlnt
 # Qxlnt https://github.com/j2doll/Qxlnt
-# 
+########################################
 # MIT License
+########################################
 
 TARGET=Qxlnt
 
 TEMPLATE=lib
 gcc:CONFIG+=staticlib
+linux-clang:CONFIG+=staticlib
 msvc:DEFINES+=XLNT_EXPORT
 
 # The following define makes your compiler emit warnings if you use
