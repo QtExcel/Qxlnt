@@ -61,12 +61,14 @@ $${QXLNT_HEADERPATH}xlnt/cell/cell_type.hpp \
 $${QXLNT_HEADERPATH}xlnt/cell/comment.hpp \
 $${QXLNT_HEADERPATH}xlnt/cell/index_types.hpp \
 $${QXLNT_HEADERPATH}xlnt/cell/rich_text.hpp \
-$${QXLNT_HEADERPATH}xlnt/cell/rich_text_run.hpp
+$${QXLNT_HEADERPATH}xlnt/cell/rich_text_run.hpp \
+$${QXLNT_HEADERPATH}xlnt/cell/hyperlink.hpp
 
 SOURCES += \
 $${QXLNT_SOURCEPATH}cell/cell.cpp \
 $${QXLNT_SOURCEPATH}cell/cell_reference.cpp \
 $${QXLNT_SOURCEPATH}cell/comment.cpp \
+$${QXLNT_SOURCEPATH}cell/hyperlink.cpp \
 $${QXLNT_SOURCEPATH}cell/index_types.cpp \
 $${QXLNT_SOURCEPATH}cell/rich_text.cpp \
 $${QXLNT_SOURCEPATH}cell/rich_text_run.cpp
@@ -76,9 +78,11 @@ $${QXLNT_SOURCEPATH}cell/rich_text_run.cpp
 HEADERS += \
 $${QXLNT_HEADERPATH}xlnt/packaging/manifest.hpp \
 $${QXLNT_HEADERPATH}xlnt/packaging/relationship.hpp \
-$${QXLNT_HEADERPATH}xlnt/packaging/uri.hpp
+$${QXLNT_HEADERPATH}xlnt/packaging/uri.hpp \
+$${QXLNT_HEADERPATH}xlnt/packaging/ext_list.hpp
 
 SOURCES += \
+$${QXLNT_SOURCEPATH}packaging/ext_list.cpp \
 $${QXLNT_SOURCEPATH}packaging/manifest.cpp \
 $${QXLNT_SOURCEPATH}packaging/relationship.cpp \
 $${QXLNT_SOURCEPATH}packaging/uri.cpp
@@ -119,6 +123,7 @@ $${QXLNT_HEADERPATH}xlnt/utils/exceptions.hpp \
 $${QXLNT_HEADERPATH}xlnt/utils/optional.hpp \
 $${QXLNT_HEADERPATH}xlnt/utils/path.hpp \
 $${QXLNT_HEADERPATH}xlnt/utils/scoped_enum_hash.hpp \
+$${QXLNT_HEADERPATH}xlnt/utils/serialisation_utils.hpp \
 $${QXLNT_HEADERPATH}xlnt/utils/time.hpp \
 $${QXLNT_HEADERPATH}xlnt/utils/timedelta.hpp \
 $${QXLNT_HEADERPATH}xlnt/utils/variant.hpp
@@ -165,11 +170,15 @@ $${QXLNT_HEADERPATH}xlnt/worksheet/major_order.hpp \
 $${QXLNT_HEADERPATH}xlnt/worksheet/page_margins.hpp \
 $${QXLNT_HEADERPATH}xlnt/worksheet/page_setup.hpp \
 $${QXLNT_HEADERPATH}xlnt/worksheet/pane.hpp \
+$${QXLNT_HEADERPATH}xlnt/worksheet/phonetic_pr.hpp \
+$${QXLNT_HEADERPATH}xlnt/worksheet/print_options.hpp \
 $${QXLNT_HEADERPATH}xlnt/worksheet/range.hpp \
 $${QXLNT_HEADERPATH}xlnt/worksheet/range_iterator.hpp \
 $${QXLNT_HEADERPATH}xlnt/worksheet/range_reference.hpp \
 $${QXLNT_HEADERPATH}xlnt/worksheet/row_properties.hpp \
 $${QXLNT_HEADERPATH}xlnt/worksheet/selection.hpp \
+$${QXLNT_HEADERPATH}xlnt/worksheet/sheet_format_properties.hpp \
+ $${QXLNT_HEADERPATH}xlnt/worksheet/sheet_pr.hpp \
 $${QXLNT_HEADERPATH}xlnt/worksheet/sheet_protection.hpp \
 $${QXLNT_HEADERPATH}xlnt/worksheet/sheet_view.hpp \
 $${QXLNT_HEADERPATH}xlnt/worksheet/worksheet.hpp
@@ -180,6 +189,7 @@ $${QXLNT_SOURCEPATH}worksheet/cell_vector.cpp \
 $${QXLNT_SOURCEPATH}worksheet/header_footer.cpp \
 $${QXLNT_SOURCEPATH}worksheet/page_margins.cpp \
 $${QXLNT_SOURCEPATH}worksheet/page_setup.cpp \
+$${QXLNT_SOURCEPATH}worksheet/phonetic_pr.cpp \
 $${QXLNT_SOURCEPATH}worksheet/range.cpp \
 $${QXLNT_SOURCEPATH}worksheet/range_iterator.cpp \
 $${QXLNT_SOURCEPATH}worksheet/range_reference.cpp \
@@ -245,10 +255,11 @@ $${QXLNT_SOURCEPATH}detail/header_footer/header_footer_code.cpp
 HEADERS += \
 $${QXLNT_SOURCEPATH}detail/implementations/cell_impl.hpp \
 $${QXLNT_SOURCEPATH}detail/implementations/conditional_format_impl.hpp \
-$${QXLNT_SOURCEPATH}detail/implementations/formatting_record.hpp \
 $${QXLNT_SOURCEPATH}detail/implementations/format_impl.hpp \
-$${QXLNT_SOURCEPATH}detail/implementations/stylesheet.hpp \
+$${QXLNT_SOURCEPATH}detail/implementations/formatting_record.hpp \
+$${QXLNT_SOURCEPATH}detail/implementations/hyperlink_impl.hpp \
 $${QXLNT_SOURCEPATH}detail/implementations/style_impl.hpp \
+$${QXLNT_SOURCEPATH}detail/implementations/stylesheet.hpp \
 $${QXLNT_SOURCEPATH}detail/implementations/workbook_impl.hpp \
 $${QXLNT_SOURCEPATH}detail/implementations/worksheet_impl.hpp
 
