@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Thomas Fussell
+// Copyright (c) 2014-2018 Thomas Fussell
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -116,6 +116,11 @@ public:
     /// Returns a cell in the range relative to its top left cell.
     /// </summary>
     const class cell cell(const cell_reference &ref) const;
+
+    /// <summary>
+    /// The worksheet this range targets
+    /// </summary>
+    const worksheet & target_worksheet() const;
 
     /// <summary>
     /// Returns the reference defining the bounds of this range.
@@ -285,11 +290,11 @@ public:
     /// </summary>
     bool operator!=(const range &comparand) const;
 
-private:
+ private:
     /// <summary>
     /// The worksheet this range is within
     /// </summary>
-    worksheet ws_;
+    class worksheet ws_;
 
     /// <summary>
     /// The reference of this range

@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2017 Thomas Fussell
+// Copyright (c) 2016-2018 Thomas Fussell
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -49,6 +49,11 @@ public:
     rich_text(const std::string &plain_text);
 
     /// <summary>
+    /// Constructs a rich text object from other
+    /// </summary>
+    rich_text(const rich_text &other);
+
+    /// <summary>
     /// Constructs a rich text object with the given text and font.
     /// </summary>
     rich_text(const std::string &plain_text, const class font &text_font);
@@ -67,7 +72,7 @@ public:
     /// Clears any runs in this text and adds a single run with default formatting and
     /// the given string as its textual content.
     /// </summary>
-    void plain_text(const std::string &s);
+    void plain_text(const std::string &s, bool preserve_space);
 
     /// <summary>
     /// Combines the textual content of each text run in order and returns the result.
@@ -90,6 +95,11 @@ public:
     void add_run(const rich_text_run &t);
 
     /// <summary>
+    /// Copies rich text object from other
+    /// </summary>
+    rich_text& operator=(const rich_text &rhs);
+
+    /// <summary>
     /// Returns true if the runs that make up this text are identical to those in rhs.
     /// </summary>
     bool operator==(const rich_text &rhs) const;
@@ -97,7 +107,7 @@ public:
     /// <summary>
     /// Returns true if the runs that make up this text are identical to those in rhs.
     /// </summary>
-    bool operator!=(const rich_text &rhs) const;    
+    bool operator!=(const rich_text &rhs) const;
 
     /// <summary>
     /// Returns true if this text has a single unformatted run with text equal to rhs.
@@ -114,6 +124,22 @@ private:
     /// The runs that make up this rich text.
     /// </summary>
     std::vector<rich_text_run> runs_;
+};
+
+class XLNT_API rich_text_hash
+{
+public:
+    std::size_t operator()(const rich_text& k) const
+    {
+        std::size_t res = 0;
+
+        for (auto r : k.runs())
+        {
+            res ^= std::hash<std::string>()(r.first);
+        }
+
+        return res;
+    }
 };
 
 } // namespace xlnt

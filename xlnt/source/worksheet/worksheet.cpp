@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Thomas Fussell
+// Copyright (c) 2014-2018 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,10 +26,6 @@
 #include <cmath>
 #include <limits>
 
-#include <detail/constants.hpp>
-#include <detail/implementations/cell_impl.hpp>
-#include <detail/implementations/workbook_impl.hpp>
-#include <detail/implementations/worksheet_impl.hpp>
 #include <xlnt/cell/cell.hpp>
 #include <xlnt/cell/cell_reference.hpp>
 #include <xlnt/cell/index_types.hpp>
@@ -46,6 +42,10 @@
 #include <xlnt/worksheet/range_iterator.hpp>
 #include <xlnt/worksheet/range_reference.hpp>
 #include <xlnt/worksheet/worksheet.hpp>
+#include <detail/constants.hpp>
+#include <detail/implementations/cell_impl.hpp>
+#include <detail/implementations/workbook_impl.hpp>
+#include <detail/implementations/worksheet_impl.hpp>
 
 namespace {
 
@@ -98,7 +98,7 @@ void worksheet::create_named_range(const std::string &name, const range_referenc
             throw invalid_parameter(); //("named range name must be outside the range A1-XFD1048576");
         }
     }
-    catch (xlnt::invalid_cell_reference)
+    catch (xlnt::invalid_cell_reference&)
     {
         // name is not a valid reference, that's good
     }
@@ -242,25 +242,31 @@ std::string worksheet::title() const
 
 void worksheet::title(const std::string &title)
 {
-    if (title.length() > 31)
+    // do no work if we don't need to
+    if (d_->title_ == title)
+    {
+        return;
+    }
+    // excel limits worksheet titles to 31 characters
+    if (title.empty() || title.length() > 31)
     {
         throw invalid_sheet_title(title);
     }
-
+    // invalid characters in a worksheet name
     if (title.find_first_of("*:/\\?[]") != std::string::npos)
     {
         throw invalid_sheet_title(title);
     }
-
-    auto same_title = std::find_if(workbook().begin(), workbook().end(),
-        [&](worksheet ws) { return ws.title() == title; });
-
-    if (same_title != workbook().end() && *same_title != *this)
+    // try and insert the new name into the worksheets map
+    // if the insert fails, we have a duplicate sheet name
+    auto insert_result = workbook().d_->sheet_title_rel_id_map_.insert(
+        std::make_pair(title, workbook().d_->sheet_title_rel_id_map_[d_->title_]));
+    if (!insert_result.second) // insert failed, duplication detected
     {
         throw invalid_sheet_title(title);
     }
-
-    workbook().d_->sheet_title_rel_id_map_[title] = workbook().d_->sheet_title_rel_id_map_[d_->title_];
+    // if the insert succeeded (i.e. wasn't a duplicate sheet name)
+    // update the worksheet title and remove the old relation
     workbook().d_->sheet_title_rel_id_map_.erase(d_->title_);
     d_->title_ = title;
 
@@ -284,13 +290,17 @@ void worksheet::freeze_panes(xlnt::cell top_left_cell)
 
 void worksheet::freeze_panes(const cell_reference &ref)
 {
+    if (ref == "A1")
+    {
+        unfreeze_panes();
+        return;
+    }
     if (!has_view())
     {
         d_->views_.push_back(sheet_view());
     }
 
     auto &primary_view = d_->views_.front();
-
     if (!primary_view.has_pane())
     {
         primary_view.pane(pane());
@@ -300,40 +310,23 @@ void worksheet::freeze_panes(const cell_reference &ref)
     primary_view.pane().state = pane_state::frozen;
 
     primary_view.clear_selections();
-    primary_view.add_selection(selection());
-
-    if (ref == "A1")
+    if (ref.column() == "A") // no column is frozen
     {
-        unfreeze_panes();
-    }
-    else if (ref.column() == "A")
-    {
-        primary_view.add_selection(selection());
-        primary_view.selection(0).pane(pane_corner::bottom_left);
-        primary_view.selection(0).active_cell(ref.make_offset(0, -1)); // cell above
-        primary_view.selection(1).active_cell(ref);
+        primary_view.add_selection(selection(pane_corner::bottom_left, ref));
         primary_view.pane().active_pane = pane_corner::bottom_left;
         primary_view.pane().y_split = ref.row() - 1;
     }
-    else if (ref.row() == 1)
+    else if (ref.row() == 1) // no row is frozen
     {
-        primary_view.add_selection(selection());
-        primary_view.selection(0).pane(pane_corner::top_right);
-        primary_view.selection(0).active_cell(ref.make_offset(-1, 0)); // cell to the left
-        primary_view.selection(1).active_cell(ref);
+        primary_view.add_selection(selection(pane_corner::top_right, ref));
         primary_view.pane().active_pane = pane_corner::top_right;
         primary_view.pane().x_split = ref.column_index() - 1;
     }
-    else
+    else // column and row is frozen
     {
-        primary_view.add_selection(selection());
-        primary_view.add_selection(selection());
-        primary_view.selection(0).pane(pane_corner::top_right);
-        primary_view.selection(0).active_cell(ref.make_offset(0, -1)); // cell above
-        primary_view.selection(1).pane(pane_corner::bottom_left);
-        primary_view.selection(1).active_cell(ref.make_offset(-1, 0)); // cell to the left
-        primary_view.selection(2).pane(pane_corner::bottom_right);
-        primary_view.selection(2).active_cell(ref);
+        primary_view.add_selection(selection(pane_corner::top_right, cell_reference(ref.column(), 1)));
+        primary_view.add_selection(selection(pane_corner::bottom_left, cell_reference(1, ref.row())));
+        primary_view.add_selection(selection(pane_corner::bottom_right, ref));
         primary_view.pane().active_pane = pane_corner::bottom_right;
         primary_view.pane().x_split = ref.column_index() - 1;
         primary_view.pane().y_split = ref.row() - 1;
@@ -361,11 +354,12 @@ void worksheet::active_cell(const cell_reference &ref)
 
     if (!primary_view.has_selections())
     {
-        primary_view.add_selection(selection());
+        primary_view.add_selection(selection(pane_corner::bottom_right, ref));
     }
-
-    auto &primary_selection = primary_view.selection(0);
-    primary_selection.active_cell(ref);
+    else
+    {
+        primary_view.selection(0).active_cell(ref);
+    }
 }
 
 bool worksheet::has_active_cell() const
@@ -608,7 +602,8 @@ column_t worksheet::highest_column_or_props() const
 
 range_reference worksheet::calculate_dimension() const
 {
-    return range_reference(lowest_column(), lowest_row(), highest_column(), highest_row());
+    return range_reference(lowest_column(), lowest_row(),
+        highest_column(), highest_row_or_props());
 }
 
 range worksheet::range(const std::string &reference_string)
@@ -756,6 +751,7 @@ void worksheet::clear_cell(const cell_reference &ref)
 void worksheet::clear_row(row_t row)
 {
     d_->cell_map_.erase(row);
+    d_->row_properties_.erase(row);
     // TODO: garbage collect newly unreferenced resources such as styles?
 }
 
@@ -1011,7 +1007,7 @@ bool worksheet::has_view() const
     return !d_->views_.empty();
 }
 
-sheet_view worksheet::view(std::size_t index) const
+sheet_view &worksheet::view(std::size_t index) const
 {
     return d_->views_.at(index);
 }
@@ -1029,6 +1025,21 @@ void worksheet::register_comments_in_manifest()
 void worksheet::register_calc_chain_in_manifest()
 {
     workbook().register_workbook_part(relationship_type::calculation_chain);
+}
+
+bool worksheet::has_phonetic_properties() const
+{
+    return d_->phonetic_properties_.is_set();
+}
+
+const phonetic_pr& worksheet::phonetic_properties() const
+{
+    return d_->phonetic_properties_.get();
+}
+
+void worksheet::phonetic_properties(const phonetic_pr& phonetic_props)
+{
+    d_->phonetic_properties_.set(phonetic_props);
 }
 
 bool worksheet::has_header_footer() const
@@ -1085,7 +1096,7 @@ double worksheet::row_height(row_t row) const
 {
     static const auto DefaultRowHeight = 15.0;
 
-    if (has_row_properties(row))
+    if (has_row_properties(row) && row_properties(row).height.is_set())
     {
         return row_properties(row).height.get();
     }
@@ -1107,7 +1118,33 @@ void worksheet::parent(xlnt::workbook &wb)
 
 conditional_format worksheet::conditional_format(const range_reference &ref, const condition &when)
 {
-	return workbook().d_->stylesheet_.get().add_conditional_format_rule(d_, ref, when);
+    return workbook().d_->stylesheet_.get().add_conditional_format_rule(d_, ref, when);
+}
+
+path worksheet::path() const
+{
+    auto rel = referring_relationship();
+    return xlnt::path(rel.source().path().parent().append(rel.target().path()));
+}
+
+relationship worksheet::referring_relationship() const
+{
+    auto &manifest = workbook().manifest();
+    auto wb_rel = manifest.relationship(xlnt::path("/"),
+        relationship_type::office_document);
+    auto ws_rel = manifest.relationship(wb_rel.target().path(),
+        workbook().d_->sheet_title_rel_id_map_.at(title()));
+    return ws_rel;
+}
+
+sheet_format_properties worksheet::format_properties() const
+{
+    return d_->format_properties_;
+}
+
+void worksheet::format_properties(const sheet_format_properties &properties)
+{
+    d_->format_properties_ = properties;
 }
 
 } // namespace xlnt

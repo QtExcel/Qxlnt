@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Thomas Fussell
+// Copyright (c) 2017-2018 Thomas Fussell
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -161,6 +161,8 @@ public:
     /// Returns the type of this variant.
     /// </summary>
     type value_type() const;
+
+    bool operator==(const variant &rhs) const;
 
 private:
     type type_;

@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Thomas Fussell
+// Copyright (c) 2014-2018 Thomas Fussell
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@
 #include <xlnt/cell/cell_reference.hpp>
 #include <xlnt/cell/cell_type.hpp>
 #include <xlnt/cell/comment.hpp>
+#include <xlnt/cell/hyperlink.hpp>
 #include <xlnt/cell/rich_text.hpp>
 #include <xlnt/cell/index_types.hpp>
 #include <xlnt/cell/rich_text_run.hpp>

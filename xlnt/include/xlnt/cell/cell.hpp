@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Thomas Fussell
+// Copyright (c) 2014-2018 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -47,6 +47,8 @@ class font;
 class format;
 class number_format;
 class protection;
+class range;
+class relationship;
 class style;
 class workbook;
 class worksheet;
@@ -239,6 +241,11 @@ public:
     column_t column() const;
 
     /// <summary>
+    /// Returns the numeric index (A == 1) of the column of this cell.
+    /// </summary>
+    column_t::index_t column_index() const;
+
+    /// <summary>
     /// Returns the row of this cell.
     /// </summary>
     row_t row() const;
@@ -251,25 +258,25 @@ public:
     // hyperlink
 
     /// <summary>
-    /// Returns the URL of this cell's hyperlink.
+    /// Returns the relationship of this cell's hyperlink.
     /// </summary>
-    std::string hyperlink() const;
-
-    /// <summary>
-    /// Adds a hyperlink to this cell pointing to the URL of the given value.
-    /// </summary>
-    void hyperlink(const std::string &url);
+    class hyperlink hyperlink() const;
 
     /// <summary>
     /// Adds a hyperlink to this cell pointing to the URI of the given value and sets
     /// the text value of the cell to the given parameter.
     /// </summary>
-    void hyperlink(const std::string &url, const std::string &display);
+    void hyperlink(const std::string &url, const std::string &display = "");
 
     /// <summary>
     /// Adds an internal hyperlink to this cell pointing to the given cell.
     /// </summary>
-    void hyperlink(xlnt::cell target);
+    void hyperlink(xlnt::cell target, const std::string& display = "");
+
+    /// <summary>
+    /// Adds an internal hyperlink to this cell pointing to the given range.
+    /// </summary>
+    void hyperlink(xlnt::range target, const std::string& display = "");
 
     /// <summary>
     /// Returns true if this cell has a hyperlink set.
@@ -601,9 +608,9 @@ public:
     bool operator==(const cell &comparand) const;
 
     /// <summary>
-    /// Returns true if this cell is uninitialized.
+    /// Returns false if this cell the same cell as comparand (compared by reference).
     /// </summary>
-    bool operator==(std::nullptr_t) const;
+    bool operator!=(const cell &comparand) const;
 
 private:
     friend class style;
@@ -638,6 +645,11 @@ private:
 /// Returns true if this cell is uninitialized.
 /// </summary>
 XLNT_API bool operator==(std::nullptr_t, const cell &cell);
+
+/// <summary>
+/// Returns true if this cell is uninitialized.
+/// </summary>
+XLNT_API bool operator==(const cell &cell, std::nullptr_t);
 
 /// <summary>
 /// Convenience function for writing cell to an ostream.

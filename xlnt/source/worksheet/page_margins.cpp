@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Thomas Fussell
+// Copyright (c) 2014-2018 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -87,6 +87,15 @@ double page_margins::footer() const
 void page_margins::footer(double footer)
 {
     footer_ = footer;
+}
+
+bool page_margins::operator==(const page_margins &rhs) const
+{
+    return top_ == rhs.top_
+        && left_ == rhs.left_
+        && right_ == rhs.right_
+        && header_ == rhs.header_
+        && footer_ == rhs.footer_;
 }
 
 } // namespace xlnt

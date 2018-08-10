@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2017 Thomas Fussell
+// Copyright (c) 2016-2018 Thomas Fussell
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -341,6 +341,20 @@ std::string to_string(pane_state state)
     }
 
     default_case("frozen");
+}
+
+std::string to_string(orientation orientation)
+{
+    switch (orientation)
+    {
+    case orientation::default_orientation:
+        return "default";
+    case orientation::landscape:
+        return "landscape";
+    case orientation::portrait:
+        return "portrait";
+    }
+    default_case("default");
 }
 
 } // namespace detail

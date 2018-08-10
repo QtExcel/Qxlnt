@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Thomas Fussell
+// Copyright (c) 2014-2018 Thomas Fussell
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -56,12 +56,7 @@ public:
     /// top_left:bottom_right.
     /// </summary>
     explicit range_reference(const char *range_string);
-
-    /// <summary>
-    /// Constructs a range reference from a pair of cell references.
-    /// </summary>
-    explicit range_reference(const std::pair<cell_reference, cell_reference> &reference_pair);
-
+    
     /// <summary>
     /// Constructs a range reference from cell references indicating top
     /// left and bottom right coordinates of the range.
@@ -73,6 +68,8 @@ public:
     /// </summary>
     range_reference(column_t column_index_start, row_t row_index_start,
         column_t column_index_end, row_t row_index_end);
+
+    range_reference(const range_reference &ref);
 
     /// <summary>
     /// Returns true if the range has a width and height of 1 cell.
@@ -153,6 +150,11 @@ public:
     /// of the other range.
     /// </summary>
     bool operator!=(const char *reference_string) const;
+
+    /// <summary>
+    /// Assigns the extents of the provided range to this range.
+    /// </summary>
+    range_reference &operator=(const range_reference &ref);
 
 private:
     /// <summary>

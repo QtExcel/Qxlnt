@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Thomas Fussell
+// Copyright (c) 2014-2018 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -52,6 +52,11 @@ public:
 	static condition text_ends_with(const std::string &end);
 	static condition text_contains(const std::string &start);
 	static condition text_does_not_contain(const std::string &start);
+
+    bool operator==(const condition& rhs) const
+    {
+        return text_comparand_ == rhs.text_comparand_;
+    }
 
 private:
 	friend class detail::xlsx_producer;

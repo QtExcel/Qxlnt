@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Thomas Fussell
+// Copyright (c) 2014-2018 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -311,6 +311,8 @@ public:
     /// be returned.
     /// </summary>
     rich_text even_footer(location where) const;
+
+    bool operator==(const header_footer &rhs) const;
 
 private:
     bool align_with_margins_ = false;

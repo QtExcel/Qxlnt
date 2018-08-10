@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Thomas Fussell
+// Copyright (c) 2014-2018 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -36,7 +36,7 @@ relationship::relationship(
 {
 }
 
-std::string relationship::id() const
+const std::string& relationship::id() const
 {
     return id_;
 }
@@ -46,12 +46,12 @@ target_mode relationship::target_mode() const
     return mode_;
 }
 
-uri relationship::source() const
+const uri &relationship::source() const
 {
     return source_;
 }
 
-uri relationship::target() const
+const uri &relationship::target() const
 {
     return target_;
 }
@@ -63,8 +63,16 @@ relationship_type relationship::type() const
 
 bool relationship::operator==(const relationship &rhs) const
 {
-    return type_ == rhs.type_ && id_ == rhs.id_ && source_ == rhs.source_ && target_ == rhs.target_
+    return type_ == rhs.type_
+        && id_ == rhs.id_
+        && source_ == rhs.source_
+        && target_ == rhs.target_
         && mode_ == rhs.mode_;
+}
+
+bool relationship::operator!=(const relationship &rhs) const
+{
+    return !(*this == rhs);
 }
 
 } // namespace xlnt

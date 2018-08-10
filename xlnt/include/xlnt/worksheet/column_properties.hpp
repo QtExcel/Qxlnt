@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Thomas Fussell
+// Copyright (c) 2014-2018 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -52,9 +52,24 @@ public:
     optional<std::size_t> style;
 
     /// <summary>
+    /// Is this column sized to fit its content as best it can
+    /// serialise if true
+    /// </summary>
+    bool best_fit = false;
+
+    /// <summary>
     /// If true, this column will be hidden
     /// </summary>
     bool hidden = false;
 };
+
+inline bool operator==(const column_properties &lhs, const column_properties &rhs)
+{
+    return lhs.width == rhs.width
+        && lhs.custom_width == rhs.custom_width
+        && lhs.style == rhs.style
+        && lhs.best_fit == rhs.best_fit
+        && lhs.hidden == rhs.hidden;
+}
 
 } // namespace xlnt

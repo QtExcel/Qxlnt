@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Thomas Fussell
+// Copyright (c) 2014-2018 Thomas Fussell
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -48,7 +48,7 @@ cell_vector::iterator cell_vector::begin()
 cell_vector::iterator cell_vector::end()
 {
     auto past_end = cursor_;
-    
+
     if (order_ == major_order::row)
     {
         past_end.column_index(bounds_.bottom_right().column_index() + 1);
@@ -69,7 +69,7 @@ cell_vector::const_iterator cell_vector::cbegin() const
 cell_vector::const_iterator cell_vector::cend() const
 {
     auto past_end = cursor_;
-    
+
     if (order_ == major_order::row)
     {
         past_end.column_index(bounds_.bottom_right().column_index() + 1);

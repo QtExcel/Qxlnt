@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2017 Thomas Fussell
+// Copyright (c) 2016-2018 Thomas Fussell
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -45,5 +45,11 @@ public:
     /// </summary>
     bool concurrent_calc;
 };
+
+inline bool operator==(const calculation_properties &lhs, const calculation_properties &rhs)
+{
+    return lhs.calc_id == rhs.calc_id
+        && lhs.concurrent_calc == rhs.concurrent_calc;
+}
 
 } // namespace xlnt

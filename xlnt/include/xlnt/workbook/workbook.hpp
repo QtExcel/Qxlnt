@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Thomas Fussell
+// Copyright (c) 2014-2018 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,6 +26,7 @@
 
 #include <functional>
 #include <iterator>
+#include <map>
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -33,6 +34,7 @@
 #include <vector>
 
 #include <xlnt/xlnt_config.hpp>
+#include <xlnt/cell/rich_text.hpp>
 
 namespace xlnt {
 
@@ -129,6 +131,26 @@ public:
     /// worksheet using workbook::empty().
     /// </summary>
     workbook();
+
+    /// <summary>
+    /// load the xlsx file at path
+    /// </summary>
+    workbook(const xlnt::path &file);
+
+    /// <summary>
+    /// load the encrpyted xlsx file at path
+    /// </summary>
+    workbook(const xlnt::path &file, const std::string& password);
+
+    /// <summary>
+    /// construct the workbook from any data stream where the data is the binary form of a workbook
+    /// </summary>
+    workbook(std::istream & data);
+
+    /// <summary>
+    /// construct the workbook from any data stream where the data is the binary form of an encrypted workbook
+    /// </summary>
+    workbook(std::istream &data, const std::string& password);
 
     /// <summary>
     /// Move constructor. Constructs a workbook from existing workbook, other.
@@ -389,6 +411,16 @@ public:
     /// Sets the title of this workbook to title.
     /// </summary>
     void title(const std::string &title);
+
+    /// <summary>
+    /// Sets the absolute path of this workbook to path.
+    /// </summary>
+    void abs_path(const std::string &path);
+
+    /// <summary>
+    /// Sets the ArchID flags of this workbook to flags.
+    /// </summary>
+    void arch_id_flags(const std::size_t flags);
 
     // Named Ranges
 
@@ -670,10 +702,10 @@ public:
     /// </summary>
     class style create_style(const std::string &name);
 
-	/// <summary>
-	/// Creates a new style and returns it.
-	/// </summary>
-	class style create_builtin_style(std::size_t builtin_id);
+    /// <summary>
+    /// Creates a new style and returns it.
+    /// </summary>
+    class style create_builtin_style(std::size_t builtin_id);
 
     /// <summary>
     /// Clear all named styles from cells and remove the styles from
@@ -681,6 +713,31 @@ public:
     /// (e.g. cell formats).
     /// </summary>
     void clear_styles();
+
+    /// <summary>
+    /// Sets the default slicer style to the given value.
+    /// </summary>
+    void default_slicer_style(const std::string &value);
+
+    /// <summary>
+    /// Returns the default slicer style.
+    /// </summary>
+    std::string default_slicer_style() const;
+
+    /// <summary>
+    /// Enables knownFonts in stylesheet.
+    /// </summary>
+    void enable_known_fonts();
+
+    /// <summary>
+    /// Disables knownFonts in stylesheet.
+    /// </summary>
+    void disable_known_fonts();
+
+    /// <summary>
+    /// Returns true if knownFonts are enabled in the stylesheet.
+    /// </summary>
+    bool known_fonts_enabled() const;
 
     // Manifest
 
@@ -705,16 +762,26 @@ public:
     std::size_t add_shared_string(const rich_text &shared, bool allow_duplicates = false);
 
     /// <summary>
-    /// Returns a reference to the shared strings being used by cells
-    /// in this workbook.
+    /// Returns a reference to the shared string ordered by id
     /// </summary>
-    std::vector<rich_text> &shared_strings();
+    const std::map<std::size_t, rich_text> &shared_strings_by_id() const;
+
+    /// <summary>
+    /// Returns a reference to the shared string related to the specified index
+    /// </summary>
+    const rich_text &shared_strings(std::size_t index) const;
 
     /// <summary>
     /// Returns a reference to the shared strings being used by cells
     /// in this workbook.
     /// </summary>
-    const std::vector<rich_text> &shared_strings() const;
+    std::unordered_map<rich_text, std::size_t, rich_text_hash> &shared_strings();
+
+    /// <summary>
+    /// Returns a reference to the shared strings being used by cells
+    /// in this workbook.
+    /// </summary>
+    const std::unordered_map<rich_text, std::size_t, rich_text_hash> &shared_strings() const;
 
     // Thumbnail
 
@@ -838,6 +905,11 @@ private:
     /// Swaps the data held in this workbook with workbook other.
     /// </summary>
     void swap(workbook &other);
+
+    /// <summary>
+    /// Sheet 1 should be rId1, sheet 2 should be rId2, etc.
+    /// </summary>
+    void reorder_relationships();
 
     /// <summary>
     /// An opaque pointer to a structure that holds all of the data relating to this workbook.

@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Thomas Fussell
+// Copyright (c) 2014-2018 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -35,9 +35,14 @@ class XLNT_API row_properties
 {
 public:
     /// <summary>
-    /// Optional height
+    /// Row height
     /// </summary>
     optional<double> height;
+
+    /// <summary>
+    /// Distance in pixels from the bottom of the cell to the baseline of the cell content
+    /// </summary>
+    optional<double> dy_descent;
 
     /// <summary>
     /// Whether or not the height is different from the default
@@ -50,9 +55,24 @@ public:
     bool hidden = false;
 
     /// <summary>
+    /// True if row style should be applied
+    /// </summary>
+    optional<bool> custom_format;
+
+    /// <summary>
     /// The index to the style used by all cells in this row
     /// </summary>
     optional<std::size_t> style;
 };
+
+inline bool operator==(const row_properties &lhs, const row_properties &rhs)
+{
+    return lhs.height == rhs.height
+        && lhs.dy_descent == rhs.dy_descent
+        && lhs.custom_height == rhs.custom_height
+        && lhs.hidden == rhs.hidden
+        && lhs.custom_format == rhs.custom_format
+        && lhs.style == rhs.style;
+}
 
 } // namespace xlnt

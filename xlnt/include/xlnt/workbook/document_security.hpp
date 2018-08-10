@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Thomas Fussell
+// Copyright (c) 2014-2018 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -67,7 +67,7 @@ public:
     /// <summary>
     /// Constructs a new document security object with default values.
     /// </summary>
-    document_security();
+    document_security() = default;
 
     /// <summary>
     /// If true, the workbook is locked for revisions.

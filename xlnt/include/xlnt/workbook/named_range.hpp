@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Thomas Fussell
+// Copyright (c) 2014-2018 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -75,6 +75,8 @@ public:
     /// Assigns the name and targets of this named_range to that of other.
     /// </summary>
     named_range &operator=(const named_range &other);
+
+    bool operator==(const named_range &rhs) const;
 
 private:
     /// <summary>

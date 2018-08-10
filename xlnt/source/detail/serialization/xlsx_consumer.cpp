@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Thomas Fussell
+// Copyright (c) 2014-2018 Thomas Fussell
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,15 @@
 #include <sstream>
 #include <unordered_map>
 
+#include <xlnt/cell/cell.hpp>
+#include <xlnt/cell/comment.hpp>
+#include <xlnt/cell/hyperlink.hpp>
+#include <xlnt/packaging/manifest.hpp>
+#include <xlnt/utils/optional.hpp>
+#include <xlnt/utils/path.hpp>
+#include <xlnt/workbook/workbook.hpp>
+#include <xlnt/worksheet/selection.hpp>
+#include <xlnt/worksheet/worksheet.hpp>
 #include <detail/constants.hpp>
 #include <detail/header_footer/header_footer_code.hpp>
 #include <detail/implementations/workbook_impl.hpp>
@@ -33,14 +42,6 @@
 #include <detail/serialization/vector_streambuf.hpp>
 #include <detail/serialization/xlsx_consumer.hpp>
 #include <detail/serialization/zstream.hpp>
-#include <xlnt/cell/cell.hpp>
-#include <xlnt/cell/comment.hpp>
-#include <xlnt/packaging/manifest.hpp>
-#include <xlnt/utils/optional.hpp>
-#include <xlnt/utils/path.hpp>
-#include <xlnt/workbook/workbook.hpp>
-#include <xlnt/worksheet/selection.hpp>
-#include <xlnt/worksheet/worksheet.hpp>
 
 namespace std {
 
@@ -124,6 +125,23 @@ struct number_converter
     double result;
 };
 
+using style_id_pair = std::pair<xlnt::detail::style_impl, std::size_t>;
+
+/// <summary>
+/// Try to find given xfid value in the styles vector and, if succeeded, set's the optional style.
+/// </summary>
+void set_style_by_xfid(const std::vector<style_id_pair> &styles,
+    std::size_t xfid, xlnt::optional<std::string> &style)
+{
+    for (auto &item : styles)
+    {
+        if (item.second == xfid)
+        {
+            style = item.first.name;
+        }
+    }
+}
+
 } // namespace
 
 /*
@@ -181,25 +199,31 @@ cell xlsx_consumer::read_cell()
     {
         expect_start_element(qn("spreadsheetml", "row"), xml::content::complex); // CT_Row
         auto row_index = static_cast<row_t>(std::stoul(parser().attribute("r")));
+        auto &row_properties = ws.row_properties(row_index);
 
         if (parser().attribute_present("ht"))
         {
-            ws.row_properties(row_index).height = parser().attribute<double>("ht");
+            row_properties.height = parser().attribute<double>("ht");
         }
 
         if (parser().attribute_present("customHeight"))
         {
-            ws.row_properties(row_index).custom_height = is_true(parser().attribute("customHeight"));
+            row_properties.custom_height = is_true(parser().attribute("customHeight"));
         }
 
         if (parser().attribute_present("hidden") && is_true(parser().attribute("hidden")))
         {
-            ws.row_properties(row_index).hidden = true;
+            row_properties.hidden = true;
         }
-        skip_attributes({ qn("x14ac", "dyDescent") });
-        skip_attributes({ "customFormat", "s", "customFont",
+
+        if (parser().attribute_present(qn("x14ac", "dyDescent")))
+        {
+            row_properties.dy_descent = parser().attribute<double>(qn("x14ac", "dyDescent"));
+        }
+
+        skip_attributes({"customFormat", "s", "customFont",
             "outlineLevel", "collapsed", "thickTop", "thickBot",
-            "ph", "spans" });
+            "ph", "spans"});
     }
 
     if (!in_element(qn("spreadsheetml", "row")))
@@ -209,7 +233,8 @@ cell xlsx_consumer::read_cell()
 
     expect_start_element(qn("spreadsheetml", "c"), xml::content::complex);
 
-    auto cell = streaming_ ? xlnt::cell(streaming_cell_.get())
+    auto cell = streaming_
+        ? xlnt::cell(streaming_cell_.get())
         : ws.cell(cell_reference(parser().attribute("r")));
     auto reference = cell_reference(parser().attribute("r"));
     cell.d_->parent_ = current_worksheet_;
@@ -221,7 +246,7 @@ cell xlsx_consumer::read_cell()
 
     if (parser().attribute_present("s"))
     {
-		    cell.format(target_.format(std::stoull(parser().attribute("s"))));
+        cell.format(target_.format(static_cast<std::size_t>(std::stoull(parser().attribute("s")))));
     }
 
     auto has_value = false;
@@ -249,8 +274,8 @@ cell xlsx_consumer::read_cell()
                 has_shared_formula = parser().attribute("t") == "shared";
             }
 
-            skip_attributes(
-            { "aca", "ref", "dt2D", "dtr", "del1", "del2", "r1", "r2", "ca", "si", "bx" });
+            skip_attributes({"aca", "ref", "dt2D", "dtr", "del1",
+                "del2", "r1", "r2", "ca", "si", "bx"});
 
             formula_value_string = read_text();
         }
@@ -342,13 +367,13 @@ std::string xlsx_consumer::read_worksheet_begin(const std::string &rel_id)
     auto title = std::find_if(target_.d_->sheet_title_rel_id_map_.begin(),
         target_.d_->sheet_title_rel_id_map_.end(),
         [&](const std::pair<std::string, std::string> &p) {
-        return p.second == rel_id;
-    })->first;
+            return p.second == rel_id;
+        })->first;
 
     auto ws = worksheet(current_worksheet_);
 
     expect_start_element(qn("spreadsheetml", "worksheet"), xml::content::complex); // CT_Worksheet
-    skip_attributes({ qn("mc", "Ignorable") });
+    skip_attributes({qn("mc", "Ignorable")});
 
     while (in_element(qn("spreadsheetml", "worksheet")))
     {
@@ -356,6 +381,44 @@ std::string xlsx_consumer::read_worksheet_begin(const std::string &rel_id)
 
         if (current_worksheet_element == qn("spreadsheetml", "sheetPr")) // CT_SheetPr 0-1
         {
+            sheet_pr props;
+            if (parser().attribute_present("syncHorizontal"))
+            { // optional, boolean, false
+                props.sync_horizontal.set(parser().attribute<bool>("syncHorizontal"));
+            }
+            if (parser().attribute_present("syncVertical"))
+            { // optional, boolean, false
+                props.sync_vertical.set(parser().attribute<bool>("syncVertical"));
+            }
+            if (parser().attribute_present("syncRef"))
+            { // optional, ST_Ref, false
+                props.sync_ref.set(cell_reference(parser().attribute("syncRef")));
+            }
+            if (parser().attribute_present("transitionEvaluation"))
+            { // optional, boolean, false
+                props.transition_evaluation.set(parser().attribute<bool>("transitionEvaluation"));
+            }
+            if (parser().attribute_present("transitionEntry"))
+            { // optional, boolean, false
+                props.transition_entry.set(parser().attribute<bool>("transitionEntry"));
+            }
+            if (parser().attribute_present("published"))
+            { // optional, boolean, true
+                props.published.set(parser().attribute<bool>("published"));
+            }
+            if (parser().attribute_present("codeName"))
+            { // optional, string
+                props.code_name.set(parser().attribute<std::string>("codeName"));
+            }
+            if (parser().attribute_present("filterMode"))
+            { // optional, boolean, false
+                props.filter_mode.set(parser().attribute<bool>("filterMode"));
+            }
+            if (parser().attribute_present("enableFormatConditionsCalculation"))
+            { // optional, boolean, true
+                props.enable_format_condition_calculation.set(parser().attribute<bool>("enableFormatConditionsCalculation"));
+            }
+            ws.d_->sheet_properties_.set(props);
             while (in_element(current_worksheet_element))
             {
                 auto sheet_pr_child_element = expect_start_element(xml::content::simple);
@@ -383,16 +446,6 @@ std::string xlsx_consumer::read_worksheet_begin(const std::string &rel_id)
 
                 expect_end_element(sheet_pr_child_element);
             }
-
-            skip_attribute("syncHorizontal"); // optional, boolean, false
-            skip_attribute("syncVertical"); // optional, boolean, false
-            skip_attribute("syncRef"); // optional, ST_Ref, false
-            skip_attribute("transitionEvaluation"); // optional, boolean, false
-            skip_attribute("transitionEntry"); // optional, boolean, false
-            skip_attribute("published"); // optional, boolean, true
-            skip_attribute("codeName"); // optional, string
-            skip_attribute("filterMode"); // optional, boolean, false
-            skip_attribute("enableFormatConditionsCalculation"); // optional, boolean, true
         }
         else if (current_worksheet_element == qn("spreadsheetml", "dimension")) // CT_SheetDimension 0-1
         {
@@ -411,22 +464,33 @@ std::string xlsx_consumer::read_worksheet_begin(const std::string &rel_id)
                 {
                     new_view.show_grid_lines(is_true(parser().attribute("showGridLines")));
                 }
+                if (parser().attribute_present("topLeftCell"))
+                {
+                    new_view.top_left_cell(cell_reference(parser().attribute("topLeftCell")));
+                }
 
                 if (parser().attribute_present("defaultGridColor")) // default="true"
                 {
                     new_view.default_grid_color(is_true(parser().attribute("defaultGridColor")));
                 }
 
-                if (parser().attribute_present("view") && parser().attribute("view") != "normal")
+                if (parser().attribute_present("view")
+                    && parser().attribute("view") != "normal")
                 {
                     new_view.type(parser().attribute("view") == "pageBreakPreview"
-                        ? sheet_view_type::page_break_preview
-                        : sheet_view_type::page_layout);
+                            ? sheet_view_type::page_break_preview
+                            : sheet_view_type::page_layout);
                 }
 
-                skip_attributes({ "windowProtection", "showFormulas", "showRowColHeaders", "showZeros", "rightToLeft",
-                    "tabSelected", "showRuler", "showOutlineSymbols", "showWhiteSpace", "view", "topLeftCell",
-                    "colorId", "zoomScale", "zoomScaleNormal", "zoomScaleSheetLayoutView", "zoomScalePageLayoutView" });
+                if (parser().attribute_present("tabSelected")
+                    && is_true(parser().attribute("tabSelected")))
+                {
+                    target_.d_->view_.get().active_tab = ws.id() - 1;
+                }
+
+                skip_attributes({"windowProtection", "showFormulas", "showRowColHeaders", "showZeros", "rightToLeft", "showRuler", "showOutlineSymbols", "showWhiteSpace",
+                    "view", "topLeftCell", "colorId", "zoomScale", "zoomScaleNormal", "zoomScaleSheetLayoutView",
+                    "zoomScalePageLayoutView"});
 
                 while (in_element(qn("spreadsheetml", "sheetView")))
                 {
@@ -471,7 +535,13 @@ std::string xlsx_consumer::read_worksheet_begin(const std::string &rel_id)
                         {
                             current_selection.active_cell(parser().attribute("activeCell"));
                         }
-                        
+
+                        if (parser().attribute_present("sqref"))
+                        {
+                            const auto sqref = range_reference(parser().attribute("sqref"));
+                            current_selection.sqref(sqref);
+                        }
+
                         current_selection.pane(pane_corner::top_left);
 
                         new_view.add_selection(current_selection);
@@ -501,7 +571,29 @@ std::string xlsx_consumer::read_worksheet_begin(const std::string &rel_id)
         }
         else if (current_worksheet_element == qn("spreadsheetml", "sheetFormatPr")) // CT_SheetFormatPr 0-1
         {
-            skip_remaining_content(current_worksheet_element);
+            if (parser().attribute_present("baseColWidth"))
+            {
+                ws.d_->format_properties_.base_col_width =
+                    parser().attribute<double>("baseColWidth");
+            }
+            if (parser().attribute_present("defaultColWidth"))
+            {
+                ws.d_->format_properties_.default_column_width =
+                    parser().attribute<double>("defaultColWidth");
+            }
+            if (parser().attribute_present("defaultRowHeight"))
+            {
+                ws.d_->format_properties_.default_row_height =
+                    parser().attribute<double>("defaultRowHeight");
+            }
+
+            if (parser().attribute_present(qn("x14ac", "dyDescent")))
+            {
+                ws.d_->format_properties_.dy_descent =
+                    parser().attribute<double>(qn("x14ac", "dyDescent"));
+            }
+
+            skip_attributes();
         }
         else if (current_worksheet_element == qn("spreadsheetml", "cols")) // CT_Cols 0+
         {
@@ -509,29 +601,37 @@ std::string xlsx_consumer::read_worksheet_begin(const std::string &rel_id)
             {
                 expect_start_element(qn("spreadsheetml", "col"), xml::content::simple);
 
-                skip_attributes({ "bestFit", "collapsed", "outlineLevel" });
+                skip_attributes(std::vector<std::string>{"collapsed", "outlineLevel"});
 
                 auto min = static_cast<column_t::index_t>(std::stoull(parser().attribute("min")));
                 auto max = static_cast<column_t::index_t>(std::stoull(parser().attribute("max")));
 
-                optional<double> width;
-
-                if (parser().attribute_present("width"))
-                {
-                    width = (parser().attribute<double>("width") * 7 - 5) / 7;
-                }
-
-                optional<std::size_t> column_style;
-
-                if (parser().attribute_present("style"))
-                {
-                    column_style = parser().attribute<std::size_t>("style");
-                }
+                // avoid uninitialised warnings in GCC by using a lambda to make the conditional initialisation
+                optional<double> width = [](xml::parser &p) -> xlnt::optional<double> {
+                    if (p.attribute_present("width"))
+                    {
+                        return (p.attribute<double>("width") * 7 - 5) / 7;
+                    }
+                    return xlnt::optional<double>();
+                }(parser());
+                // avoid uninitialised warnings in GCC by using a lambda to make the conditional initialisation
+                optional<std::size_t> column_style = [](xml::parser &p) -> xlnt::optional<std::size_t> {
+                    if (p.attribute_present("style"))
+                    {
+                        return p.attribute<std::size_t>("style");
+                    }
+                    return xlnt::optional<std::size_t>();
+                }(parser());
 
                 auto custom = parser().attribute_present("customWidth")
-                    ? is_true(parser().attribute("customWidth")) : false;
+                    ? is_true(parser().attribute("customWidth"))
+                    : false;
                 auto hidden = parser().attribute_present("hidden")
-                    ? is_true(parser().attribute("hidden")) : false;
+                    ? is_true(parser().attribute("hidden"))
+                    : false;
+                auto best_fit = parser().attribute_present("bestFit")
+                    ? is_true(parser().attribute("bestFit"))
+                    : false;
 
                 expect_end_element(qn("spreadsheetml", "col"));
 
@@ -551,6 +651,7 @@ std::string xlsx_consumer::read_worksheet_begin(const std::string &rel_id)
 
                     props.hidden = hidden;
                     props.custom_width = custom;
+                    props.best_fit = best_fit;
                     ws.add_column_properties(column, props);
                 }
             }
@@ -581,26 +682,40 @@ void xlsx_consumer::read_worksheet_sheetdata()
     {
         expect_start_element(qn("spreadsheetml", "row"), xml::content::complex); // CT_Row
         auto row_index = parser().attribute<row_t>("r");
+        auto &row_properties = ws.row_properties(row_index);
 
         if (parser().attribute_present("ht"))
         {
-            ws.row_properties(row_index).height = parser().attribute<double>("ht");
+            row_properties.height = parser().attribute<double>("ht");
         }
 
         if (parser().attribute_present("customHeight"))
         {
-            ws.row_properties(row_index).custom_height = is_true(parser().attribute("customHeight"));
+            row_properties.custom_height = is_true(parser().attribute("customHeight"));
         }
 
         if (parser().attribute_present("hidden") && is_true(parser().attribute("hidden")))
         {
-            ws.row_properties(row_index).hidden = true;
+            row_properties.hidden = true;
         }
 
-        skip_attributes({ qn("x14ac", "dyDescent") });
-        skip_attributes({ "customFormat", "s", "customFont",
+        if (parser().attribute_present(qn("x14ac", "dyDescent")))
+        {
+            row_properties.dy_descent = parser().attribute<double>(qn("x14ac", "dyDescent"));
+        }
+
+        if (parser().attribute_present("s"))
+        {
+            row_properties.style.set(static_cast<std::size_t>(std::stoull(parser().attribute("s"))));
+        }
+        if (parser().attribute_present("customFormat"))
+        {
+            row_properties.custom_format.set(parser().attribute<bool>("customFormat"));
+        }
+
+        skip_attributes({"customFont",
             "outlineLevel", "collapsed", "thickTop", "thickBot",
-            "ph", "spans" });
+            "ph", "spans"});
 
         while (in_element(qn("spreadsheetml", "row")))
         {
@@ -612,7 +727,7 @@ void xlsx_consumer::read_worksheet_sheetdata()
 
             if (parser().attribute_present("s"))
             {
-		            cell.format(target_.format(std::stoull(parser().attribute("s"))));
+                cell.format(target_.format(static_cast<std::size_t>(std::stoull(parser().attribute("s")))));
             }
 
             auto has_value = false;
@@ -641,7 +756,7 @@ void xlsx_consumer::read_worksheet_sheetdata()
                     }
 
                     skip_attributes(
-                    { "aca", "ref", "dt2D", "dtr", "del1", "del2", "r1", "r2", "ca", "si", "bx" });
+                        {"aca", "ref", "dt2D", "dtr", "del1", "del2", "r1", "r2", "ca", "si", "bx"});
 
                     formula_value_string = read_text();
                 }
@@ -696,7 +811,6 @@ void xlsx_consumer::read_worksheet_sheetdata()
                     cell.error(value_string);
                 }
             }
-
         }
 
         expect_end_element(qn("spreadsheetml", "row"));
@@ -774,7 +888,16 @@ worksheet xlsx_consumer::read_worksheet_end(const std::string &rel_id)
         }
         else if (current_worksheet_element == qn("spreadsheetml", "phoneticPr")) // CT_PhoneticPr 0-1
         {
-            skip_remaining_content(current_worksheet_element);
+            phonetic_pr phonetic_properties(parser().attribute<std::uint32_t>("fontId"));
+            if (parser().attribute_present("type"))
+            {
+                phonetic_properties.type(phonetic_pr::type_from_string(parser().attribute("type")));
+            }
+            if (parser().attribute_present("alignment"))
+            {
+                phonetic_properties.alignment(phonetic_pr::alignment_from_string(parser().attribute("alignment")));
+            }
+            current_worksheet_->phonetic_properties_.set(phonetic_properties);
         }
         else if (current_worksheet_element == qn("spreadsheetml", "conditionalFormatting")) // CT_ConditionalFormatting 0+
         {
@@ -786,8 +909,9 @@ worksheet xlsx_consumer::read_worksheet_end(const std::string &rel_id)
         }
         else if (current_worksheet_element == qn("spreadsheetml", "hyperlinks")) // CT_Hyperlinks 0-1
         {
-            while (in_element(qn("spreadsheetml", "hyperlinks")))
+            while (in_element(current_worksheet_element))
             {
+                // CT_Hyperlink
                 expect_start_element(qn("spreadsheetml", "hyperlink"), xml::content::simple);
 
                 auto cell = ws.cell(parser().attribute("ref"));
@@ -800,16 +924,66 @@ worksheet xlsx_consumer::read_worksheet_end(const std::string &rel_id)
 
                     if (hyperlink_rel != hyperlinks.end())
                     {
-                        cell.hyperlink(hyperlink_rel->target().path().string());
+                        auto url = hyperlink_rel->target().path().string();
+
+                        if (cell.has_value())
+                        {
+                            cell.hyperlink(url, cell.value<std::string>());
+                        }
+                        else
+                        {
+                            cell.hyperlink(url);
+                        }
                     }
                 }
+                else if (parser().attribute_present("location"))
+                {
+                    auto hyperlink = hyperlink_impl();
 
-                skip_attributes({ "location", "tooltip", "display" });
+                    auto location = parser().attribute("location");
+                    hyperlink.relationship = relationship("", relationship_type::hyperlink,
+                        uri(""), uri(location), target_mode::internal);
+
+                    if (parser().attribute_present("display"))
+                    {
+                        hyperlink.display = parser().attribute("display");
+                    }
+
+                    if (parser().attribute_present("tooltip"))
+                    {
+                        hyperlink.tooltip = parser().attribute("tooltip");
+                    }
+
+                    cell.d_->hyperlink_ = hyperlink;
+                }
+
                 expect_end_element(qn("spreadsheetml", "hyperlink"));
             }
         }
         else if (current_worksheet_element == qn("spreadsheetml", "printOptions")) // CT_PrintOptions 0-1
         {
+            print_options opts;
+            if (parser().attribute_present("gridLines"))
+            {
+                opts.print_grid_lines.set(parser().attribute<bool>("gridLines"));
+            }
+            if (parser().attribute_present("gridLinesSet"))
+            {
+                opts.print_grid_lines.set(parser().attribute<bool>("gridLinesSet"));
+            }
+            if (parser().attribute_present("headings"))
+            {
+                opts.print_grid_lines.set(parser().attribute<bool>("headings"));
+            }
+            if (parser().attribute_present("horizontalCentered"))
+            {
+                opts.print_grid_lines.set(parser().attribute<bool>("horizontalCentered"));
+            }
+            if (parser().attribute_present("verticalCentered"))
+            {
+                opts.print_grid_lines.set(parser().attribute<bool>("verticalCentered"));
+            }
+            ws.d_->print_options_.set(opts);
             skip_remaining_content(current_worksheet_element);
         }
         else if (current_worksheet_element == qn("spreadsheetml", "pageMargins")) // CT_PageMargins 0-1
@@ -827,20 +1001,34 @@ worksheet xlsx_consumer::read_worksheet_end(const std::string &rel_id)
         }
         else if (current_worksheet_element == qn("spreadsheetml", "pageSetup")) // CT_PageSetup 0-1
         {
+            page_setup setup;
+            if (parser().attribute_present("orientation"))
+            {
+                setup.orientation_.set(parser().attribute<orientation>("orientation"));
+            }
+            if (parser().attribute_present("horizontalDpi"))
+            {
+                setup.horizontal_dpi_.set(parser().attribute<std::size_t>("horizontalDpi"));
+            }
+            if (parser().attribute_present("verticalDpi"))
+            {
+                setup.vertical_dpi_.set(parser().attribute<std::size_t>("verticalDpi"));
+            }
+            ws.page_setup(setup);
             skip_remaining_content(current_worksheet_element);
         }
         else if (current_worksheet_element == qn("spreadsheetml", "headerFooter")) // CT_HeaderFooter 0-1
         {
             header_footer hf;
 
-            hf.align_with_margins(
-                !parser().attribute_present("alignWithMargins") || is_true(parser().attribute("alignWithMargins")));
-            hf.scale_with_doc(
-                !parser().attribute_present("alignWithMargins") || is_true(parser().attribute("alignWithMargins")));
-            auto different_odd_even =
-                parser().attribute_present("differentOddEven") && is_true(parser().attribute("differentOddEven"));
-            auto different_first =
-                parser().attribute_present("differentFirst") && is_true(parser().attribute("differentFirst"));
+            hf.align_with_margins(!parser().attribute_present("alignWithMargins")
+                || is_true(parser().attribute("alignWithMargins")));
+            hf.scale_with_doc(!parser().attribute_present("alignWithMargins")
+                || is_true(parser().attribute("alignWithMargins")));
+            auto different_odd_even = parser().attribute_present("differentOddEven")
+                && is_true(parser().attribute("differentOddEven"));
+            auto different_first = parser().attribute_present("differentFirst")
+                && is_true(parser().attribute("differentFirst"));
 
             optional<std::array<optional<rich_text>, 3>> odd_header;
             optional<std::array<optional<rich_text>, 3>> odd_footer;
@@ -890,17 +1078,21 @@ worksheet xlsx_consumer::read_worksheet_end(const std::string &rel_id)
             for (std::size_t i = 0; i < 3; ++i)
             {
                 auto loc = i == 0 ? header_footer::location::left
-                    : i == 1 ? header_footer::location::center : header_footer::location::right;
+                                  : i == 1 ? header_footer::location::center : header_footer::location::right;
 
                 if (different_odd_even)
                 {
-                    if (odd_header.is_set() && odd_header.get().at(i).is_set() && even_header.is_set()
+                    if (odd_header.is_set()
+                        && odd_header.get().at(i).is_set()
+                        && even_header.is_set()
                         && even_header.get().at(i).is_set())
                     {
                         hf.odd_even_header(loc, odd_header.get().at(i).get(), even_header.get().at(i).get());
                     }
 
-                    if (odd_footer.is_set() && odd_footer.get().at(i).is_set() && even_footer.is_set()
+                    if (odd_footer.is_set()
+                        && odd_footer.get().at(i).is_set()
+                        && even_footer.is_set()
                         && even_footer.get().at(i).is_set())
                     {
                         hf.odd_even_footer(loc, odd_footer.get().at(i).get(), even_footer.get().at(i).get());
@@ -930,7 +1122,8 @@ worksheet xlsx_consumer::read_worksheet_end(const std::string &rel_id)
         {
             auto count = parser().attribute_present("count") ? parser().attribute<std::size_t>("count") : 0;
             auto manual_break_count = parser().attribute_present("manualBreakCount")
-                ? parser().attribute<std::size_t>("manualBreakCount") : 0;
+                ? parser().attribute<std::size_t>("manualBreakCount")
+                : 0;
 
             while (in_element(qn("spreadsheetml", "rowBreaks")))
             {
@@ -947,7 +1140,7 @@ worksheet xlsx_consumer::read_worksheet_end(const std::string &rel_id)
                     --manual_break_count;
                 }
 
-                skip_attributes({ "min", "max", "pt" });
+                skip_attributes({"min", "max", "pt"});
                 expect_end_element(qn("spreadsheetml", "brk"));
             }
         }
@@ -973,7 +1166,7 @@ worksheet xlsx_consumer::read_worksheet_end(const std::string &rel_id)
                     --manual_break_count;
                 }
 
-                skip_attributes({ "min", "max", "pt" });
+                skip_attributes({"min", "max", "pt"});
                 expect_end_element(qn("spreadsheetml", "brk"));
             }
         }
@@ -1003,7 +1196,8 @@ worksheet xlsx_consumer::read_worksheet_end(const std::string &rel_id)
         }
         else if (current_worksheet_element == qn("spreadsheetml", "extLst"))
         {
-            skip_remaining_content(current_worksheet_element);
+            ext_list extensions(parser(), current_worksheet_element.namespace_());
+            ws.d_->extension_list_.set(extensions);
         }
         else
         {
@@ -1017,8 +1211,8 @@ worksheet xlsx_consumer::read_worksheet_end(const std::string &rel_id)
 
     if (manifest.has_relationship(sheet_path, xlnt::relationship_type::comments))
     {
-        auto comments_part = manifest.canonicalize({ workbook_rel, sheet_rel,
-            manifest.relationship(sheet_path, xlnt::relationship_type::comments) });
+        auto comments_part = manifest.canonicalize({workbook_rel, sheet_rel,
+            manifest.relationship(sheet_path, xlnt::relationship_type::comments)});
 
         auto receive = xml::parser::receive_default;
         auto comments_part_streambuf = archive_->open(comments_part);
@@ -1030,8 +1224,8 @@ worksheet xlsx_consumer::read_worksheet_end(const std::string &rel_id)
 
         if (manifest.has_relationship(sheet_path, xlnt::relationship_type::vml_drawing))
         {
-            auto vml_drawings_part = manifest.canonicalize({ workbook_rel, sheet_rel,
-                manifest.relationship(sheet_path, xlnt::relationship_type::vml_drawing) });
+            auto vml_drawings_part = manifest.canonicalize({workbook_rel, sheet_rel,
+                manifest.relationship(sheet_path, xlnt::relationship_type::vml_drawing)});
 
             auto vml_drawings_part_streambuf = archive_->open(comments_part);
             std::istream vml_drawings_part_stream(comments_part_streambuf.get());
@@ -1058,8 +1252,7 @@ bool xlsx_consumer::has_cell()
 
 std::vector<relationship> xlsx_consumer::read_relationships(const path &part)
 {
-    const auto part_rels_path = part.parent().append("_rels")
-        .append(part.filename() + ".rels").relative_to(path("/"));
+    const auto part_rels_path = part.parent().append("_rels").append(part.filename() + ".rels").relative_to(path("/"));
 
     std::vector<xlnt::relationship> relationships;
     if (!archive_->has_file(part_rels_path)) return relationships;
@@ -1267,8 +1460,8 @@ void xlsx_consumer::populate_workbook(bool streaming)
         }
     }
 
-    read_part({ manifest().relationship(root_path,
-        relationship_type::office_document) });
+    read_part({manifest().relationship(root_path,
+        relationship_type::office_document)});
 }
 
 // Package Parts
@@ -1365,14 +1558,16 @@ void xlsx_consumer::read_custom_properties()
 
 void xlsx_consumer::read_office_document(const std::string &content_type) // CT_Workbook
 {
-    if (content_type != "application/vnd."
-        "openxmlformats-officedocument.spreadsheetml.sheet.main+xml"
-        && content_type != "application/vnd."
-        "openxmlformats-officedocument.spreadsheetml.template.main+xml")
+    if (content_type !=
+            "application/vnd."
+            "openxmlformats-officedocument.spreadsheetml.sheet.main+xml"
+        && content_type !=
+            "application/vnd."
+            "openxmlformats-officedocument.spreadsheetml.template.main+xml")
     {
         throw xlnt::invalid_file(content_type);
     }
-    
+
     target_.d_->calculation_properties_.clear();
 
     expect_start_element(qn("workbook", "workbook"), xml::content::complex);
@@ -1414,11 +1609,37 @@ void xlsx_consumer::read_office_document(const std::string &content_type) // CT_
         {
             skip_remaining_content(current_workbook_element);
         }
+        else if (current_workbook_element == qn("mc", "AlternateContent"))
+        {
+            while (in_element(qn("mc", "AlternateContent")))
+            {
+                auto alternate_content_element = expect_start_element(xml::content::complex);
+
+                if (alternate_content_element == qn("mc", "Choice")
+                    && parser().attribute_present("Requires")
+                    && parser().attribute("Requires") == "x15")
+                {
+                    auto x15_element = expect_start_element(xml::content::simple);
+
+                    if (x15_element == qn("x15ac", "absPath"))
+                    {
+                        target_.d_->abs_path_ = parser().attribute("url");
+                    }
+
+                    skip_remaining_content(x15_element);
+                    expect_end_element(x15_element);
+                }
+
+                skip_remaining_content(alternate_content_element);
+                expect_end_element(alternate_content_element);
+            }
+        }
         else if (current_workbook_element == qn("workbook", "workbookPr")) // CT_WorkbookPr 0-1
         {
             target_.base_date(parser().attribute_present("date1904") // optional, bool=false
-                && is_true(parser().attribute("date1904"))
-                    ? calendar::mac_1904 : calendar::windows_1900);
+                        && is_true(parser().attribute("date1904"))
+                    ? calendar::mac_1904
+                    : calendar::windows_1900);
             skip_attribute("showObjects"); // optional, ST_Objects="all"
             skip_attribute("showBorderUnselectedTables"); // optional, bool=true
             skip_attribute("filterPrivacy"); // optional, bool=false
@@ -1447,8 +1668,8 @@ void xlsx_consumer::read_office_document(const std::string &content_type) // CT_
             while (in_element(qn("workbook", "bookViews")))
             {
                 expect_start_element(qn("workbook", "workbookView"), xml::content::simple);
-                skip_attributes({"activeTab", "firstSheet",
-                    "showHorizontalScroll", "showSheetTabs", "showVerticalScroll"});
+                skip_attributes({"firstSheet", "showHorizontalScroll",
+                    "showSheetTabs", "showVerticalScroll"});
 
                 workbook_view view;
 
@@ -1475,6 +1696,11 @@ void xlsx_consumer::read_office_document(const std::string &content_type) // CT_
                 if (parser().attribute_present("tabRatio"))
                 {
                     view.tab_ratio = parser().attribute<std::size_t>("tabRatio");
+                }
+
+                if (parser().attribute_present("activeTab"))
+                {
+                    view.active_tab = parser().attribute<std::size_t>("activeTab");
                 }
 
                 target_.view(view);
@@ -1561,11 +1787,28 @@ void xlsx_consumer::read_office_document(const std::string &content_type) // CT_
         }
         else if (current_workbook_element == qn("workbook", "extLst")) // CT_ExtensionList 0-1
         {
-            skip_remaining_content(current_workbook_element);
-        }
-        else if (current_workbook_element == qn("mc", "AlternateContent"))
-        {
-            skip_remaining_content(current_workbook_element);
+            while (in_element(qn("workbook", "extLst")))
+            {
+                auto extension_element = expect_start_element(xml::content::complex);
+
+                if (extension_element == qn("workbook", "ext")
+                    && parser().attribute_present("uri")
+                    && parser().attribute("uri") == "{7523E5D3-25F3-A5E0-1632-64F254C22452}")
+                {
+                    auto arch_id_extension_element = expect_start_element(xml::content::simple);
+
+                    if (arch_id_extension_element == qn("mx", "ArchID"))
+                    {
+                        target_.d_->arch_id_flags_ = parser().attribute<std::size_t>("Flags");
+                    }
+
+                    skip_remaining_content(arch_id_extension_element);
+                    expect_end_element(arch_id_extension_element);
+                }
+
+                skip_remaining_content(extension_element);
+                expect_end_element(extension_element);
+            }
         }
         else
         {
@@ -1607,7 +1850,8 @@ void xlsx_consumer::read_office_document(const std::string &content_type) // CT_
             target_.d_->sheet_title_rel_id_map_.end(),
             [&](const std::pair<std::string, std::string> &p) {
                 return p.second == worksheet_rel.id();
-            })->first;
+            })
+                         ->first;
 
         auto id = sheet_title_id_map_[title];
         auto index = sheet_title_index_map_[title];
@@ -1622,7 +1866,7 @@ void xlsx_consumer::read_office_document(const std::string &content_type) // CT_
 
         if (!streaming_)
         {
-            read_part({ workbook_rel, worksheet_rel });
+            read_part({workbook_rel, worksheet_rel});
         }
     }
 }
@@ -1675,18 +1919,17 @@ void xlsx_consumer::read_shared_string_table()
         unique_count = parser().attribute<std::size_t>("uniqueCount");
     }
 
-    auto &strings = target_.shared_strings();
-
     while (in_element(qn("spreadsheetml", "sst")))
     {
         expect_start_element(qn("spreadsheetml", "si"), xml::content::complex);
-        strings.push_back(read_rich_text(qn("spreadsheetml", "si")));
+        auto rt = read_rich_text(qn("spreadsheetml", "si"));
+        target_.add_shared_string(rt);
         expect_end_element(qn("spreadsheetml", "si"));
     }
 
     expect_end_element(qn("spreadsheetml", "sst"));
 
-    if (has_unique_count && unique_count != strings.size())
+    if (has_unique_count && unique_count != target_.shared_strings().size())
     {
         throw invalid_file("sizes don't match");
     }
@@ -1870,7 +2113,11 @@ void xlsx_consumer::read_stylesheet()
         {
             auto &fonts = stylesheet.fonts;
             auto count = parser().attribute<std::size_t>("count");
-            skip_attributes({qn("x14ac", "knownFonts")});
+
+            if (parser().attribute_present(qn("x14ac", "knownFonts")))
+            {
+                target_.enable_known_fonts();
+            }
 
             while (in_element(qn("spreadsheetml", "fonts")))
             {
@@ -1916,7 +2163,16 @@ void xlsx_consumer::read_stylesheet()
                     }
                     else if (font_property_element == qn("spreadsheetml", "vertAlign"))
                     {
-                        new_font.superscript(parser().attribute("val") == "superscript");
+                        auto vert_align = parser().attribute("val");
+
+                        if (vert_align == "superscript")
+                        {
+                            new_font.superscript(true);
+                        }
+                        else if (vert_align == "subscript")
+                        {
+                            new_font.subscript(true);
+                        }
                     }
                     else if (font_property_element == qn("spreadsheetml", "strike"))
                     {
@@ -2074,36 +2330,52 @@ void xlsx_consumer::read_stylesheet()
                 expect_start_element(qn("spreadsheetml", "xf"), xml::content::complex);
 
                 auto &record = *(!in_style_records
-                    ? format_records.emplace(format_records.end())
-                    : style_records.emplace(style_records.end()));
+                        ? format_records.emplace(format_records.end())
+                        : style_records.emplace(style_records.end()));
 
-                record.first.border_applied = parser().attribute_present("applyBorder")
-                    && is_true(parser().attribute("applyBorder"));
+                if (parser().attribute_present("applyBorder"))
+                {
+                    record.first.border_applied = is_true(parser().attribute("applyBorder"));
+                }
                 record.first.border_id = parser().attribute_present("borderId")
-                    ? parser().attribute<std::size_t>("borderId") : 0;
+                    ? parser().attribute<std::size_t>("borderId")
+                    : 0;
 
-                record.first.fill_applied = parser().attribute_present("applyFill")
-                    && is_true(parser().attribute("applyFill"));
+                if (parser().attribute_present("applyFill"))
+                {
+                    record.first.fill_applied = is_true(parser().attribute("applyFill"));
+                }
                 record.first.fill_id = parser().attribute_present("fillId")
-                    ? parser().attribute<std::size_t>("fillId") : 0;
+                    ? parser().attribute<std::size_t>("fillId")
+                    : 0;
 
-                record.first.font_applied = parser().attribute_present("applyFont")
-                    && is_true(parser().attribute("applyFont"));
+                if (parser().attribute_present("applyFont"))
+                {
+                    record.first.font_applied = is_true(parser().attribute("applyFont"));
+                }
                 record.first.font_id = parser().attribute_present("fontId")
-                    ? parser().attribute<std::size_t>("fontId") : 0;
+                    ? parser().attribute<std::size_t>("fontId")
+                    : 0;
 
-                record.first.number_format_applied = parser().attribute_present("applyNumberFormat")
-                    && is_true(parser().attribute("applyNumberFormat"));
+                if (parser().attribute_present("applyNumberFormat"))
+                {
+                    record.first.number_format_applied = is_true(parser().attribute("applyNumberFormat"));
+                }
                 record.first.number_format_id = parser().attribute_present("numFmtId")
-                    ? parser().attribute<std::size_t>("numFmtId") : 0;
+                    ? parser().attribute<std::size_t>("numFmtId")
+                    : 0;
 
                 auto apply_alignment_present = parser().attribute_present("applyAlignment");
-                record.first.alignment_applied = apply_alignment_present
-                    && is_true(parser().attribute("applyAlignment"));
+                if (apply_alignment_present)
+                {
+                    record.first.alignment_applied = is_true(parser().attribute("applyAlignment"));
+                }
 
                 auto apply_protection_present = parser().attribute_present("applyProtection");
-                record.first.protection_applied = apply_protection_present
-                    && is_true(parser().attribute("applyProtection"));
+                if (apply_protection_present)
+                {
+                    record.first.protection_applied = is_true(parser().attribute("applyProtection"));
+                }
 
                 record.first.pivot_button_ = parser().attribute_present("pivotButton")
                     && is_true(parser().attribute("pivotButton"));
@@ -2227,7 +2499,25 @@ void xlsx_consumer::read_stylesheet()
         }
         else if (current_style_element == qn("spreadsheetml", "extLst"))
         {
-            skip_remaining_content(current_style_element);
+            while (in_element(qn("spreadsheetml", "extLst")))
+            {
+                expect_start_element(qn("spreadsheetml", "ext"), xml::content::complex);
+
+                const auto uri = parser().attribute("uri");
+
+                if (uri == "{EB79DEF2-80B8-43e5-95BD-54CBDDF9020C}") // slicerStyles
+                {
+                    expect_start_element(qn("x14", "slicerStyles"), xml::content::simple);
+                    stylesheet.default_slicer_style = parser().attribute("defaultSlicerStyle");
+                    expect_end_element(qn("x14", "slicerStyles"));
+                }
+                else
+                {
+                    skip_remaining_content(qn("spreadsheetml", "ext"));
+                }
+
+                expect_end_element(qn("spreadsheetml", "ext"));
+            }
         }
         else if (current_style_element == qn("spreadsheetml", "colors")) // CT_Colors 0-1
         {
@@ -2326,7 +2616,7 @@ void xlsx_consumer::read_stylesheet()
         new_format.pivot_button_ = record.first.pivot_button_;
         new_format.quote_prefix_ = record.first.quote_prefix_;
 
-        new_format.style = styles.at(record.second).first.name;
+        set_style_by_xfid(styles, record.second, new_format.style);
     }
 }
 
@@ -2364,7 +2654,7 @@ void xlsx_consumer::read_comments(worksheet ws)
 
     expect_start_element(qn("spreadsheetml", "comments"), xml::content::complex);
     // name space can be ignored
-    skip_attribute(qn("mc","Ignorable"));
+    skip_attribute(qn("mc", "Ignorable"));
     expect_start_element(qn("spreadsheetml", "authors"), xml::content::complex);
 
     while (in_element(qn("spreadsheetml", "authors")))
@@ -2391,12 +2681,12 @@ void xlsx_consumer::read_comments(worksheet ws)
 
         expect_end_element(qn("spreadsheetml", "text"));
 
-	if (in_element(xml::qname(qn("spreadsheetml", "comment"))))
-	{
-	    expect_start_element(qn("mc", "AlternateContent"), xml::content::complex);
-	    skip_remaining_content(qn("mc", "AlternateContent"));
-	    expect_end_element(qn("mc", "AlternateContent"));
-	}
+        if (in_element(xml::qname(qn("spreadsheetml", "comment"))))
+        {
+            expect_start_element(qn("mc", "AlternateContent"), xml::content::complex);
+            skip_remaining_content(qn("mc", "AlternateContent"));
+            expect_end_element(qn("mc", "AlternateContent"));
+        }
 
         expect_end_element(qn("spreadsheetml", "comment"));
     }
@@ -2597,12 +2887,16 @@ rich_text xlsx_consumer::read_rich_text(const xml::qname &parent)
     while (in_element(parent))
     {
         auto text_element = expect_start_element(xml::content::mixed);
+        const auto xml_space = qn("xml", "space");
+        const auto preserve_space = parser().attribute_present(xml_space)
+            ? parser().attribute(xml_space) == "preserve"
+            : false;
         skip_attributes();
         auto text = read_text();
 
         if (text_element == xml::qname(xmlns, "t"))
         {
-            t.plain_text(text);
+            t.plain_text(text, preserve_space);
         }
         else if (text_element == xml::qname(xmlns, "r"))
         {
@@ -2648,12 +2942,14 @@ rich_text xlsx_consumer::read_rich_text(const xml::qname &parent)
                         else if (current_run_property_element == xml::qname(xmlns, "b"))
                         {
                             run.second.get().bold(parser().attribute_present("val")
-                                ? is_true(parser().attribute("val")) : true);
+                                    ? is_true(parser().attribute("val"))
+                                    : true);
                         }
                         else if (current_run_property_element == xml::qname(xmlns, "i"))
                         {
                             run.second.get().italic(parser().attribute_present("val")
-                                ? is_true(parser().attribute("val")) : true);
+                                    ? is_true(parser().attribute("val"))
+                                    : true);
                         }
                         else if (current_run_property_element == xml::qname(xmlns, "u"))
                         {
@@ -2748,4 +3044,4 @@ manifest &xlsx_consumer::manifest()
 }
 
 } // namespace detail
-} // namepsace xlnt
+} // namespace xlnt

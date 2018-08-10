@@ -1,26 +1,40 @@
 #pragma once
 
 #include <sstream>
+#include <unordered_set>
 
+#include <xlnt/packaging/manifest.hpp>
+#include <xlnt/workbook/workbook.hpp>
 #include <detail/external/include_libstudxml.hpp>
 #include <detail/serialization/vector_streambuf.hpp>
 #include <detail/serialization/zstream.hpp>
-#include <xlnt/packaging/manifest.hpp>
-#include <xlnt/workbook/workbook.hpp>
 
 class xml_helper
 {
 public:
     static bool compare_files(const std::string &left,
-		const std::string &right, const std::string &content_type)
+        const std::string &right, const std::string &content_type)
     {
         // content types are stored in unordered maps, too complicated to compare
-        if (content_type == "[Content_Types].xml") return true;
+        if (content_type == "[Content_Types].xml")
+        {
+            return true;
+        }
+
         // calcChain is optional
-        if (content_type == "application/vnd.openxmlformats-officedocument.spreadsheetml.calcChain+xml") return true;
+        if (content_type == "application/vnd.openxmlformats-officedocument.spreadsheetml.calcChain+xml")
+        {
+            return true;
+        }
+
+        // compared already
+        if (content_type == "application/vnd.openxmlformats-package.relationships+xml")
+        {
+            return true;
+        }
 
         auto is_xml = (content_type.substr(0, 12) == "application/"
-            && content_type.substr(content_type.size() - 4) == "+xml")
+                          && content_type.substr(content_type.size() - 4) == "+xml")
             || content_type == "application/xml"
             || content_type == "[Content_Types].xml"
             || content_type == "application/vnd.openxmlformats-officedocument.vmlDrawing";
@@ -49,8 +63,7 @@ public:
         bool difference = false;
         auto right_iter = right_parser.begin();
 
-        auto is_whitespace = [](const std::string &v)
-        {
+        auto is_whitespace = [](const std::string &v) {
             return v.find_first_not_of("\n\r\t ") == std::string::npos;
         };
 
@@ -184,49 +197,99 @@ public:
             ++right_iter;
         }
 
-		if (difference && !suppress_debug_info)
-		{
-			std::cout << "documents don't match" << std::endl;
+        if (difference && !suppress_debug_info)
+        {
+            std::cout << "documents don't match" << std::endl;
 
-			std::cout << "left:" << std::endl;
+            std::cout << "left:" << std::endl;
             for (auto c : left)
             {
                 std::cout << c << std::flush;
             }
-			std::cout << std::endl;
+            std::cout << std::endl;
 
-			std::cout << "right:" << std::endl;
+            std::cout << "right:" << std::endl;
             for (auto c : right)
             {
                 std::cout << c << std::flush;
             }
-			std::cout << std::endl;
-		}
+            std::cout << std::endl;
+        }
 
-		return !difference;
+        return !difference;
     }
 
-	static bool xlsx_archives_match(const std::vector<std::uint8_t> &left,
+    static bool compare_relationships(const xlnt::manifest &left,
+        const xlnt::manifest &right)
+    {
+        std::unordered_set<std::string> parts;
+
+        for (const auto &part : left.parts())
+        {
+            parts.insert(part.string());
+
+            auto left_rels = left.relationships(part);
+            auto right_rels = right.relationships(part);
+
+            if (left_rels.size() != right_rels.size())
+            {
+                return false;
+            }
+
+            std::unordered_map<std::string, xlnt::relationship> left_rels_map;
+
+            for (const auto &rel : left_rels)
+            {
+                left_rels_map[rel.id()] = rel;
+            }
+
+            for (const auto &right_rel : right_rels)
+            {
+                if (left_rels_map.count(right_rel.id()) != 1)
+                {
+                    return false;
+                }
+
+                const auto &left_rel = left_rels_map.at(right_rel.id());
+
+                if (left_rel != right_rel)
+                {
+                    return false;
+                }
+            }
+        }
+
+        for (const auto &part : right.parts())
+        {
+            if (parts.count(part.string()) != 1)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    static bool xlsx_archives_match(const std::vector<std::uint8_t> &left,
         const std::vector<std::uint8_t> &right)
-	{
+    {
         xlnt::detail::vector_istreambuf left_buffer(left);
         std::istream left_stream(&left_buffer);
         xlnt::detail::izstream left_archive(left_stream);
 
-		const auto left_info = left_archive.files();
+        const auto left_info = left_archive.files();
 
         xlnt::detail::vector_istreambuf right_buffer(right);
         std::istream right_stream(&right_buffer);
         xlnt::detail::izstream right_archive(right_stream);
 
-		const auto right_info = right_archive.files();
+        const auto right_info = right_archive.files();
 
         auto difference_is_missing_calc_chain = false;
 
         if (std::abs(int(left_info.size()) - int(right_info.size())) == 1)
         {
-            auto is_calc_chain = [](const xlnt::path &p)
-            {
+            auto is_calc_chain = [](const xlnt::path &p) {
                 return p.filename() == "calcChain.xml";
             };
 
@@ -241,7 +304,7 @@ public:
             }
         }
 
-		if (left_info.size() != right_info.size() && ! difference_is_missing_calc_chain)
+        if (left_info.size() != right_info.size() && !difference_is_missing_calc_chain)
         {
             std::cout << "left has a different number of files than right" << std::endl;
 
@@ -271,9 +334,43 @@ public:
         auto &left_manifest = left_workbook.manifest();
         auto &right_manifest = right_workbook.manifest();
 
-		for (auto left_member : left_info)
-		{
-			if (!right_archive.has_file(left_member))
+        if (!compare_relationships(left_manifest, right_manifest))
+        {
+            std::cout << "relationship mismatch\n"
+                      << "Left:\n";
+            for (const auto &part : left_manifest.parts())
+            {
+                std::cout << "-part: " << part.string() << '\n';
+                auto rels = left_manifest.relationships(part);
+                for (auto &rel : rels)
+                {
+                    std::cout << rel.id() << ':' 
+                        << static_cast<int>(rel.type()) 
+                        << ':' << static_cast<int>(rel.target_mode()) 
+                        << ':' << rel.source().path().string() 
+                        << ':' << rel.target().path().string() << '\n';
+                }
+            }
+            std::cout << "\nRight:\n";
+            for (const auto &part : right_manifest.parts())
+            {
+                std::cout << "-part: " << part.string() << '\n';
+                auto rels = right_manifest.relationships(part);
+                for (auto &rel : rels)
+                {
+                    std::cout << rel.id() 
+                        << ':' << static_cast<int>(rel.type()) 
+                        << ':' << static_cast<int>(rel.target_mode()) 
+                        << ':' << rel.source().path().string() 
+                        << ':' << rel.target().path().string() << '\n';
+                }
+            }
+            return false;
+        }
+
+        for (auto left_member : left_info)
+        {
+            if (!right_archive.has_file(left_member))
             {
                 if (difference_is_missing_calc_chain)
                 {
@@ -287,32 +384,34 @@ public:
             }
 
             auto left_content_type = left_member.string() == "[Content_Types].xml"
-                ? "[Content_Types].xml" : left_manifest.content_type(left_member);
+                ? "[Content_Types].xml"
+                : left_manifest.content_type(left_member);
             auto right_content_type = left_member.string() == "[Content_Types].xml"
-                ? "[Content_Types].xml" : right_manifest.content_type(left_member);
+                ? "[Content_Types].xml"
+                : right_manifest.content_type(left_member);
 
             if (left_content_type != right_content_type)
             {
                 std::cout << "content types differ: "
-                    << left_member.string()
-                    << " "
-                    << left_content_type
-                    << " "
-                    << right_content_type
-                    << std::endl;
+                          << left_member.string()
+                          << " "
+                          << left_content_type
+                          << " "
+                          << right_content_type
+                          << std::endl;
                 match = false;
                 break;
             }
 
             if (!compare_files(left_archive.read(left_member),
-                left_archive.read(left_member), left_content_type))
-			{
-				std::cout << left_member.string() << std::endl;
+                    right_archive.read(left_member), left_content_type))
+            {
+                std::cout << left_member.string() << std::endl;
                 match = false;
                 break;
-			}
-		}
+            }
+        }
 
-		return match;
-	}
+        return match;
+    }
 };

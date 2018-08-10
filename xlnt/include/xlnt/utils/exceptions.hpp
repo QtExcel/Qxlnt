@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Thomas Fussell
+// Copyright (c) 2014-2018 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -120,7 +120,7 @@ public:
     /// <summary>
     /// Default constructor.
     /// </summary>
-    missing_number_format();
+    missing_number_format() = default;
 
     /// <summary>
     /// Default copy constructor.

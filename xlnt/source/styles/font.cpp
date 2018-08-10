@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Thomas Fussell
+// Copyright (c) 2014-2018 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,11 +26,18 @@
 
 #include <xlnt/styles/font.hpp>
 
+namespace {
+const std::string &Default_Name()
+{
+    static const std::string Default("Calibri");
+    return Default;
+}
+constexpr double Default_Size = 12.0;
+} // namespace
+
 namespace xlnt {
 
 font::font()
-    : name_("Calibri"),
-      size_(12.0)
 {
 }
 
@@ -45,15 +52,26 @@ bool font::bold() const
     return bold_;
 }
 
-font &font::superscript(bool superscript)
+font &font::superscript(bool value)
 {
-    superscript_ = superscript;
+    superscript_ = value;
     return *this;
 }
 
 bool font::superscript() const
 {
     return superscript_;
+}
+
+font &font::subscript(bool value)
+{
+    subscript_ = value;
+    return *this;
+}
+
+bool font::subscript() const
+{
+    return subscript_;
 }
 
 font &font::italic(bool italic)
@@ -129,7 +147,11 @@ font &font::size(double size)
 
 double font::size() const
 {
-    return size_.get();
+    if (size_.is_set())
+    {
+        return size_.get();
+    }
+    return Default_Size;
 }
 
 bool font::has_name() const
@@ -143,9 +165,13 @@ font &font::name(const std::string &name)
     return *this;
 }
 
-std::string font::name() const
+const std::string &font::name() const
 {
-    return name_.get();
+    if (name_.is_set())
+    {
+        return name_.get();
+    }
+    return Default_Name();
 }
 
 bool font::has_color() const
@@ -181,6 +207,11 @@ font &font::charset(std::size_t charset)
     return *this;
 }
 
+std::size_t font::charset() const
+{
+    return charset_.get();
+}
+
 bool font::has_scheme() const
 {
     return scheme_.is_set();
@@ -202,86 +233,39 @@ std::size_t font::family() const
     return family_.get();
 }
 
-std::string font::scheme() const
+const std::string &font::scheme() const
 {
     return scheme_.get();
 }
 
 bool font::operator==(const font &other) const
 {
-    if (bold() != other.bold())
-    {
-        return false;
-    }
-
-    if (has_color() != other.has_color())
-    {
-        return false;
-    }
-
-    if (has_color())
-    {
-        if (color() != other.color())
-        {
-            return false;
-        }
-    }
-
-    if (has_family() != other.has_family())
-    {
-        return false;
-    }
-
-    if (has_family())
-    {
-        if (family() != other.family())
-        {
-            return false;
-        }
-    }
-
-    if (italic() != other.italic())
-    {
-        return false;
-    }
-
-    if (name() != other.name())
-    {
-        return false;
-    }
-
-    if (has_scheme() != other.has_scheme())
-    {
-        return false;
-    }
-
-    if (has_scheme())
-    {
-        if (scheme() != other.scheme())
-        {
-            return false;
-        }
-    }
-
-    if (std::fabs(size() - other.size()) != 0.0)
-    {
-        return false;
-    }
-
-    if (strikethrough() != other.strikethrough())
-    {
-        return false;
-    }
-
-    if (superscript() != other.superscript())
-    {
-        return false;
-    }
-
-    if (underline() != other.underline())
-    {
-        return false;
-    }
+    // name
+    if (has_name() != other.has_name()) return false;
+    if (has_name() && name() != other.name()) return false;
+    // size
+    if (has_size() != other.has_size()) return false;
+    if (has_size() && std::fabs(size() - other.size()) != 0.0) return false;
+    // family
+    if (has_family() != other.has_family()) return false;
+    if (has_family() && family() != other.family()) return false;
+    // scheme
+    if (has_scheme() != other.has_scheme()) return false;
+    if (has_scheme() && scheme() != other.scheme()) return false;
+    // color
+    if (has_color() != other.has_color()) return false;
+    if (has_color() && color() != other.color()) return false;
+    // charset
+    if (has_charset() != other.has_charset()) return false;
+    if (has_charset() && charset() != other.charset()) return false;
+    // modifiers
+    if (bold() != other.bold()) return false;
+    if (italic() != other.italic()) return false;
+    if (strikethrough() != other.strikethrough()) return false;
+    if (superscript() != other.superscript()) return false;
+    if (subscript() != other.subscript()) return false;
+    if (underline() != other.underline()) return false;
+    if (shadow() != other.shadow()) return false;
 
     return true;
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Thomas Fussell
+// Copyright (c) 2014-2018 Thomas Fussell
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -56,16 +56,6 @@ const_cell_iterator::const_cell_iterator(worksheet ws, const cell_reference &cur
     {
         (*this)++; // move to the next non-empty cell or one past the end if none exists
     }
-}
-
-cell_iterator::cell_iterator(const cell_iterator &other)
-{
-    *this = other;
-}
-
-const_cell_iterator::const_cell_iterator(const const_cell_iterator &other)
-{
-    *this = other;
 }
 
 bool cell_iterator::operator==(const cell_iterator &other) const
@@ -275,14 +265,18 @@ const_cell_iterator const_cell_iterator::operator++(int)
     return old;
 }
 
-cell cell_iterator::operator*()
+cell_iterator::reference cell_iterator::operator*()
 {
     return ws_.cell(cursor_);
 }
 
-const cell const_cell_iterator::operator*() const
+const cell_iterator::reference cell_iterator::operator*() const
 {
     return ws_.cell(cursor_);
 }
 
+const const_cell_iterator::reference const_cell_iterator::operator*() const
+{
+    return ws_.cell(cursor_);
+}
 } // namespace xlnt

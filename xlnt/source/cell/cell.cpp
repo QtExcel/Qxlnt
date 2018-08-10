@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Thomas Fussell
+// Copyright (c) 2014-2018 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,12 +28,15 @@
 
 #include <detail/implementations/cell_impl.hpp>
 #include <detail/implementations/format_impl.hpp>
+#include <detail/implementations/hyperlink_impl.hpp>
 #include <detail/implementations/stylesheet.hpp>
 #include <detail/implementations/worksheet_impl.hpp>
 #include <xlnt/cell/cell.hpp>
 #include <xlnt/cell/cell_reference.hpp>
 #include <xlnt/cell/comment.hpp>
+#include <xlnt/cell/hyperlink.hpp>
 #include <xlnt/cell/rich_text.hpp>
+#include <xlnt/packaging/manifest.hpp>
 #include <xlnt/packaging/relationship.hpp>
 #include <xlnt/styles/alignment.hpp>
 #include <xlnt/styles/border.hpp>
@@ -195,7 +198,7 @@ cell::cell(detail::cell_impl *d)
 
 bool cell::garbage_collectible() const
 {
-    return !(has_value() || is_merged() || has_formula() || has_format());
+    return !(has_value() || is_merged() || has_formula() || has_format() || has_hyperlink());
 }
 
 void cell::value(std::nullptr_t)
@@ -311,6 +314,11 @@ column_t cell::column() const
     return d_->column_;
 }
 
+column_t::index_t cell::column_index() const
+{
+    return d_->column_.index;
+}
+
 void cell::merged(bool merged)
 {
     d_->is_merged_ = merged;
@@ -333,57 +341,104 @@ cell_reference cell::reference() const
     return {d_->column_, d_->row_};
 }
 
-bool cell::operator==(std::nullptr_t) const
-{
-    return d_ == nullptr;
-}
-
 bool cell::operator==(const cell &comparand) const
 {
     return d_ == comparand.d_;
 }
 
-cell &cell::operator=(const cell &rhs)
+bool cell::operator!=(const cell &comparand) const
 {
-    d_->column_ = rhs.d_->column_;
-    d_->format_ = rhs.d_->format_;
-    d_->formula_ = rhs.d_->formula_;
-    d_->hyperlink_ = rhs.d_->hyperlink_;
-    d_->is_merged_ = rhs.d_->is_merged_;
-    d_->parent_ = rhs.d_->parent_;
-    d_->row_ = rhs.d_->row_;
-    d_->type_ = rhs.d_->type_;
-    d_->value_numeric_ = rhs.d_->value_numeric_;
-    d_->value_text_ = rhs.d_->value_text_;
-
-    return *this;
+    return d_ != comparand.d_;
 }
 
-std::string cell::hyperlink() const
-{
-    return d_->hyperlink_.get();
-}
+cell &cell::operator=(const cell &rhs) = default;
 
-void cell::hyperlink(const std::string &hyperlink)
+hyperlink cell::hyperlink() const
 {
-    if (hyperlink.length() == 0
-        || std::find(hyperlink.begin(), hyperlink.end(), ':') == hyperlink.end())
-    {
-        throw invalid_parameter();
-    }
-
-    d_->hyperlink_ = hyperlink;
+    return xlnt::hyperlink(&d_->hyperlink_.get());
 }
 
 void cell::hyperlink(const std::string &url, const std::string &display)
 {
-    hyperlink(url);
-    value(display);
+    if (url.empty() || std::find(url.begin(), url.end(), ':') == url.end())
+    {
+        throw invalid_parameter();
+    }
+
+    auto ws = worksheet();
+    auto &manifest = ws.workbook().manifest();
+
+    d_->hyperlink_ = detail::hyperlink_impl();
+
+    // check for existing relationships
+    auto relationships = manifest.relationships(ws.path(), relationship_type::hyperlink);
+    auto relation = std::find_if(relationships.cbegin(), relationships.cend(),
+        [&url](xlnt::relationship rel) { return rel.target().path().string() == url; });
+    if (relation != relationships.end())
+    {
+        d_->hyperlink_.get().relationship = *relation;
+    }
+    else
+    { // register a new relationship
+        auto rel_id = manifest.register_relationship(
+            uri(ws.path().string()),
+            relationship_type::hyperlink,
+            uri(url),
+            target_mode::external);
+        // TODO: make manifest::register_relationship return the created relationship instead of rel id
+        d_->hyperlink_.get().relationship = manifest.relationship(ws.path(), rel_id);
+    }
+    // if a value is already present, the display string is ignored
+    if (has_value())
+    {
+        d_->hyperlink_.get().display.set(to_string());
+    }
+    else
+    {
+        d_->hyperlink_.get().display.set(display.empty() ? url : display);
+        value(hyperlink().display());
+    }
 }
 
-void cell::hyperlink(xlnt::cell /*target*/)
+void cell::hyperlink(xlnt::cell target, const std::string& display)
 {
-    //todo: implement
+    // TODO: should this computed value be a method on a cell?
+    const auto cell_address = target.worksheet().title() + "!" + target.reference().to_string();
+
+    d_->hyperlink_ = detail::hyperlink_impl();
+    d_->hyperlink_.get().relationship = xlnt::relationship("", relationship_type::hyperlink,
+        uri(""), uri(cell_address), target_mode::internal);
+    // if a value is already present, the display string is ignored
+    if (has_value())
+    {
+        d_->hyperlink_.get().display.set(to_string());
+    }
+    else
+    {
+        d_->hyperlink_.get().display.set(display.empty() ? cell_address : display);
+        value(hyperlink().display());
+    }
+}
+
+void cell::hyperlink(xlnt::range target, const std::string &display)
+{
+    // TODO: should this computed value be a method on a cell?
+    const auto range_address = target.target_worksheet().title() + "!" + target.reference().to_string();
+
+    d_->hyperlink_ = detail::hyperlink_impl();
+    d_->hyperlink_.get().relationship = xlnt::relationship("", relationship_type::hyperlink,
+        uri(""), uri(range_address), target_mode::internal);
+    
+    // if a value is already present, the display string is ignored
+    if (has_value())
+    {
+        d_->hyperlink_.get().display.set(to_string());
+    }
+    else
+    {
+        d_->hyperlink_.get().display.set(display.empty() ? range_address : display);
+        value(hyperlink().display());
+    }
 }
 
 void cell::formula(const std::string &formula)
@@ -401,8 +456,6 @@ void cell::formula(const std::string &formula)
     {
         d_->formula_ = formula;
     }
-
-    data_type(type::number);
 
     worksheet().register_calc_chain_in_manifest();
 }
@@ -426,6 +479,15 @@ void cell::clear_formula()
     }
 }
 
+std::string cell::error() const
+{
+    if (d_->type_ != type::error)
+    {
+        throw xlnt::exception("called error() when cell type is not error");
+    }
+    return value<std::string>();
+}
+
 void cell::error(const std::string &error)
 {
     if (error.length() == 0 || error[0] != '#')
@@ -433,7 +495,7 @@ void cell::error(const std::string &error)
         throw invalid_data_type();
     }
 
-    d_->value_text_.plain_text(error);
+    d_->value_text_.plain_text(error, false);
     d_->type_ = type::error;
 }
 
@@ -598,37 +660,37 @@ XLNT_API timedelta cell::value() const
 void cell::alignment(const class alignment &alignment_)
 {
     auto new_format = has_format() ? modifiable_format() : workbook().create_format();
-    format(new_format.alignment(alignment_, true));
+    format(new_format.alignment(alignment_, optional<bool>(true)));
 }
 
 void cell::border(const class border &border_)
 {
     auto new_format = has_format() ? modifiable_format() : workbook().create_format();
-    format(new_format.border(border_, true));
+    format(new_format.border(border_, optional<bool>(true)));
 }
 
 void cell::fill(const class fill &fill_)
 {
     auto new_format = has_format() ? modifiable_format() : workbook().create_format();
-    format(new_format.fill(fill_, true));
+    format(new_format.fill(fill_, optional<bool>(true)));
 }
 
 void cell::font(const class font &font_)
 {
     auto new_format = has_format() ? modifiable_format() : workbook().create_format();
-    format(new_format.font(font_, true));
+    format(new_format.font(font_, optional<bool>(true)));
 }
 
 void cell::number_format(const class number_format &number_format_)
 {
     auto new_format = has_format() ? modifiable_format() : workbook().create_format();
-    format(new_format.number_format(number_format_, true));
+    format(new_format.number_format(number_format_, optional<bool>(true)));
 }
 
 void cell::protection(const class protection &protection_)
 {
     auto new_format = has_format() ? modifiable_format() : workbook().create_format();
-    format(new_format.protection(protection_, true));
+    format(new_format.protection(protection_, optional<bool>(true)));
 }
 
 template <>
@@ -642,7 +704,7 @@ XLNT_API rich_text cell::value() const
 {
     if (data_type() == cell::type::shared_string)
     {
-        return workbook().shared_strings().at(static_cast<std::size_t>(d_->value_numeric_));
+        return workbook().shared_strings(static_cast<std::size_t>(d_->value_numeric_));
     }
 
     return d_->value_text_;
@@ -695,6 +757,16 @@ void cell::format(const class format new_format)
 calendar cell::base_date() const
 {
     return workbook().base_date();
+}
+
+bool operator==(std::nullptr_t, const cell &cell)
+{
+    return cell.data_type() == cell::type::empty;
+}
+
+bool operator==(const cell &cell, std::nullptr_t)
+{
+    return nullptr == cell;
 }
 
 XLNT_API std::ostream &operator<<(std::ostream &stream, const xlnt::cell &cell)
@@ -756,8 +828,11 @@ void cell::value(const std::string &value_string, bool infer_type)
 
 void cell::clear_format()
 {
-    format().d_->references -= format().d_->references > 0 ? 1 : 0;
-    d_->format_.clear();
+    if (d_->format_.is_set())
+    {
+        format().d_->references -= format().d_->references > 0 ? 1 : 0;
+        d_->format_.clear();
+    }
 }
 
 void cell::clear_style()
@@ -786,19 +861,19 @@ style cell::style()
         throw invalid_attribute();
     }
 
-	auto f = format();
+    auto f = format();
 
     return f.style();
 }
 
 const style cell::style() const
 {
-	if (!has_format() || !format().has_style())
-	{
-		throw invalid_attribute();
-	}
+    if (!has_format() || !format().has_style())
+    {
+        throw invalid_attribute();
+    }
 
-	return format().style();
+    return format().style();
 }
 
 bool cell::has_style() const

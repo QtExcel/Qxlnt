@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 Thomas Fussell
+// Copyright (c) 2014-2018 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,16 +26,35 @@
 #include <xlnt/cell/rich_text.hpp>
 #include <xlnt/cell/rich_text_run.hpp>
 
+namespace {
+bool has_trailing_whitespace(const std::string &s) 
+{
+    return !s.empty() && (s.front() == ' ' || s.back() == ' ');
+};
+}
+
 namespace xlnt {
 
 rich_text::rich_text(const std::string &plain_text)
-    : rich_text({plain_text, optional<font>()})
+    : rich_text(rich_text_run{plain_text, optional<font>(), has_trailing_whitespace(plain_text)})
 {
 }
 
 rich_text::rich_text(const std::string &plain_text, const class font &text_font)
-    : rich_text({plain_text, optional<font>(text_font)})
+    : rich_text(rich_text_run{plain_text, optional<font>(text_font), has_trailing_whitespace(plain_text)})
 {
+}
+
+rich_text::rich_text(const rich_text &other)
+{
+    *this = other;
+}
+
+rich_text &rich_text::operator=(const rich_text &rhs)
+{
+    runs_.clear();
+    runs_ = rhs.runs_;
+    return *this;
 }
 
 rich_text::rich_text(const rich_text_run &single_run)
@@ -48,14 +67,19 @@ void rich_text::clear()
     runs_.clear();
 }
 
-void rich_text::plain_text(const std::string &s)
+void rich_text::plain_text(const std::string &s, bool preserve_space = false)
 {
     clear();
-    add_run(rich_text_run{s, {}});
+    add_run(rich_text_run{s, {}, preserve_space});
 }
 
 std::string rich_text::plain_text() const
 {
+    if (runs_.size() == 1)
+    {
+        return runs_.begin()->first;
+    }
+
     return std::accumulate(runs_.begin(), runs_.end(), std::string(),
         [](const std::string &a, const rich_text_run &run) { return a + run.first; });
 }
@@ -63,6 +87,11 @@ std::string rich_text::plain_text() const
 std::vector<rich_text_run> rich_text::runs() const
 {
     return runs_;
+}
+
+void rich_text::runs(const std::vector<rich_text_run> &new_runs)
+{
+    runs_ = new_runs;
 }
 
 void rich_text::add_run(const rich_text_run &t)
