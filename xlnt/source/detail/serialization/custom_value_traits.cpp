@@ -343,9 +343,10 @@ std::string to_string(pane_state state)
     default_case("frozen");
 }
 
-std::string to_string(orientation orientation)
+// std::string to_string(orientation orientation)
+std::string to_string(orientation ori) // fixed:j2doll
 {
-    switch (orientation)
+    switch (ori) //(orientation)
     {
     case orientation::default_orientation:
         return "default";
