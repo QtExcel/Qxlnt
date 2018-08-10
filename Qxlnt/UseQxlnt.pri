@@ -17,7 +17,7 @@ message('Current compiler is gcc')
 # LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
 
 DEFINES += \
-XLNT_API=XLNT_STATIC
+XLNT_STATIC=1
 
 }
 linux-clang{
@@ -30,7 +30,7 @@ message('Current compiler is linux-clang')
 # LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
 
 DEFINES += \
-XLNT_API=XLNT_STATIC
+XLNT_STATIC=1
 
 }
 msvc{
