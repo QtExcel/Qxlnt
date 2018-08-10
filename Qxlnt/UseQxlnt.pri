@@ -15,6 +15,10 @@ message('Current compiler is gcc')
 # LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
 # LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
 # LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
+
+DEFINES += \
+XLNT_API=XLNT_STATIC
+
 }
 linux-clang{
 message('Current compiler is linux-clang')
@@ -24,6 +28,10 @@ message('Current compiler is linux-clang')
 # LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
 # LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
 # LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
+
+DEFINES += \
+XLNT_API=XLNT_STATIC
+
 }
 msvc{
 message('Current compiler is Visual C++')
