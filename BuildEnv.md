@@ -36,7 +36,6 @@ Failed: 0
 - Success to build. :smiley:
 - Success to run hello world. :smiley:
 - Success to run Qxlnt.test. :rage: one case is failed.
-- If you use gcc on Windows, Use MSYS2 instead of MingW. 
 
 ```
 $ uname -a
@@ -67,36 +66,43 @@ std::exception
 ```
 
 ## Case 3 : MingW+gcc
-- MingW 32bit : Testing now
 
-```
-Qt 5.9.5 (x86/32bit), MingW 5.3.0, qmake 3.1
-Microsoft Windows 10 x64
-gcc 5.3.0 (i686-posix-dwarf-rev0, Built by MinGW-W64 project)
-```
-
+- MingW x86/32bit
 - Success to build. :smiley:
-- Qxlnt.test has unicode error. :rage: This is mentioned in the xlnt [issue](https://github.com/tfussell/xlnt/issues/251).
+- Success to run hello world. :smiley:
+- Success to run Qxlnt.test. :rage: one case is failed.
 
+```
+>qmake -v
+QMake version 3.1
+Using Qt version 5.11.1 in D:/Qt/Qt5.11.1/5.11.1/mingw53_32/lib
+
+>g++ -v
+Using built-in specs.
+COLLECT_GCC=g++
+COLLECT_LTO_WRAPPER=D:/Qt/Qt5.11.1/Tools/mingw530_32/bin/../libexec/gcc/i686-w64-mingw32/5.3.0/lto-wrapper.exe
+Target: i686-w64-mingw32
+Configured with: ../../../src/gcc-5.3.0/configure --host=i686-w64-mingw32 --build=i686-w64-mingw32 --target=i686-w64-mingw32 --prefix=/mingw32 --with-sysroot=/c/mingw530/i686-530-posix-dwarf-rt_v4-rev0/mingw32 --with-gxx-include-dir=/mingw32/i686-w64-mingw32/include/c++ --enable-shared --enable-static --disable-multilib --enable-languages=c,c++,fortran,lto --enable-libstdcxx-time=yes --enable-threads=posix --enable-libgomp --enable-libatomic --enable-lto --enable-graphite --enable-checking=release --enable-fully-dynamic-string --enable-version-specific-runtime-libs --disable-sjlj-exceptions --with-dwarf2 --disable-isl-version-check --disable-libstdcxx-pch --disable-libstdcxx-debug --enable-bootstrap --disable-rpath --disable-win32-registry --disable-nls --disable-werror --disable-symvers --with-gnu-as --with-gnu-ld --with-arch=i686 --with-tune=generic --with-libiconv --with-system-zlib --with-gmp=/c/mingw530/prerequisites/i686-w64-mingw32-static --with-mpfr=/c/mingw530/prerequisites/i686-w64-mingw32-static --with-mpc=/c/mingw530/prerequisites/i686-w64-mingw32-static --with-isl=/c/mingw530/prerequisites/i686-w64-mingw32-static --with-pkgversion='i686-posix-dwarf-rev0, Built by MinGW-W64 project' --with-bugurl=http://sourceforge.net/projects/mingw-w64 CFLAGS='-O2 -pipe -I/c/mingw530/i686-530-posix-dwarf-rt_v4-rev0/mingw32/opt/include -I/c/mingw530/prerequisites/i686-zlib-static/include -I/c/mingw530/prerequisites/i686-w64-mingw32-static/include' CXXFLAGS='-O2 -pipe -I/c/mingw530/i686-530-posix-dwarf-rt_v4-rev0/mingw32/opt/include -I/c/mingw530/prerequisites/i686-zlib-static/include -I/c/mingw530/prerequisites/i686-w64-mingw32-static/include' CPPFLAGS= LDFLAGS='-pipe -L/c/mingw530/i686-530-posix-dwarf-rt_v4-rev0/mingw32/opt/lib -L/c/mingw530/prerequisites/i686-zlib-static/lib -L/c/mingw530/prerequisites/i686-w64-mingw32-static/lib -Wl,--large-address-aware'
+Thread model: posix
+gcc version 5.3.0 (i686-posix-dwarf-rev0, Built by MinGW-W64 project)
+
+>release\Qxlnt.test
+...........................................................................................*
+stest_round_trip_rw_unicode failed with:
+std::exception
+..............................................................................................................................................................................................
+
+Run: 282
+Passed: 281
+Failed: 1
+
+stest_round_trip_rw_unicode failed with:
+std::exception
+```
 
 ## Case 4 : Mac OS+gcc
+
 - Mac OS (old mac): Testing now
-
-```
-uname -a
-Darwin tentia.local 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017; root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64
-
-gcc --version
-Configured with: --prefix=/Applications/Xcode.app/Contents/Developer/usr --with-gxx-include-dir=/usr/include/c++/4.2.1
-Apple LLVM version 7.0.2 (clang-700.1.81)
-Target: x86_64-apple-darwin15.6.0
-Thread model: posix
-
-qmake --version
-QMake version 3.0
-Using Qt version 5.6.0 in /Users/j2doll/Qt5.6.0/5.6/clang_64/lib
-```
-
 - Testing now...
 	- Build :alien:
 	- Hello world :alien:
