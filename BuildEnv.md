@@ -115,7 +115,7 @@ Microsoft Windows 10 x64
 
 ## Case 5 : Mac OS
 
-- Testing now... (My old mac is out of order. :sad:)
+- Testing now... (My old mac is out of order. :sob:)
 	- Build :alien:
 	- Hello world :alien:
 	- Qxlnt.test :alien:
