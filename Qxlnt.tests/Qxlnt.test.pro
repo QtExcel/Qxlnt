@@ -25,8 +25,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 # Set environment values for Qxlnt. You may use default values.
 
-msvc:DEFINES+=XLNT_IMPORT # EXE
+msvc:DEFINES+=XLNT_IMPORT
+
 include(../Qxlnt/UseQxlnt.pri)
+
+msvc{
+message('Visual C++ EXE TYPE')
+CONFIG(debug, debug|release) {
+LIBS+=$${QXLNT_ROOT}debug/QXlnt.lib
+} else {
+LIBS+=$${QXLNT_ROOT}release/QXlnt.lib
+}
+}
 
 # set XLNT_TEST_DATA_DIR value for test data
 DEFINES += \

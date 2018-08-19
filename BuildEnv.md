@@ -102,18 +102,17 @@ std::exception
 
 ## Case 4 : Mac OS+gcc
 
-- Mac OS (old mac): Testing now
-- Testing now...
+- Testing now... (My old mac is out of order. :sad:)
 	- Build :alien:
 	- Hello world :alien:
 	- Qxlnt.test :alien:
 
 ## Case 5 : Visual C++
 
-- Testing now... (using Qxlnt DLL)
-	- Build :smiley:
-	- Hello world :smiley:
-	- Qxlnt.test is failed to make. :rage:
+- Build :smiley: 
+	- You must build Qxlnt.DLL. Static lib is not supported.
+- Hello world (using Qxlnt.DLL) :smiley: 
+- Qxlnt.test is failed to make. :rage:
 
 ```
 Visual Studio 2017
