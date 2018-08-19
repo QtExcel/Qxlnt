@@ -26,8 +26,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # Set environment values for Qxlnt. You may use default values.
 #
 
+msvc:DEFINES+=XLNT_IMPORT # EXE
 include(../Qxlnt/UseQxlnt.pri)
- 
+
 SOURCES += \
 main.cpp
 
