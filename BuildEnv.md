@@ -100,14 +100,7 @@ stest_round_trip_rw_unicode failed with:
 std::exception
 ```
 
-## Case 4 : Mac OS+gcc
-
-- Testing now... (My old mac is out of order. :sad:)
-	- Build :alien:
-	- Hello world :alien:
-	- Qxlnt.test :alien:
-
-## Case 5 : Visual C++
+## Case 4 : Visual C++
 
 - Build :smiley: 
 	- You must build Qxlnt.DLL. Static lib is not supported.
@@ -119,5 +112,12 @@ Visual Studio 2017
 Qt 5.11.1
 Microsoft Windows 10 x64
 ```
+
+## Case 5 : Mac OS
+
+- Testing now... (My old mac is out of order. :sad:)
+	- Build :alien:
+	- Hello world :alien:
+	- Qxlnt.test :alien:
 
 
