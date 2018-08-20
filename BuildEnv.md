@@ -50,7 +50,7 @@ Configured with: ../gcc-8.2.0/configure --prefix=/mingw64 --with-local-prefix=/m
 Thread model: posix
 gcc version 8.2.0 (Rev1, Built by MSYS2 project)
 
-wjjang@DESKTOP-AJ9QK8Q MINGW64 ~/workspace/github/Qxlnt/Qxlnt.tests
+MINGW64 ~/workspace/github/Qxlnt/Qxlnt.tests
 $ ./debug/Qxlnt.test
 ...........................................................................................*
 stest_round_trip_rw_unicode failed with:
