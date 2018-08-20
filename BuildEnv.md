@@ -115,9 +115,32 @@ Microsoft Windows 10 x64
 
 ## Case 5 : Mac OS
 
-- Testing now... (My old mac is out of order. :sob:)
-	- Build :alien:
-	- Hello world :alien:
-	- Qxlnt.test :alien:
+- Build :smiley:
+- Hello world :smiley:
+- Qxlnt.test :smiley:
+
+```
+
+$ uname -a
+Darwin tests-Mac.local 17.7.0 Darwin Kernel Version 17.7.0: Thu Jun 21 22:53:14 PDT 2018; root:xnu-4570.71.2~1/RELEASE_X86_64 x86_64
+
+$ g++ --version
+Configured with: --prefix=/Applications/Xcode.app/Contents/Developer/usr --with-gxx-include-dir=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/4.2.1
+Apple LLVM version 9.1.0 (clang-902.0.39.2)
+Target: x86_64-apple-darwin17.7.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+
+$ qmake --version
+QMake version 3.1
+Using Qt version 5.11.1 in /Users/test/Qt5.11.1/5.11.1/clang_64/lib
+
+$ ./Qxlnt.test 
+..........................................................................................................................................................................................................................................................................................
+Run: 282
+Passed: 282
+Failed: 0
+
+```
 
 
