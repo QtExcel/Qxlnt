@@ -1,8 +1,8 @@
 ########################################
 # UseQxlnt.pri
 ########################################
-# xlnt https://github.com/tfussell/xlnt
 # Qxlnt https://github.com/j2doll/Qxlnt
+# xlnt https://github.com/tfussell/xlnt
 ########################################
 # MIT License
 ########################################
@@ -65,6 +65,4 @@ include(../Qxlnt/Qxlnt.pri)
 
 }
 
-# qxlnt headers & source files 
-# include(../Qxlnt/Qxlnt.pri)	
 
