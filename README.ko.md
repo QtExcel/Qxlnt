@@ -70,7 +70,7 @@ int main(int argc, char **argv)
 
 - QXlsx는 엑셀 파일(*.xlsx)을 읽고 쓰는 라이브러리입니다.
 - QtXlsx가 더이상 지원되지 않기 때문에(2014), QtXlsx에 기반한 새로운 프로젝트를 만들었습니다. (2017-)
-- QXlsx는 개발언어로 C++를 사용합니다. (Qt 5.x 사용)
+- QXlsx는 개발언어로 C++를 사용합니다. (Qt 사용)
 - QXlsx는 정적 또는 동적 라이브러리를 사용하지 않아도 되도록 제작되었습니다.
 
 ### :star: <b>Qlibxlsxwriter</b> [https://github.com/j2doll/Qlibxlsxwriter](https://github.com/j2doll/Qlibxlsxwriter)
@@ -78,4 +78,4 @@ int main(int argc, char **argv)
 <p align="center"><img src="https://github.com/j2doll/Qlibxlsxwriter/raw/master/markdown.data/logo.png"></p>
 
 - Qlibxlsxwriter는 libxlsxwriter를 Qt에서 사용할 수있는 도우미 프로젝트입니다.
-- libxlsxwriter는 Excel XLSX 파일을 만들기위한 C 라이브러리 입니다.
+- libxlsxwriter는 Excel XLSX 파일을 만들기위한 C 라이브러리 입니다. :+1:
