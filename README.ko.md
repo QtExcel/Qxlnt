@@ -16,6 +16,8 @@
 
 ## 헬로우 월드 (HelloQXlnt)
 
+:one: 엑셀(xlsx) 파일 쓰기
+
 ```cpp
 #include <iostream>
 #include <xlnt/xlnt.hpp>
@@ -38,6 +40,25 @@ int main(int argc, char **argv)
 }
 ```
 
+:two: 기존의 xlsx 스프레드 쉬트 읽기
+
+```cpp
+// https://tfussell.gitbooks.io/xlnt/content/docs/introduction/Examples.html
+
+xlnt::workbook wb;
+wb.load("/home/timothymccallum/test.xlsx");
+auto ws = wb.active_sheet();
+std::clog << "Processing spread sheet" << std::endl;
+for (auto row : ws.rows(false)) 
+{ 
+    for (auto cell : row) 
+    { 
+        std::clog << cell.to_string() << std::endl;
+    }
+}
+std::clog << "Processing complete" << std::endl;
+```
+
 ## 주의 :zap:
 
 - C++14 이상 버전이 필요합니다.
@@ -54,23 +75,23 @@ int main(int argc, char **argv)
 
 ## 라이센스 및 링크
 
-- ![](markdown-data/mit-license.png) Qxlnt는 MIT 라이센스입니다. (https://github.com/j2doll/Qxlnt)[https://github.com/j2doll/Qxlnt] 
-- ![](markdown-data/mit-license.png) xlnt는 MIT 라이센스입니다. (https://github.com/tfussell/xlnt)[https://github.com/tfussell/xlnt] 
-- ![](markdown-data/mit-license.png) libstudxml는 MIT 라이센스입니다. (https://www.codesynthesis.com/projects/libstudxml/)[https://www.codesynthesis.com/projects/libstudxml/]
-- ![](markdown-data/boost-license.png) utfcpp는 Boost 소프트웨어 라이센스입니다. [http://utfcpp.sourceforge.net](http://utfcpp.sourceforge.net)
+- Qxlnt는 MIT 라이센스입니다. (https://github.com/j2doll/Qxlnt)[https://github.com/j2doll/Qxlnt] 
+- xlnt는 MIT 라이센스입니다. (https://github.com/tfussell/xlnt)[https://github.com/tfussell/xlnt] 
+- libstudxml는 MIT 라이센스입니다. (https://www.codesynthesis.com/projects/libstudxml/)[https://www.codesynthesis.com/projects/libstudxml/]
+- utfcpp는 Boost 소프트웨어 라이센스입니다. [http://utfcpp.sourceforge.net](http://utfcpp.sourceforge.net)
 
 ## :mailbox: 연락처
 - 제게 이슈를 남겨주세요. [https://github.com/j2doll/Qxlnt/issues](https://github.com/j2doll/Qxlnt/issues)
 
-## 진행중인 유사한 프로젝트
+## 유사한 프로젝트
 
 ### :star: <b>QXlsx</b> [https://github.com/j2doll/QXlsx](https://github.com/j2doll/QXlsx)
 
 <p align="center"><img src="https://github.com/j2doll/QXlsx/raw/master/markdown.data/QXlsx2.jpg"></p>
 
 - QXlsx는 엑셀 파일(*.xlsx)을 읽고 쓰는 라이브러리입니다.
-- QtXlsx가 더이상 지원되지 않기 때문에(2014), QtXlsx에 기반한 새로운 프로젝트를 만들었습니다. (2017-)
-- QXlsx는 개발언어로 C++를 사용합니다. (Qt 사용)
+- QtXlsx가 더 이상 지원되지 않기 때문에(2014), QtXlsx에 기반한 새로운 프로젝트를 만들었습니다. (2017-)
+- QXlsx는 개발 언어로 C++를 사용합니다. (Qt 사용)
 - QXlsx는 정적 또는 동적 라이브러리를 사용하지 않아도 되도록 제작되었습니다.
 
 ### :star: <b>Qlibxlsxwriter</b> [https://github.com/j2doll/Qlibxlsxwriter](https://github.com/j2doll/Qlibxlsxwriter)
@@ -78,4 +99,4 @@ int main(int argc, char **argv)
 <p align="center"><img src="https://github.com/j2doll/Qlibxlsxwriter/raw/master/markdown.data/logo.png"></p>
 
 - Qlibxlsxwriter는 libxlsxwriter를 Qt에서 사용할 수있는 도우미 프로젝트입니다.
-- libxlsxwriter는 Excel XLSX 파일을 만들기위한 C 라이브러리 입니다. :+1:
+- libxlsxwriter는 Excel XLSX 파일을 만들기 위한 C 라이브러리 입니다. :+1:

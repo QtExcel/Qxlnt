@@ -16,6 +16,8 @@
 
 ## Hello World (HelloQXlnt)
 
+:one: Writing a excel(xlsx) file
+
 ```cpp
 #include <iostream>
 #include <xlnt/xlnt.hpp>
@@ -38,6 +40,25 @@ int main(int argc, char **argv)
 }
 ```
 
+:two: Reading from an existing xlsx spread sheet.
+
+```cpp
+// https://tfussell.gitbooks.io/xlnt/content/docs/introduction/Examples.html
+
+xlnt::workbook wb;
+wb.load("/home/timothymccallum/test.xlsx");
+auto ws = wb.active_sheet();
+std::clog << "Processing spread sheet" << std::endl;
+for (auto row : ws.rows(false)) 
+{ 
+    for (auto cell : row) 
+    { 
+        std::clog << cell.to_string() << std::endl;
+    }
+}
+std::clog << "Processing complete" << std::endl;
+```
+
 ## Notice :zap:
 
 - C++14 or higher version is required.
@@ -53,10 +74,10 @@ int main(int argc, char **argv)
 - Unicode Test (filename, file path, data value) :umbrella:
 
 ## License and links
-- ![](markdown-data/mit-license.png) Qxlnt is under MIT License. [https://github.com/j2doll/Qxlnt](https://github.com/j2doll/Qxlnt)
-- ![](markdown-data/mit-license.png) xlnt is under MIT License. [https://github.com/tfussell/xlnt](https://github.com/tfussell/xlnt) 
-- ![](markdown-data/mit-license.png) libstudxml is under MIT License. [https://www.codesynthesis.com/projects/libstudxml/](https://www.codesynthesis.com/projects/libstudxml/)
-- ![](markdown-data/boost-license.png) utfcpp is under Boost Software License. [http://utfcpp.sourceforge.net](http://utfcpp.sourceforge.net)
+- Qxlnt is under MIT License. [https://github.com/j2doll/Qxlnt](https://github.com/j2doll/Qxlnt)
+- xlnt is under MIT License. [https://github.com/tfussell/xlnt](https://github.com/tfussell/xlnt) 
+- libstudxml is under MIT License. [https://www.codesynthesis.com/projects/libstudxml/](https://www.codesynthesis.com/projects/libstudxml/)
+- utfcpp is under Boost Software License. [http://utfcpp.sourceforge.net](http://utfcpp.sourceforge.net)
 
 ## :mailbox: Contact
 - Please leave an issue to me. [https://github.com/j2doll/Qxlnt/issues](https://github.com/j2doll/Qxlnt/issues) 
