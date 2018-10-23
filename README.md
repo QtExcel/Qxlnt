@@ -87,7 +87,7 @@ std::clog << "Processing complete" << std::endl;
 
 ### :star: <b>QXlsx</b> [https://github.com/j2doll/QXlsx](https://github.com/j2doll/QXlsx)
 
-<p align="center"><img src="https://github.com/j2doll/QXlsx/raw/master/markdown.data/QXlsx2.jpg"></p>
+<p align="center"><img src="https://github.com/j2doll/QXlsx/raw/master/markdown.data/QXlsx-Desktop.png"></p>
 
 - QXlsx is excel file(*.xlsx) reader/writer library.
 - Because QtXlsx is no longer supported(2014), I created a new project that is based on QtXlsx. (2017-)
