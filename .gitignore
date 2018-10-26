@@ -1,3 +1,6 @@
+# use every thing of xlnt
+!/xlnt/*
+
 # C++ objects and libs
 *.slo
 *.lo
