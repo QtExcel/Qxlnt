@@ -18,9 +18,9 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - g++-5
+            - g++-7
       env:
-         - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 
 before_install:
   - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
