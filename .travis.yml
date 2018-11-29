@@ -18,7 +18,7 @@ before_install:
 install:
 
 script:
-  - cd QXlnt
+  - cd Qxlnt
   - qmake Qxlnt.pro
   - make
   - ../HelloQXlnt
