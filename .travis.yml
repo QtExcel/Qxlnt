@@ -33,7 +33,7 @@ script:
   - cd ../HelloQXlnt
   - qmake HelloQXlnt.pro
   - make
-  - ./HelloQXlnt
+  - ./HelloQxlnt
 
   - cd ../Qxlnt.tests
   - qmake Qxlnt.test.pro
