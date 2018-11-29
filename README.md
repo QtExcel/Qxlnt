@@ -4,6 +4,8 @@
 
 <p align="center"><img src="https://github.com/j2doll/Qxlnt/raw/master/markdown-data/Concept-QXlnt.jpg"></p>
 
+[![Build Status](https://travis-ci.com/j2doll/Qxlnt.svg?branch=master)](https://travis-ci.com/j2doll/Qxlnt)
+
 - Qxlnt is a helper project that allows xlnt to be used in Qt.
 - xlnt is xlsx library that using C++14. See 'License and links' for more information.
 
