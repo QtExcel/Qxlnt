@@ -26,15 +26,18 @@ before_install:
 install:
 
 script:
+  # Qxlnt library
   - cd Qxlnt
   - qmake Qxlnt.pro
   - make
 
+  # HelloQXlnt exmaple
   - cd ../HelloQXlnt
   - qmake HelloQXlnt.pro
   - make
   - ./HelloQxlnt
 
+  # Qxlnt tests
   - cd ../Qxlnt.tests
   - qmake Qxlnt.test.pro
   - make
