@@ -4,8 +4,6 @@
 
 <p align="center"><img src="https://github.com/j2doll/Qxlnt/raw/master/markdown-data/Concept-QXlnt.jpg"></p>
 
-![](markdown-data/qxlnt-badge1.png)
-
 - Qxlnt는 xlnt가 Qt에서 사용될 수있게 해주는 도우미 프로젝트입니다.
 - xlnt는 C++14를 사용하는 xlsx 라이브러리입니다. 자세한 정보는 '라이센스 및 링크'를 참조하십시오.
 
