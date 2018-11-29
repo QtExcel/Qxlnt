@@ -21,10 +21,12 @@ script:
   - cd Qxlnt
   - qmake Qxlnt.pro
   - make
-  - ../HelloQXlnt
+  
+  - cd ../HelloQXlnt
   - qmake HelloQXlnt.pro
   - make
   - ./HelloQXlnt
+
   - cd ../Qxlnt.tests
   - qmake Qxlnt.test.pro
   - make
