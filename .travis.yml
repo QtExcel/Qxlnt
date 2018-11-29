@@ -7,7 +7,7 @@
 language: cpp
 compiler: gcc
 sudo: require
-dist: trusty
+dist: xenial # Ubuntu Xenial 16.04, Trusty 14.04, Precise 12.04
 
 before_install:
   - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
