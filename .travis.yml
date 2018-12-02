@@ -18,6 +18,7 @@ before_install:
   - sudo apt install g++-7 -y
   - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7 
   - sudo update-alternatives --config gcc
+  - gcc --version
 
   # Qt 5
   - sudo apt-get install qtbase5-dev qtdeclarative5-dev 
@@ -26,18 +27,18 @@ before_install:
 install:
 
 script:
-  # Qxlnt library
+  # build Qxlnt library
   - cd Qxlnt
   - qmake Qxlnt.pro
   - make
 
-  # HelloQXlnt exmaple
+  # build HelloQXlnt exmaple
   - cd ../HelloQXlnt
   - qmake HelloQXlnt.pro
   - make
   - ./HelloQxlnt
 
-  # Qxlnt tests
+  # build Qxlnt tests
   - cd ../Qxlnt.tests
   - qmake Qxlnt.test.pro
   - make
