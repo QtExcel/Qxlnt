@@ -57,7 +57,9 @@ for (auto row : ws.rows(false))
 std::clog << "Processing complete" << std::endl;
 ```
 
-## 주의 :zap:
+## 주의 
+
+### 선행 조건
 
 - C++14 이상 버전이 필요합니다.
 	- gcc 4.x (4.8 이하)는 지원되지 않습니다. 현재 (2018) gcc 버전은 7.x입니다.
