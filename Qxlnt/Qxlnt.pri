@@ -14,6 +14,21 @@
 # https://gcc.gnu.org/projects/cxx-status.html
 CONFIG += c++14
 
+linux-g++ | linux-g++-64 | linux-g++-32 {
+    message('current type is linux-g++')
+    QMAKE_CFLAGS += -std=c99
+}
+linux-clang {
+    message('current type is linux-clang')
+}
+win32-g++ {
+    message('current type is win32-g++')
+    QMAKE_CFLAGS += -std=c99
+}
+win32-msvc* {
+    message('current type is win32-msvc*')
+}
+
 ########################################
 # xlnt
 
@@ -403,11 +418,5 @@ $${UTFCPP_HEADERPATH}utf8.h \
 $${UTFCPP_HEADERPATH}utf8/checked.h \
 $${UTFCPP_HEADERPATH}utf8/core.h \
 $${UTFCPP_HEADERPATH}utf8/unchecked.h
-
-
-
-
-
-
 
 
