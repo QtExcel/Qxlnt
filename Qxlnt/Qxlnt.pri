@@ -1,11 +1,9 @@
 ########################################
 #
 # Qxlnt.pri
-#
-# xlnt https://github.com/tfussell/xlnt
-# Qxlnt https://github.com/j2doll/Qxlnt
+# Qxlnt MIT License https://github.com/j2doll/Qxlnt
+# xlnt MIT License https://github.com/tfussell/xlnt
 # 
-# MIT License
 
 ########################################
 # NOTE:
@@ -17,6 +15,7 @@ CONFIG += c++14
 linux-g++ | linux-g++-64 | linux-g++-32 {
     message('current type is linux-g++')
     QMAKE_CFLAGS += -std=c99
+    # QMAKE_CXXFLAGS += -std=c++14
 }
 linux-clang {
     message('current type is linux-clang')
@@ -24,6 +23,7 @@ linux-clang {
 win32-g++ {
     message('current type is win32-g++')
     QMAKE_CFLAGS += -std=c99
+    # QMAKE_CXXFLAGS += -std=c++14
 }
 win32-msvc* {
     message('current type is win32-msvc*')
