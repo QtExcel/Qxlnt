@@ -4,8 +4,6 @@
 
 <p align="center"><img src="https://github.com/j2doll/Qxlnt/raw/master/markdown-data/Concept-QXlnt.jpg"></p>
 
-[![Build Status](https://travis-ci.com/j2doll/Qxlnt.svg?branch=master)](https://travis-ci.com/j2doll/Qxlnt)
-
 - Qxlnt는 xlnt가 Qt에서 사용될 수있게 해주는 도우미 프로젝트입니다.
 - xlnt는 C++14를 사용하는 xlsx 라이브러리입니다. 자세한 정보는 '라이센스 및 링크'를 참조하십시오.
 
@@ -66,8 +64,12 @@ std::clog << "Processing complete" << std::endl;
 	- Visual C++를 사용하는 경우 VS 2017 이상의 버전을 사용하십시오.
 
 ## 테스트
-- 현재 테스트 중입니다.
+
 - [테스트 환경](BuildEnv.md)을 참조하세요.
+
+| AppVeyor |
+| :------: |
+| [![Build status](https://ci.appveyor.com/api/projects/status/51ryx1ewacc1g8em?svg=true)](https://ci.appveyor.com/project/j2doll/qxlnt) |
 
 ## 할 일
 - 다양한 Qt 환경에서 테스트 :cloud:

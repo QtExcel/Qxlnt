@@ -1,0 +1,37 @@
+#
+# AppVetor
+#
+# Qxlnt
+# https://github.com/j2doll/Qxlnt
+#
+
+image: Visual Studio 2017
+
+environment:
+  DEPLOY_DIR: Quaternion-%APPVEYOR_BUILD_VERSION%
+  matrix:
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    QTDIR: C:\Qt\5.11.2\msvc2017_64
+    VCVARS: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat"
+    PLATFORM:
+
+init:
+  - call "%QTDIR%\bin\qtenv2.bat"
+  - set PATH=C:\Qt\Tools\QtCreator\bin;%PATH%
+  - call "%VCVARS%" %platform%
+  - cd /D "%APPVEYOR_BUILD_FOLDER%"
+
+before_build:
+
+build_script:
+  # Get version of Windows
+  - ver # Microsoft Windows [Version 10.0.14393]
+  - wmic os get osarchitecture # OSArchitecture 64-bit
+
+  # Build Qxlnt library
+  - cd Qxlnt
+  - qmake Qxlnt.pro
+  - nmake
+
+after_build:
+

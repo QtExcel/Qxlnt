@@ -4,8 +4,6 @@
 
 <p align="center"><img src="https://github.com/j2doll/Qxlnt/raw/master/markdown-data/Concept-QXlnt.jpg"></p>
 
-[![Build Status](https://travis-ci.com/j2doll/Qxlnt.svg?branch=master)](https://travis-ci.com/j2doll/Qxlnt)
-
 - Qxlnt is a helper project that allows xlnt to be used in Qt.
 - xlnt is xlsx library that using C++14. See 'License and links' for more information.
 
@@ -66,8 +64,12 @@ std::clog << "Processing complete" << std::endl;
 	- If you use Visual C++, then use VS 2017 or higher version.
 
 ## Test
-- Currently in testing now.
-- See [Tested Environments](BuildEnv.md)
+
+- See [tested environments](BuildEnv.md)
+
+| AppVeyor |
+| :------: |
+| [![Build status](https://ci.appveyor.com/api/projects/status/51ryx1ewacc1g8em?svg=true)](https://ci.appveyor.com/project/j2doll/qxlnt) |
 
 ## To Do
 - Testing in various Qt environments. :cloud:
