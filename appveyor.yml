@@ -33,5 +33,11 @@ build_script:
   - qmake Qxlnt.pro
   - nmake
 
+  # Build and execute test
+  - cd ..\Qxlnt.tests
+  - qmake Qxlnt.test.pro
+  - cd release
+  - Qxlnt.test.exe
+
 after_build:
 
