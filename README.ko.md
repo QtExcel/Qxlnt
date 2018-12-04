@@ -67,11 +67,11 @@ std::clog << "Processing complete" << std::endl;
 
 ## 테스트
 
-- [테스트 환경](BuildEnv.md)을 참조하세요.
+| Travis CI |
+| :-------: |
+| [![Build Status](https://travis-ci.com/j2doll/Qxlnt.svg?branch=master)](https://travis-ci.com/j2doll/Qxlnt) |
 
-| AppVeyor |
-| :------: |
-| [![Build status](https://ci.appveyor.com/api/projects/status/51ryx1ewacc1g8em?svg=true)](https://ci.appveyor.com/project/j2doll/qxlnt) |
+- [테스트 환경](BuildEnv.md)을 참조하세요.
 
 ## 할 일
 - 다양한 Qt 환경에서 테스트 :cloud:

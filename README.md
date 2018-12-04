@@ -67,11 +67,11 @@ std::clog << "Processing complete" << std::endl;
 
 ## Test
 
-- See [tested environments](BuildEnv.md)
+| Travis CI |
+| :-------: |
+| [![Build Status](https://travis-ci.com/j2doll/Qxlnt.svg?branch=master)](https://travis-ci.com/j2doll/Qxlnt) |
 
-| AppVeyor |
-| :------: |
-| [![Build status](https://ci.appveyor.com/api/projects/status/51ryx1ewacc1g8em?svg=true)](https://ci.appveyor.com/project/j2doll/qxlnt) |
+- See [tested environments](BuildEnv.md)
 
 ## To Do
 - Testing in various Qt environments. :cloud:
