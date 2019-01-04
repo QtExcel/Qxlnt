@@ -2,7 +2,7 @@
 
 > *Read this in other languages: [English](README.md), :kr: [한국어](README.ko.md)*
 
-<p align="center"><img src="https://github.com/j2doll/Qxlnt/raw/master/markdown-data/Concept-QXlnt.jpg"></p>
+<p align="center"><img src="https://github.com/QtExcel/Qxlnt/raw/master/markdown-data/Concept-QXlnt.jpg"></p>
 
 - Qxlnt is a helper project that allows xlnt to be used in Qt.
 - xlnt is xlsx library that using C++14. See 'License and links' for more information.
@@ -69,7 +69,7 @@ std::clog << "Processing complete" << std::endl;
 
 | Travis CI |
 | :-------: |
-| [![Build Status](https://travis-ci.com/j2doll/Qxlnt.svg?branch=master)](https://travis-ci.com/j2doll/Qxlnt) |
+| [![Build Status](https://travis-ci.com/QtExcel/Qxlnt.svg?branch=master)](https://travis-ci.com/QtExcel/Qxlnt) |
 
 - See [tested environments](BuildEnv.md)
 
@@ -78,34 +78,34 @@ std::clog << "Processing complete" << std::endl;
 - Unicode Test (filename, file path, data value) :umbrella:
 
 ## License and links
-- Qxlnt is under MIT License. [https://github.com/j2doll/Qxlnt](https://github.com/j2doll/Qxlnt)
+- Qxlnt is under MIT License. [https://github.com/QtExcel/Qxlnt](https://github.com/QtExcel/Qxlnt)
 - xlnt is under MIT License. [https://github.com/tfussell/xlnt](https://github.com/tfussell/xlnt) 
 - libstudxml is under MIT License. [https://www.codesynthesis.com/projects/libstudxml/](https://www.codesynthesis.com/projects/libstudxml/)
 - utfcpp is under Boost Software License. [http://utfcpp.sourceforge.net](http://utfcpp.sourceforge.net)
 
 ## :mailbox: Contact
-- Please leave an issue to me. [https://github.com/j2doll/Qxlnt/issues](https://github.com/j2doll/Qxlnt/issues) 
+- Please leave an issue to me. [https://github.com/QtExcel/Qxlnt/issues](https://github.com/QtExcel/Qxlnt/issues) 
 - Hi! I'm j2doll (aka Jay Two). My native language is not English and my English is not fluent. Please, use EASY English. :-)
 
 ## Similar projects
 
-### :star: <b>QXlsx</b> [https://github.com/j2doll/QXlsx](https://github.com/j2doll/QXlsx)
+### :star: <b>QXlsx</b> [https://github.com/QtExcel/QXlsx](https://github.com/QtExcel/QXlsx)
 
-<p align="center"><img src="https://github.com/j2doll/QXlsx/raw/master/markdown.data/QXlsx-Desktop.png"></p>
+<p align="center"><img src="https://github.com/QtExcel/QXlsx/raw/master/markdown.data/QXlsx-Desktop.png"></p>
 
 - QXlsx is excel file(*.xlsx) reader/writer library.
 - Because QtXlsx is no longer supported(2014), I created a new project that is based on QtXlsx. (2017-)
 - Development language of QXlsx is C++. (with Qt)
 - You don't need to use static library or dynamic shared object using QXlsx.
 
-### :star: <b>Qlibxlsxwriter</b> [https://github.com/j2doll/Qlibxlsxwriter](https://github.com/j2doll/Qlibxlsxwriter)
+### :star: <b>Qlibxlsxwriter</b> [https://github.com/QtExcel/Qlibxlsxwriter](https://github.com/QtExcel/Qlibxlsxwriter)
 
-<p align="center"><img src="https://github.com/j2doll/Qlibxlsxwriter/raw/master/markdown.data/logo.png"></p>
+<p align="center"><img src="https://github.com/QtExcel/Qlibxlsxwriter/raw/master/markdown.data/logo.png"></p>
 
 - Qlibxlsxwriter is a helper project that allows libxlsxwriter to be used in Qt.
 - libxlsxwriter is a C library for creating Excel XLSX files. :+1:
 
-### :star: <b>QSimpleXlsxWriter</b> [https://github.com/j2doll/QSimpleXlsxWriter](https://github.com/j2doll/QSimpleXlsxWriter)
+### :star: <b>QSimpleXlsxWriter</b> [https://github.com/QtExcel/QSimpleXlsxWriter](https://github.com/QtExcel/QSimpleXlsxWriter)
 
 - Use SimpleXlsxWriter in Qt.
 - SimpleXlsxWriter is C++ library for creating XLSX files for MS Excel 2007 and above.
