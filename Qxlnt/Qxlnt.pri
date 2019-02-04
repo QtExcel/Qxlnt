@@ -19,90 +19,84 @@ CONFIG += c++14
 ########################################
 # Setting for OS and Compiler
 
-linux-g++ | linux-g++-64 | linux-g++-32 {
-    message('current type is linux-g++')
-
-    QMAKE_CFLAGS += -std=c99
-    # QMAKE_CXXFLAGS += -std=c++14
-
-	message('Current compiler is gcc')
-	# QXLNT_PARENTPATH = ../xlnt/
-	# QXLNT_HEADERPATH = ../xlnt/include/
-	# QXLNT_SOURCEPATH = ../xlnt/source/
-	# LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
-	# LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
-	# LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
-
-	DEFINES += \
-	XLNT_STATIC=1
+linux-g++ | linux-g++-64 | linux-g++-32{
+# message('current type is linux-g++')
+QMAKE_CFLAGS += -std=c99
+# QMAKE_CXXFLAGS += -std=c++14
+# message('Current compiler is gcc')
+# QXLNT_PARENTPATH = ../xlnt/
+# QXLNT_HEADERPATH = ../xlnt/include/
+# QXLNT_SOURCEPATH = ../xlnt/source/
+# LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
+# LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
+# LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
+DEFINES += \
+XLNT_STATIC=1
 }
-linux-clang {
-	message('Current compiler is linux-clang')
-
-	# QXLNT_PARENTPATH = ../xlnt/
-	# QXLNT_HEADERPATH = ../xlnt/include/
-	# QXLNT_SOURCEPATH = ../xlnt/source/
-	# LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
-	# LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
-	# LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
-
-	DEFINES += \
-	XLNT_STATIC=1
-
-	include(../Qxlnt/Qxlnt.pri)	
+linux-clang{
+# message('Current compiler is linux-clang')
+# QXLNT_PARENTPATH = ../xlnt/
+# QXLNT_HEADERPATH = ../xlnt/include/
+# QXLNT_SOURCEPATH = ../xlnt/source/
+# LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
+# LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
+# LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
+DEFINES += \
+XLNT_STATIC=1
+include(../Qxlnt/Qxlnt.pri)	
 }
-win32-g++ {
-    message('current type is win32-g++')
-
-    QMAKE_CFLAGS += -std=c99
-    # QMAKE_CXXFLAGS += -std=c++14
+win32-g++{
+# message('current type is win32-g++')
+QMAKE_CFLAGS += -std=c99
+# QMAKE_CXXFLAGS += -std=c++14
 }
-win32-msvc* {
-	message('Current compiler is Visual C++')
-
-	QXLNT_ROOT = ../Qxlnt/
-	QXLNT_PARENTPATH = ../xlnt/
-	QXLNT_HEADERPATH = ../xlnt/include/
-	QXLNT_SOURCEPATH = ../xlnt/source/
-
-	LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
-	LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/
-	LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/
-
-	UTFCPP_HEADERPATH = ../xlnt/third-party/utfcpp/
-
-	INCLUDEPATH += $${QXLNT_HEADERPATH}
-	INCLUDEPATH += $${LIBSTUDXML_HEADERPATH}
-	INCLUDEPATH += $${QXLNT_SOURCEPATH}
-	INCLUDEPATH += $${UTFCPP_HEADERPATH}
+msvc{
+# message('Current compiler is Visual C++')
+QXLNT_ROOT = ../Qxlnt/
+QXLNT_PARENTPATH = ../xlnt/
+QXLNT_HEADERPATH = ../xlnt/include/
+QXLNT_SOURCEPATH = ../xlnt/source/
+LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
+LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/
+LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/
+UTFCPP_HEADERPATH = ../xlnt/third-party/utfcpp/
+INCLUDEPATH += $${QXLNT_HEADERPATH}
+INCLUDEPATH += $${LIBSTUDXML_HEADERPATH}
+INCLUDEPATH += $${QXLNT_SOURCEPATH}
+INCLUDEPATH += $${UTFCPP_HEADERPATH}
 }
 
 ########################################
 # xlnt
 
 isEmpty(QXLNT_PARENTPATH) {
-    message( 'QXLNT_PARENTPATH is empty. use default value.' )
+    # message( 'QXLNT_PARENTPATH is empty. use default value.' )
     QXLNT_PARENTPATH = ../xlnt/
 } else {
-    message( 'QXLNT_PARENTPATH :' )
-    message( $${QXLNT_PARENTPATH} )
+    # message( 'QXLNT_PARENTPATH :' )
+    # message( $${QXLNT_PARENTPATH} )
 }
 
 isEmpty(QXLNT_HEADERPATH) {
-    message( 'QXLNT_HEADERPATH is empty. use default value.' )
+    # message( 'QXLNT_HEADERPATH is empty. use default value.' )
     QXLNT_HEADERPATH = ../xlnt/include/
 } else {
-    message( 'QXLNT_HEADERPATH :' )
-    message( $${QXLNT_HEADERPATH} )
+    # message( 'QXLNT_HEADERPATH :' )
+    # message( $${QXLNT_HEADERPATH} )
 }
 
 isEmpty(QXLNT_SOURCEPATH) {
-    message( 'QXLNT_SOURCEPATH is empty. use default value.' )
+    # message( 'QXLNT_SOURCEPATH is empty. use default value.' )
     QXLNT_SOURCEPATH = ../xlnt/source/
 } else {
-    message( 'QXLNT_SOURCEPATH :' )
-    message( $${QXLNT_SOURCEPATH} )
+    # message( 'QXLNT_SOURCEPATH :' )
+    # message( $${QXLNT_SOURCEPATH} )
 }
+
+# EXE (MSVC)
+contains( DEFINES, XLNT_IMPORT ) {
+# nothing
+}else{
 
 INCLUDEPATH += .
 INCLUDEPATH += $${QXLNT_PARENTPATH}
@@ -363,27 +357,27 @@ $${QXLNT_SOURCEPATH}detail/serialization/zstream.cpp
 # libstudxml
 
 isEmpty(LIBSTUDXML_PARENTPATH) {
-    message( 'LIBSTUDXML_PARENTPATH is empty. use default value.' )
+    # message( 'LIBSTUDXML_PARENTPATH is empty. use default value.' )
     LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
 } else {
-    message( 'LIBSTUDXML_PARENTPATH :' )
-    message( $${LIBSTUDXML_PARENTPATH} )
+    # message( 'LIBSTUDXML_PARENTPATH :' )
+    # message( $${LIBSTUDXML_PARENTPATH} )
 }
 
 isEmpty(LIBSTUDXML_HEADERPATH) {
-    message( 'LIBSTUDXML_HEADERPATH is empty. use default value.' )
+    # message( 'LIBSTUDXML_HEADERPATH is empty. use default value.' )
     LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/
 } else {
-    message( 'LIBSTUDXML_HEADERPATH :' )
-    message( $${LIBSTUDXML_HEADERPATH} )
+    # message( 'LIBSTUDXML_HEADERPATH :' )
+    # message( $${LIBSTUDXML_HEADERPATH} )
 }
 
 isEmpty(LIBSTUDXML_SOURCEPATH) {
-    message( 'LIBSTUDXML_SOURCEPATH is empty. use default value.' )
+    # message( 'LIBSTUDXML_SOURCEPATH is empty. use default value.' )
     LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/
 } else {
-    message( 'LIBSTUDXML_SOURCEPATH :' )
-    message( $${LIBSTUDXML_SOURCEPATH} )
+    # message( 'LIBSTUDXML_SOURCEPATH :' )
+    # message( $${LIBSTUDXML_SOURCEPATH} )
 }
 
 # libstudxml header files and source files
@@ -452,11 +446,11 @@ $${LIBSTUDXML_HEADERPATH}xml/details/genx/genx.h
 # utfcpp
 
 isEmpty(UTFCPP_HEADERPATH) {
-    message( 'UTFCPP_HEADERPATH is empty. use default value.' )
+    # message( 'UTFCPP_HEADERPATH is empty. use default value.' )
     UTFCPP_HEADERPATH = ../xlnt/third-party/utfcpp/
 } else {
-    message( 'UTFCPP_HEADERPATH :' )
-    message( $${UTFCPP_HEADERPATH} )
+    # message( 'UTFCPP_HEADERPATH :' )
+    # message( $${UTFCPP_HEADERPATH} )
 }
 
 INCLUDEPATH += $${UTFCPP_HEADERPATH}
@@ -467,6 +461,6 @@ $${UTFCPP_HEADERPATH}utf8/checked.h \
 $${UTFCPP_HEADERPATH}utf8/core.h \
 $${UTFCPP_HEADERPATH}utf8/unchecked.h
 
-
+} # contains( DEFINES, XLNT_IMPORT ) {} else {}
 
 
