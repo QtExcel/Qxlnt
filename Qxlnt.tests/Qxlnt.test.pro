@@ -27,7 +27,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 msvc:DEFINES+=XLNT_IMPORT
 
-include(../Qxlnt/UseQxlnt.pri)
+include(../Qxlnt/Qxlnt.pri)
 
 msvc{
 message('Visual C++ EXE TYPE')

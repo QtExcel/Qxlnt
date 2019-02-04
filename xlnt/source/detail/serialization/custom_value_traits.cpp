@@ -343,9 +343,9 @@ std::string to_string(pane_state state)
     default_case("frozen");
 }
 
-std::string to_string(orientation orientation)
+std::string to_string(orientation ori)
 {
-    switch (orientation)
+    switch (ori)
     {
     case orientation::default_orientation:
         return "default";

@@ -1,32 +1,80 @@
 ########################################
 #
 # Qxlnt.pri
+#
 # Qxlnt MIT License https://github.com/j2doll/Qxlnt
 # xlnt MIT License https://github.com/tfussell/xlnt
 # 
+########################################
 
 ########################################
-# NOTE:
+# NOTICE:
 # Check your compiler version. we need c++14 or higher version.
-# GCC has full support for the previous revision of the C++ standard, which was published in 2014.
-# https://gcc.gnu.org/projects/cxx-status.html
+# GCC has full support for the previous revision of the C++ standard,
+#  which was published in 2014.
+# See https://gcc.gnu.org/projects/cxx-status.html for more information.
+
 CONFIG += c++14
+
+########################################
+# Setting for OS and Compiler
 
 linux-g++ | linux-g++-64 | linux-g++-32 {
     message('current type is linux-g++')
+
     QMAKE_CFLAGS += -std=c99
     # QMAKE_CXXFLAGS += -std=c++14
+
+	message('Current compiler is gcc')
+	# QXLNT_PARENTPATH = ../xlnt/
+	# QXLNT_HEADERPATH = ../xlnt/include/
+	# QXLNT_SOURCEPATH = ../xlnt/source/
+	# LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
+	# LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
+	# LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
+
+	DEFINES += \
+	XLNT_STATIC=1
 }
 linux-clang {
-    message('current type is linux-clang')
+	message('Current compiler is linux-clang')
+
+	# QXLNT_PARENTPATH = ../xlnt/
+	# QXLNT_HEADERPATH = ../xlnt/include/
+	# QXLNT_SOURCEPATH = ../xlnt/source/
+	# LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
+	# LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
+	# LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
+
+	DEFINES += \
+	XLNT_STATIC=1
+
+	include(../Qxlnt/Qxlnt.pri)	
 }
 win32-g++ {
     message('current type is win32-g++')
+
     QMAKE_CFLAGS += -std=c99
     # QMAKE_CXXFLAGS += -std=c++14
 }
 win32-msvc* {
-    message('current type is win32-msvc*')
+	message('Current compiler is Visual C++')
+
+	QXLNT_ROOT = ../Qxlnt/
+	QXLNT_PARENTPATH = ../xlnt/
+	QXLNT_HEADERPATH = ../xlnt/include/
+	QXLNT_SOURCEPATH = ../xlnt/source/
+
+	LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
+	LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/
+	LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/
+
+	UTFCPP_HEADERPATH = ../xlnt/third-party/utfcpp/
+
+	INCLUDEPATH += $${QXLNT_HEADERPATH}
+	INCLUDEPATH += $${LIBSTUDXML_HEADERPATH}
+	INCLUDEPATH += $${QXLNT_SOURCEPATH}
+	INCLUDEPATH += $${UTFCPP_HEADERPATH}
 }
 
 ########################################
@@ -418,5 +466,7 @@ $${UTFCPP_HEADERPATH}utf8.h \
 $${UTFCPP_HEADERPATH}utf8/checked.h \
 $${UTFCPP_HEADERPATH}utf8/core.h \
 $${UTFCPP_HEADERPATH}utf8/unchecked.h
+
+
 
 
