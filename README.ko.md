@@ -80,9 +80,9 @@ std::clog << "Processing complete" << std::endl;
 
 ## 라이센스 및 링크
 
-- Qxlnt는 MIT 라이센스입니다. (https://github.com/QtExcel/Qxlnt)[https://github.com/QtExcel/Qxlnt] 
-- xlnt는 MIT 라이센스입니다. (https://github.com/tfussell/xlnt)[https://github.com/tfussell/xlnt] 
-- libstudxml는 MIT 라이센스입니다. (https://www.codesynthesis.com/projects/libstudxml/)[https://www.codesynthesis.com/projects/libstudxml/]
+- Qxlnt는 MIT 라이센스입니다. [https://github.com/QtExcel/Qxlnt](https://github.com/QtExcel/Qxlnt) 
+- xlnt는 MIT 라이센스입니다. [https://github.com/tfussell/xlnt](https://github.com/tfussell/xlnt) 
+- libstudxml는 MIT 라이센스입니다. [https://www.codesynthesis.com/projects/libstudxml/](https://www.codesynthesis.com/projects/libstudxml/)
 - utfcpp는 Boost 소프트웨어 라이센스입니다. [http://utfcpp.sourceforge.net](http://utfcpp.sourceforge.net)
 
 ## :mailbox: 연락처
