@@ -33,15 +33,15 @@ script:
 
 # travis encrypt b903d8864201ee09c7099005ca3a5bf9f25a6418
 
-addons:
-  sonarcloud:
-    organization: "qtexcel"
-    token:
-      secure: "b903d8864201ee09c7099005ca3a5bf9f25a6418" # encrypted value of your token
+#addons:
+  #sonarcloud:
+    #organization: "qtexcel"
+    #token:
+      #secure: "b903d8864201ee09c7099005ca3a5bf9f25a6418" # encrypted value of your token
 
-script:
+#script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-  - sonar-scanner
+  #- sonar-scanner
 
 
 
