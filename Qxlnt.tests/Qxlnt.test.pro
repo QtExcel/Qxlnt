@@ -1,11 +1,6 @@
 #
 # Qxlnt.test.pro
 #
-# xlnt https://github.com/tfussell/xlnt
-# Qxlnt https://github.com/j2doll/Qxlnt
-#
-# MIT License
-#
 
 TARGET = Qxlnt.test
 
@@ -64,6 +59,12 @@ SOURCES += \
 ../xlnt/tests/cell/cell_test_suite.cpp \
 ../xlnt/tests/cell/index_types_test_suite.cpp \
 ../xlnt/tests/cell/rich_text_test_suite.cpp 
+
+SOURCES += \
+../xlnt/tests/detail/numeric_util_test_suite.cpp
+
+SOURCES += \
+../xlnt/tests/drawing/drawing_test_suite.cpp
 
 HEADERS += \
 ../xlnt/tests/helpers/assertions.hpp \

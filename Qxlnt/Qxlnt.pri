@@ -1,11 +1,4 @@
-########################################
-#
 # Qxlnt.pri
-#
-# Qxlnt MIT License https://github.com/j2doll/Qxlnt
-# xlnt MIT License https://github.com/tfussell/xlnt
-# 
-########################################
 
 ########################################
 # NOTICE:
@@ -117,6 +110,7 @@ $${QXLNT_HEADERPATH}xlnt/cell/cell_reference.hpp \
 $${QXLNT_HEADERPATH}xlnt/cell/cell_type.hpp \
 $${QXLNT_HEADERPATH}xlnt/cell/comment.hpp \
 $${QXLNT_HEADERPATH}xlnt/cell/index_types.hpp \
+$${QXLNT_HEADERPATH}xlnt/cell/phonetic_run.hpp \
 $${QXLNT_HEADERPATH}xlnt/cell/rich_text.hpp \
 $${QXLNT_HEADERPATH}xlnt/cell/rich_text_run.hpp \
 $${QXLNT_HEADERPATH}xlnt/cell/hyperlink.hpp
@@ -127,8 +121,17 @@ $${QXLNT_SOURCEPATH}cell/cell_reference.cpp \
 $${QXLNT_SOURCEPATH}cell/comment.cpp \
 $${QXLNT_SOURCEPATH}cell/hyperlink.cpp \
 $${QXLNT_SOURCEPATH}cell/index_types.cpp \
+$${QXLNT_SOURCEPATH}cell/phonetic_run.cpp \
 $${QXLNT_SOURCEPATH}cell/rich_text.cpp \
 $${QXLNT_SOURCEPATH}cell/rich_text_run.cpp
+
+# drawing
+
+HEADERS += \
+$${QXLNT_HEADERPATH}xlnt/drawing/spreadsheet_drawing.hpp
+
+SOURCES += \
+$${QXLNT_SOURCEPATH}drawing/spreadsheet_drawing.cpp
 
 # packaging
 
@@ -177,6 +180,7 @@ $${QXLNT_HEADERPATH}xlnt/utils/calendar.hpp \
 $${QXLNT_HEADERPATH}xlnt/utils/date.hpp \
 $${QXLNT_HEADERPATH}xlnt/utils/datetime.hpp \
 $${QXLNT_HEADERPATH}xlnt/utils/exceptions.hpp \
+$${QXLNT_HEADERPATH}xlnt/utils/numeric.hpp \
 $${QXLNT_HEADERPATH}xlnt/utils/optional.hpp \
 $${QXLNT_HEADERPATH}xlnt/utils/path.hpp \
 $${QXLNT_HEADERPATH}xlnt/utils/scoped_enum_hash.hpp \
