@@ -15,25 +15,11 @@ CONFIG += c++14
 linux-g++ | linux-g++-64 | linux-g++-32{
 # message('current type is linux-g++')
 QMAKE_CFLAGS += -std=c99
-# QMAKE_CXXFLAGS += -std=c++14
-# message('Current compiler is gcc')
-# QXLNT_PARENTPATH = ../xlnt/
-# QXLNT_HEADERPATH = ../xlnt/include/
-# QXLNT_SOURCEPATH = ../xlnt/source/
-# LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
-# LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
-# LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
 DEFINES += \
 XLNT_STATIC=1
 }
 linux-clang{
 # message('Current compiler is linux-clang')
-# QXLNT_PARENTPATH = ../xlnt/
-# QXLNT_HEADERPATH = ../xlnt/include/
-# QXLNT_SOURCEPATH = ../xlnt/source/
-# LIBSTUDXML_PARENTPATH = ../xlnt/third-party/libstudxml/
-# LIBSTUDXML_HEADERPATH = ../xlnt/third-party/libstudxml/ 
-# LIBSTUDXML_SOURCEPATH = ../xlnt/third-party/libstudxml/  
 DEFINES += \
 XLNT_STATIC=1
 include(../Qxlnt/Qxlnt.pri)	
@@ -109,11 +95,11 @@ $${QXLNT_HEADERPATH}xlnt/cell/cell.hpp \
 $${QXLNT_HEADERPATH}xlnt/cell/cell_reference.hpp \
 $${QXLNT_HEADERPATH}xlnt/cell/cell_type.hpp \
 $${QXLNT_HEADERPATH}xlnt/cell/comment.hpp \
+$${QXLNT_HEADERPATH}xlnt/cell/hyperlink.hpp \
 $${QXLNT_HEADERPATH}xlnt/cell/index_types.hpp \
 $${QXLNT_HEADERPATH}xlnt/cell/phonetic_run.hpp \
 $${QXLNT_HEADERPATH}xlnt/cell/rich_text.hpp \
-$${QXLNT_HEADERPATH}xlnt/cell/rich_text_run.hpp \
-$${QXLNT_HEADERPATH}xlnt/cell/hyperlink.hpp
+$${QXLNT_HEADERPATH}xlnt/cell/rich_text_run.hpp
 
 SOURCES += \
 $${QXLNT_SOURCEPATH}cell/cell.cpp \
@@ -136,10 +122,10 @@ $${QXLNT_SOURCEPATH}drawing/spreadsheet_drawing.cpp
 # packaging
 
 HEADERS += \
+$${QXLNT_HEADERPATH}xlnt/packaging/ext_list.hpp \
 $${QXLNT_HEADERPATH}xlnt/packaging/manifest.hpp \
 $${QXLNT_HEADERPATH}xlnt/packaging/relationship.hpp \
-$${QXLNT_HEADERPATH}xlnt/packaging/uri.hpp \
-$${QXLNT_HEADERPATH}xlnt/packaging/ext_list.hpp
+$${QXLNT_HEADERPATH}xlnt/packaging/uri.hpp
 
 SOURCES += \
 $${QXLNT_SOURCEPATH}packaging/ext_list.cpp \
@@ -184,7 +170,6 @@ $${QXLNT_HEADERPATH}xlnt/utils/numeric.hpp \
 $${QXLNT_HEADERPATH}xlnt/utils/optional.hpp \
 $${QXLNT_HEADERPATH}xlnt/utils/path.hpp \
 $${QXLNT_HEADERPATH}xlnt/utils/scoped_enum_hash.hpp \
-$${QXLNT_HEADERPATH}xlnt/utils/serialisation_utils.hpp \
 $${QXLNT_HEADERPATH}xlnt/utils/time.hpp \
 $${QXLNT_HEADERPATH}xlnt/utils/timedelta.hpp \
 $${QXLNT_HEADERPATH}xlnt/utils/variant.hpp
@@ -239,7 +224,7 @@ $${QXLNT_HEADERPATH}xlnt/worksheet/range_reference.hpp \
 $${QXLNT_HEADERPATH}xlnt/worksheet/row_properties.hpp \
 $${QXLNT_HEADERPATH}xlnt/worksheet/selection.hpp \
 $${QXLNT_HEADERPATH}xlnt/worksheet/sheet_format_properties.hpp \
- $${QXLNT_HEADERPATH}xlnt/worksheet/sheet_pr.hpp \
+$${QXLNT_HEADERPATH}xlnt/worksheet/sheet_pr.hpp \
 $${QXLNT_HEADERPATH}xlnt/worksheet/sheet_protection.hpp \
 $${QXLNT_HEADERPATH}xlnt/worksheet/sheet_view.hpp \
 $${QXLNT_HEADERPATH}xlnt/worksheet/worksheet.hpp
@@ -316,11 +301,11 @@ $${QXLNT_SOURCEPATH}detail/header_footer/header_footer_code.cpp
 HEADERS += \
 $${QXLNT_SOURCEPATH}detail/implementations/cell_impl.hpp \
 $${QXLNT_SOURCEPATH}detail/implementations/conditional_format_impl.hpp \
-$${QXLNT_SOURCEPATH}detail/implementations/format_impl.hpp \
 $${QXLNT_SOURCEPATH}detail/implementations/formatting_record.hpp \
+$${QXLNT_SOURCEPATH}detail/implementations/format_impl.hpp \
 $${QXLNT_SOURCEPATH}detail/implementations/hyperlink_impl.hpp \
-$${QXLNT_SOURCEPATH}detail/implementations/style_impl.hpp \
 $${QXLNT_SOURCEPATH}detail/implementations/stylesheet.hpp \
+$${QXLNT_SOURCEPATH}detail/implementations/style_impl.hpp \
 $${QXLNT_SOURCEPATH}detail/implementations/workbook_impl.hpp \
 $${QXLNT_SOURCEPATH}detail/implementations/worksheet_impl.hpp
 
@@ -340,7 +325,6 @@ $${QXLNT_SOURCEPATH}detail/number_format/number_formatter.cpp
 HEADERS += \
 $${QXLNT_SOURCEPATH}detail/serialization/custom_value_traits.hpp \
 $${QXLNT_SOURCEPATH}detail/serialization/excel_thumbnail.hpp \
-$${QXLNT_SOURCEPATH}detail/serialization/miniz.hpp \
 $${QXLNT_SOURCEPATH}detail/serialization/open_stream.hpp \
 $${QXLNT_SOURCEPATH}detail/serialization/vector_streambuf.hpp \
 $${QXLNT_SOURCEPATH}detail/serialization/xlsx_consumer.hpp \
@@ -349,13 +333,11 @@ $${QXLNT_SOURCEPATH}detail/serialization/zstream.hpp
 
 SOURCES += \
 $${QXLNT_SOURCEPATH}detail/serialization/custom_value_traits.cpp \
-$${QXLNT_SOURCEPATH}detail/serialization/miniz.cpp \
 $${QXLNT_SOURCEPATH}detail/serialization/open_stream.cpp \
 $${QXLNT_SOURCEPATH}detail/serialization/vector_streambuf.cpp \
 $${QXLNT_SOURCEPATH}detail/serialization/xlsx_consumer.cpp \
 $${QXLNT_SOURCEPATH}detail/serialization/xlsx_producer.cpp \
 $${QXLNT_SOURCEPATH}detail/serialization/zstream.cpp
-
 
 ########################################
 # libstudxml
@@ -389,62 +371,61 @@ isEmpty(LIBSTUDXML_SOURCEPATH) {
 INCLUDEPATH += $${LIBSTUDXML_HEADERPATH}
 
 HEADERS += \
-$${LIBSTUDXML_HEADERPATH}xml/content \
-$${LIBSTUDXML_HEADERPATH}xml/exception \
-$${LIBSTUDXML_HEADERPATH}xml/forward \
-$${LIBSTUDXML_HEADERPATH}xml/qname \
-$${LIBSTUDXML_HEADERPATH}xml/parser \
-$${LIBSTUDXML_HEADERPATH}xml/serializer \
-$${LIBSTUDXML_HEADERPATH}xml/value-traits \
-$${LIBSTUDXML_HEADERPATH}xml/version
+$${LIBSTUDXML_HEADERPATH}libstudxml/content.hxx
+$${LIBSTUDXML_HEADERPATH}libstudxml/exception.hxx
+$${LIBSTUDXML_HEADERPATH}libstudxml/forward.hxx
+$${LIBSTUDXML_HEADERPATH}libstudxml/parser.hxx
+$${LIBSTUDXML_HEADERPATH}libstudxml/qname.hxx
+$${LIBSTUDXML_HEADERPATH}libstudxml/serializer.hxx
+$${LIBSTUDXML_HEADERPATH}libstudxml/value-traits.hxx
+$${LIBSTUDXML_HEADERPATH}libstudxml/version.hxx
+$${LIBSTUDXML_HEADERPATH}libstudxml/version.hxx.in
 
 SOURCES += \
-$${LIBSTUDXML_SOURCEPATH}xml/parser.cxx \
-$${LIBSTUDXML_SOURCEPATH}xml/qname.cxx \
-$${LIBSTUDXML_SOURCEPATH}xml/serializer.cxx \
-$${LIBSTUDXML_SOURCEPATH}xml/value-traits.cxx
+$${LIBSTUDXML_SOURCEPATH}libstudxml/parser.cxx \
+$${LIBSTUDXML_SOURCEPATH}libstudxml/qname.cxx \
+$${LIBSTUDXML_SOURCEPATH}libstudxml/serializer.cxx \
+$${LIBSTUDXML_SOURCEPATH}libstudxml/value-traits.cxx
 
 # config
 
 HEADERS += \
-$${LIBSTUDXML_HEADERPATH}xml/details/config.h
+$${LIBSTUDXML_HEADERPATH}libstudxml/details/config.h
+$${LIBSTUDXML_HEADERPATH}libstudxml/details/config.hxx
+$${LIBSTUDXML_HEADERPATH}libstudxml/details/export.hxx
+$${LIBSTUDXML_HEADERPATH}libstudxml/details/post.hxx
+$${LIBSTUDXML_HEADERPATH}libstudxml/details/pre.hxx
 
 # expat
 
-SOURCES += \
-$${LIBSTUDXML_SOURCEPATH}xml/details/expat/xmlparse.c \
-$${LIBSTUDXML_SOURCEPATH}xml/details/expat/xmlrole.c \
-$${LIBSTUDXML_SOURCEPATH}xml/details/expat/xmltok.c
-
 HEADERS += \
-$${LIBSTUDXML_HEADERPATH}xml/details/expat/expat.h \
-$${LIBSTUDXML_HEADERPATH}xml/details/expat/expat_external.h
-
-HEADERS += \
-$${LIBSTUDXML_HEADERPATH}xml/details/expat/ascii.h \
-$${LIBSTUDXML_HEADERPATH}xml/details/expat/asciitab.h \
-$${LIBSTUDXML_HEADERPATH}xml/details/expat/config.h \
-$${LIBSTUDXML_HEADERPATH}xml/details/expat/iasciitab.h \
-$${LIBSTUDXML_HEADERPATH}xml/details/expat/internal.h \
-$${LIBSTUDXML_HEADERPATH}xml/details/expat/latin1tab.h \
-$${LIBSTUDXML_HEADERPATH}xml/details/expat/nametab.h \
-$${LIBSTUDXML_HEADERPATH}xml/details/expat/utf8tab.h \
-$${LIBSTUDXML_HEADERPATH}xml/details/expat/xmlrole.h \
-$${LIBSTUDXML_HEADERPATH}xml/details/expat/xmltok.h \
-$${LIBSTUDXML_SOURCEPATH}xml/details/expat/xmltok_impl.h
+$${LIBSTUDXML_HEADERPATH}libstudxml/details/expat/ascii.h \
+$${LIBSTUDXML_HEADERPATH}libstudxml/details/expat/asciitab.h \
+$${LIBSTUDXML_HEADERPATH}libstudxml/details/expat/config.h \
+$${LIBSTUDXML_HEADERPATH}libstudxml/details/expat/iasciitab.h \
+$${LIBSTUDXML_HEADERPATH}libstudxml/details/expat/internal.h \
+$${LIBSTUDXML_HEADERPATH}libstudxml/details/expat/latin1tab.h \
+$${LIBSTUDXML_HEADERPATH}libstudxml/details/expat/nametab.h \
+$${LIBSTUDXML_HEADERPATH}libstudxml/details/expat/utf8tab.h \
+$${LIBSTUDXML_HEADERPATH}libstudxml/details/expat/xmlrole.h \
+$${LIBSTUDXML_HEADERPATH}libstudxml/details/expat/xmltok.h \
+$${LIBSTUDXML_HEADERPATH}libstudxml/details/expat/xmltok_impl.h
 
 SOURCES += \
-$${LIBSTUDXML_SOURCEPATH}xml/details/expat/xmltok_impl.c \
-$${LIBSTUDXML_SOURCEPATH}xml/details/expat/xmltok_ns.c
+$${LIBSTUDXML_SOURCEPATH}libstudxml/details/expat/xmlparse.c \
+$${LIBSTUDXML_SOURCEPATH}libstudxml/details/expat/xmlrole.c \
+$${LIBSTUDXML_SOURCEPATH}libstudxml/details/expat/xmltok.c \
+$${LIBSTUDXML_SOURCEPATH}libstudxml/details/expat/xmltok_impl.c \
+$${LIBSTUDXML_SOURCEPATH}libstudxml/details/expat/xmltok_ns.c
 
 # genx
 
-SOURCES += \
-$${LIBSTUDXML_SOURCEPATH}xml/details/genx/genx.c \
-$${LIBSTUDXML_SOURCEPATH}xml/details/genx/char-props.c
-
 HEADERS += \
-$${LIBSTUDXML_HEADERPATH}xml/details/genx/genx.h
+$${LIBSTUDXML_HEADERPATH}libstudxml/details/genx/genx.h
+
+SOURCES += \
+$${LIBSTUDXML_SOURCEPATH}libstudxml/details/genx/genx.c \
+$${LIBSTUDXML_SOURCEPATH}libstudxml/details/genx/char-props.c
 
 ########################################
 # utfcpp
@@ -463,7 +444,21 @@ HEADERS += \
 $${UTFCPP_HEADERPATH}utf8.h \
 $${UTFCPP_HEADERPATH}utf8/checked.h \
 $${UTFCPP_HEADERPATH}utf8/core.h \
+$${UTFCPP_HEADERPATH}utf8/cpp11.h \
 $${UTFCPP_HEADERPATH}utf8/unchecked.h
+
+########################################
+# miniz
+
+isEmpty(MINIZ_PATH) {
+    MINIZ_PATH = ../xlnt/third-party/miniz/
+} else {
+}
+
+INCLUDEPATH += $${MINIZ_PATH}
+
+HEADERS += $${MINIZ_PATH}miniz.h
+SOURCES += $${MINIZ_PATH}miniz.c
 
 } # contains( DEFINES, XLNT_IMPORT ) {} else {}
 

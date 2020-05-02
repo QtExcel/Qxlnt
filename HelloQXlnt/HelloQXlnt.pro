@@ -1,11 +1,4 @@
-#
 # HelloQXlnt.pro
-#
-# xlnt https://github.com/tfussell/xlnt
-# Qxlnt https://github.com/j2doll/Qxlnt
-#
-# MIT License
-#
 
 TARGET = HelloQxlnt
 

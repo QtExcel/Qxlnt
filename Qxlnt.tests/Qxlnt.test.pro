@@ -1,6 +1,4 @@
-#
 # Qxlnt.test.pro
-#
 
 TARGET = Qxlnt.test
 
@@ -50,21 +48,24 @@ INCLUDEPATH += \
 SOURCES += \
 ../xlnt/tests/runner.cpp
 
-HEADERS += \
-../xlnt/tests/cell/cell_test_suite.hpp \
-../xlnt/tests/cell/index_types_test_suite.hpp \
-../xlnt/tests/cell/rich_text_test_suite.hpp
+# cell
 
 SOURCES += \
 ../xlnt/tests/cell/cell_test_suite.cpp \
 ../xlnt/tests/cell/index_types_test_suite.cpp \
 ../xlnt/tests/cell/rich_text_test_suite.cpp 
 
+# detail
+
 SOURCES += \
 ../xlnt/tests/detail/numeric_util_test_suite.cpp
 
+# drawing
+
 SOURCES += \
 ../xlnt/tests/drawing/drawing_test_suite.cpp
+
+# helpers
 
 HEADERS += \
 ../xlnt/tests/helpers/assertions.hpp \
@@ -78,52 +79,38 @@ HEADERS += \
 SOURCES += \
 ../xlnt/tests/helpers/test_suite.cpp
 
-HEADERS += \
-../xlnt/tests/styles/alignment_test_suite.hpp \
-../xlnt/tests/styles/color_test_suite.hpp \
-../xlnt/tests/styles/fill_test_suite.hpp \
-../xlnt/tests/styles/number_format_test_suite.hpp
+# styles
 
 SOURCES += \
 ../xlnt/tests/styles/alignment_test_suite.cpp \
-../xlnt/tests/styles/number_format_test_suite.cpp \
 ../xlnt/tests/styles/color_test_suite.cpp \
-../xlnt/tests/styles/protection_test_suite.cpp \
 ../xlnt/tests/styles/conditional_format_test_suite.cpp \
-../xlnt/tests/styles/style_test_suite.cpp \
-../xlnt/tests/styles/fill_test_suite.cpp
+../xlnt/tests/styles/fill_test_suite.cpp \
+../xlnt/tests/styles/number_format_test_suite.cpp \
+../xlnt/tests/styles/protection_test_suite.cpp \
+../xlnt/tests/styles/style_test_suite.cpp
 
-HEADERS += \
-../xlnt/tests/utils/datetime_test_suite.hpp \
-../xlnt/tests/utils/helper_test_suite.hpp \
-../xlnt/tests/utils/path_test_suite.hpp \
-../xlnt/tests/utils/timedelta_test_suite.hpp
+# utils
 
 SOURCES += \
 ../xlnt/tests/utils/datetime_test_suite.cpp \
-../xlnt/tests/utils/optional_tests.cpp \
-../xlnt/tests/utils/timedelta_test_suite.cpp \
 ../xlnt/tests/utils/helper_test_suite.cpp \
-../xlnt/tests/utils/path_test_suite.cpp \ 
-../xlnt/tests/utils/variant_tests.cpp        
+../xlnt/tests/utils/optional_tests.cpp \
+../xlnt/tests/utils/path_test_suite.cpp \
+../xlnt/tests/utils/timedelta_test_suite.cpp \
+../xlnt/tests/utils/variant_tests.cpp
 
-HEADERS += \
-../xlnt/tests/workbook/named_range_test_suite.hpp \
-../xlnt/tests/workbook/serialization_test_suite.hpp \
-../xlnt/tests/workbook/workbook_test_suite.hpp
+# workbook
 
 SOURCES += \
 ../xlnt/tests/workbook/named_range_test_suite.cpp \
-../xlnt/tests/workbook/workbook_test_suite.cpp \
-../xlnt/tests/workbook/serialization_test_suite.cpp
+../xlnt/tests/workbook/serialization_test_suite.cpp \
+../xlnt/tests/workbook/workbook_test_suite.cpp
 
-HEADERS += \
-../xlnt/tests/worksheet/page_setup_test_suite.hpp \
-../xlnt/tests/worksheet/range_test_suite.hpp \
-../xlnt/tests/worksheet/worksheet_test_suite.hpp
+# worksheet
 
 SOURCES += \
 ../xlnt/tests/worksheet/page_setup_test_suite.cpp \
-../xlnt/tests/worksheet/worksheet_test_suite.cpp \
-../xlnt/tests/worksheet/range_test_suite.cpp
+../xlnt/tests/worksheet/range_test_suite.cpp \
+../xlnt/tests/worksheet/worksheet_test_suite.cpp
 
