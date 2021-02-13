@@ -3,34 +3,27 @@
 ## Case 1 : MingW
 
 - Environment
-  - Qt 5.13.1
-  - MingW 7.3.0 64bit
-  - gcc 7.3.0
+  - Qt 6.0.1
+  - MingW 8.1.0 64bit
+  - gcc 8.1.0
   - Microsoft Windows 10 x64
 
 - Tested project (Qxlnt.tests)
-  - mostly OK (2 test case is failed)
+  - mostly OK (1 test case is failed)
 
 ```
+D:\workspace\github\Qxlnt\build3\release>Qxlnt.test
 .............................................................................................................................*
 stest_round_trip_rw_unicode failed with:
 std::exception
-..................................................................................................................................*
-ntest_serialise_number failed with:
-xlnt::exception : assert failed at L:53
-serialiser.serialise(1.23456789012345e+67) == "1.23456789012345e+67"
-.................................................
+....................................................................................................................................................................................
 
 Run: 306
-Passed: 304
-Failed: 2
+Passed: 305
+Failed: 1
 
 stest_round_trip_rw_unicode failed with:
 std::exception
-
-ntest_serialise_number failed with:
-xlnt::exception : assert failed at L:53
-serialiser.serialise(1.23456789012345e+67) == "1.23456789012345e+67"
 ```
  
 
@@ -45,13 +38,11 @@ serialiser.serialise(1.23456789012345e+67) == "1.23456789012345e+67"
   - mostly OK
 
 ```
+/workspace/github/Qxlnt/build$ ./Qxlnt.test
 ..................................................................................................................................................................................................................................................................................................................
 
 Run: 306
 Passed: 306
 Failed: 0
 ```
-
-
-
 
