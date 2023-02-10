@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2020 Thomas Fussell
+// Copyright (c) 2014-2021 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -15,7 +15,7 @@
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, WRISING FROM,
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE
 //
@@ -167,6 +167,8 @@ xlnt::path default_path(xlnt::relationship_type type, std::size_t index = 0)
         return path("/xl/vmlDrawing.xml");
     case relationship_type::volatile_dependencies:
         return path("/xl/volatileDependencies.xml");
+    case relationship_type::vbaproject:
+        return path("/xl/vbaProject.bin");
     case relationship_type::worksheet:
         return path("/xl/worksheets/sheet" + std::to_string(index) + ".xml");
     }
@@ -246,6 +248,8 @@ std::string content_type(xlnt::relationship_type type)
         return "application/vnd.openxmlformats-officedocument.vmlDrawing";
     case relationship_type::volatile_dependencies:
         return "application/vnd.openxmlformats-officedocument.spreadsheetml.volatileDependencies+xml";
+    case relationship_type::vbaproject:
+        return "application/vnd.ms-office.vbaProject";        
     case relationship_type::worksheet:
         return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml";
     }
@@ -414,7 +418,11 @@ workbook workbook::empty()
     wb.extended_property(xlnt::extended_property::hyperlinks_changed, false);
     wb.extended_property(xlnt::extended_property::app_version, "15.0300");
 
-    auto file_version = detail::workbook_impl::file_version_t{"xl", 6, 6, 26709};
+    detail::workbook_impl::file_version_t file_version;
+    file_version.app_name = "xl";
+    file_version.last_edited = 6;
+    file_version.lowest_edited = 6;
+    file_version.rup_build = 26709;
     wb.d_->file_version_ = file_version;
 
     xlnt::workbook_view wb_view;
@@ -681,6 +689,11 @@ worksheet workbook::sheet_by_index(std::size_t index)
 
 const worksheet workbook::sheet_by_index(std::size_t index) const
 {
+    if (index >= d_->worksheets_.size())
+    {
+        throw invalid_parameter();
+    }
+
     auto iter = d_->worksheets_.begin();
 
     for (std::size_t i = 0; i < index; ++i, ++iter)
@@ -716,9 +729,24 @@ const worksheet workbook::sheet_by_id(std::size_t id) const
     throw key_not_found();
 }
 
+bool workbook::sheet_hidden_by_index(std::size_t index) const
+{
+    if (index >= d_->sheet_hidden_.size())
+    {
+        throw invalid_parameter();
+    }
+
+    return d_->sheet_hidden_.at(index);
+}
+
 worksheet workbook::active_sheet()
 {
     return sheet_by_index(d_->active_sheet_index_.is_set() ? d_->active_sheet_index_.get() : 0);
+}
+void workbook::active_sheet(std::size_t index)
+{
+    d_->active_sheet_index_.set(index);
+    d_->view_.get().active_tab = index;
 }
 
 bool workbook::has_named_range(const std::string &name) const
@@ -1348,32 +1376,25 @@ const manifest &workbook::manifest() const
     return d_->manifest_;
 }
 
-const std::map<std::size_t, rich_text> &workbook::shared_strings_by_id() const
-{
-    return d_->shared_strings_values_;
-}
-
 const rich_text &workbook::shared_strings(std::size_t index) const
 {
-    auto it = d_->shared_strings_values_.find(index);
-
-    if (it != d_->shared_strings_values_.end())
+    if (index < d_->shared_strings_values_.size())
     {
-        return it->second;
+        return d_->shared_strings_values_.at(index);
     }
 
     static rich_text empty;
     return empty;
 }
 
-std::unordered_map<rich_text, std::size_t, rich_text_hash> &workbook::shared_strings()
+std::vector<rich_text> &workbook::shared_strings()
 {
-    return d_->shared_strings_ids_;
+    return d_->shared_strings_values_;
 }
 
-const std::unordered_map<rich_text, std::size_t, rich_text_hash> &workbook::shared_strings() const
+const std::vector<rich_text> &workbook::shared_strings() const
 {
-    return d_->shared_strings_ids_;
+    return d_->shared_strings_values_;
 }
 
 std::size_t workbook::add_shared_string(const rich_text &shared, bool allow_duplicates)
@@ -1392,7 +1413,7 @@ std::size_t workbook::add_shared_string(const rich_text &shared, bool allow_dupl
 
     auto sz = d_->shared_strings_ids_.size();
     d_->shared_strings_ids_[shared] = sz;
-    d_->shared_strings_values_[sz] = shared;
+    d_->shared_strings_values_.push_back(shared);
 
     return sz;
 }
@@ -1425,6 +1446,11 @@ const std::vector<std::uint8_t> &workbook::thumbnail() const
 {
     auto thumbnail_rel = d_->manifest_.relationship(path("/"), relationship_type::thumbnail);
     return d_->images_.at(thumbnail_rel.target().to_string());
+}
+
+const std::unordered_map<std::string, std::vector<std::uint8_t>> &workbook::binaries() const
+{
+    return d_->binaries_;
 }
 
 style workbook::create_style(const std::string &name)

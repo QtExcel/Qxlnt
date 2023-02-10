@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2020 Thomas Fussell
+// Copyright (c) 2014-2021 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -15,7 +15,7 @@
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, WRISING FROM,
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE
 //
@@ -433,9 +433,11 @@ public:
     column_t highest_column_or_props() const;
 
     /// <summary>
-    /// Returns a range_reference pointing to the full range of non-empty cells in the worksheet.
+    /// Returns a range_reference pointing to the full range of cells in the worksheet.
+    /// If skip_null is true (default), empty cells (For example if the first row or column is empty)
+    /// will not be included in upper left bound of range.
     /// </summary>
-    range_reference calculate_dimension() const;
+    range_reference calculate_dimension(bool skip_null=true) const;
 
     // cell merge
 
@@ -650,27 +652,32 @@ public:
     /// <summary>
     /// Sets rows to repeat at top during printing.
     /// </summary>
-    void print_title_rows(row_t first_row, row_t last_row);
+    void print_title_rows(row_t start, row_t end);
 
     /// <summary>
-    /// Sets rows to repeat at top during printing.
+    /// Get rows to repeat at top during printing.
     /// </summary>
-    void print_title_rows(row_t last_row);
-
-    /// <summary>
-    /// Sets columns to repeat at left during printing.
-    /// </summary>
-    void print_title_cols(column_t first_column, column_t last_column);
+    optional<std::pair<row_t, row_t>> print_title_rows() const;
 
     /// <summary>
     /// Sets columns to repeat at left during printing.
     /// </summary>
-    void print_title_cols(column_t last_column);
+    void print_title_cols(column_t start, column_t end);
+    
+    /// <summary>
+    /// Get columns to repeat at left during printing.
+    /// </summary>
+    optional<std::pair<column_t, column_t>> print_title_cols() const;
 
     /// <summary>
-    /// Returns a string representation of the defined print titles.
+    /// Returns true if the sheet has print titles defined.
     /// </summary>
-    std::string print_titles() const;
+    bool has_print_titles() const;
+
+    /// <summary>
+    /// Remove all print titles.
+    /// </summary>
+    void clear_print_titles();
 
     /// <summary>
     /// Sets the print area of this sheet to print_area.
@@ -678,9 +685,19 @@ public:
     void print_area(const std::string &print_area);
 
     /// <summary>
+    /// Clear the print area of this sheet.
+    /// </summary>
+    void clear_print_area();
+
+    /// <summary>
     /// Returns the print area defined for this sheet.
     /// </summary>
     range_reference print_area() const;
+    
+    /// <summary>
+    /// Returns true if the print area is defined for this sheet.
+    /// </summary>
+    bool has_print_area() const;
 
     /// <summary>
     /// Returns true if this sheet has any number of views defined.
@@ -769,6 +786,12 @@ public:
     /// Returns true if this worksheet has a page setup.
     /// </summary>
     bool has_drawing() const;
+
+    /// <summary>
+    /// Returns true if this worksheet is empty.
+    /// A worksheet is considered empty if it doesn't have any cells.
+    /// </summary>
+    bool is_empty() const;
 
 private:
     friend class cell;

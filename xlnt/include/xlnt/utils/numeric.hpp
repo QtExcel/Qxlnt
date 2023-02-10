@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2020 Thomas Fussell
+// Copyright (c) 2014-2021 Thomas Fussell
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -14,7 +14,7 @@
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, WRISING FROM,
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE
 //
@@ -32,6 +32,9 @@
 #include <sstream>
 #include <type_traits>
 
+#undef min
+#undef max
+
 namespace xlnt {
 namespace detail {
 
@@ -48,7 +51,7 @@ constexpr Number abs(Number val)
 /// constexpr max
 /// </summary>
 template <typename NumberL, typename NumberR>
-constexpr typename std::common_type<NumberL, NumberR>::type max(NumberL lval, NumberR rval)
+constexpr typename std::common_type<NumberL, NumberR>::type (max)(NumberL lval, NumberR rval)
 {
     return (lval < rval) ? rval : lval;
 }
@@ -57,7 +60,7 @@ constexpr typename std::common_type<NumberL, NumberR>::type max(NumberL lval, Nu
 /// constexpr min
 /// </summary>
 template <typename NumberL, typename NumberR>
-constexpr typename std::common_type<NumberL, NumberR>::type min(NumberL lval, NumberR rval)
+constexpr typename std::common_type<NumberL, NumberR>::type (min)(NumberL lval, NumberR rval)
 {
     return (lval < rval) ? lval : rval;
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2020 Thomas Fussell
+// Copyright (c) 2014-2021 Thomas Fussell
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -14,7 +14,7 @@
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, WRISING FROM,
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE
 //
@@ -49,7 +49,15 @@ range_reference::range_reference(const char *range_string)
 range_reference::range_reference(const std::string &range_string)
     : top_left_("A1"), bottom_right_("A1")
 {
-    auto colon_index = range_string.find(':');
+    auto colon_index = range_string.find(' ');
+
+    if (colon_index != std::string::npos)
+    {
+        // Multiple cell selection is not supported at this time.
+        return;
+    }
+
+    colon_index = range_string.find(':');
 
     if (colon_index != std::string::npos)
     {
@@ -135,6 +143,14 @@ cell_reference range_reference::bottom_left() const
 cell_reference range_reference::bottom_right() const
 {
     return bottom_right_;
+}
+
+bool range_reference::contains(const cell_reference &ref) const
+{
+    return top_left_.column_index() <= ref.column_index()
+        && bottom_right_.column_index() >= ref.column_index()
+        && top_left_.row() <= ref.row()
+        && bottom_right_.row() >= ref.row();
 }
 
 bool range_reference::operator==(const std::string &reference_string) const

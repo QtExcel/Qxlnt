@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2020 Thomas Fussell
+// Copyright (c) 2014-2021 Thomas Fussell
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -14,7 +14,7 @@
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, WRISING FROM,
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE
 //
@@ -99,6 +99,7 @@ private:
     void write_extended_properties(const relationship &rel);
     void write_custom_properties(const relationship &rel);
     void write_image(const path &image_path);
+    void write_binary(const path &binary_path);
 
 	// SpreadsheetML-Specific Package Parts
 
@@ -178,9 +179,16 @@ private:
         current_part_serializer_->attribute(name, value);
     }
 
-    void write_attribute(const std::string &name, double value)
+    template <typename T, typename std::enable_if<std::is_floating_point<T>::value, T>::type* = nullptr>
+    void write_attribute(const std::string &name, T value)
     {
         current_part_serializer_->attribute(name, converter_.serialise(value));
+    }
+
+    template <typename T, typename std::enable_if<std::is_integral<T>::value, T>::type* = nullptr>
+    void write_attribute(const std::string &name, T value)
+    {
+        current_part_serializer_->attribute(name, std::to_string(value));
     }
 
     // qname attribute name
@@ -191,9 +199,16 @@ private:
         current_part_serializer_->attribute(name, value);
     }
 
-    void write_attribute(const xml::qname &name, double value)
+    template <typename T, typename std::enable_if<std::is_floating_point<T>::value, T>::type* = nullptr>
+    void write_attribute(const xml::qname &name, T value)
     {
         current_part_serializer_->attribute(name, converter_.serialise(value));
+    }
+
+    template <typename T, typename std::enable_if<std::is_integral<T>::value, T>::type* = nullptr>
+    void write_attribute(const xml::qname &name, T value)
+    {
+        current_part_serializer_->attribute(name, std::to_string(value));
     }
 
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2020 Thomas Fussell
+// Copyright (c) 2016-2021 Thomas Fussell
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -14,7 +14,7 @@
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, WRISING FROM,
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE
 //
@@ -38,12 +38,12 @@ public:
     /// If this is older than the version of the Excel calculation engine opening
     /// the workbook, cell values will be recalculated.
     /// </summary>
-    std::size_t calc_id;
+    std::size_t calc_id = 0;
 
     /// <summary>
     /// If this is true, concurrent calculation will be enabled for the workbook.
     /// </summary>
-    bool concurrent_calc;
+    bool concurrent_calc = false;
 };
 
 inline bool operator==(const calculation_properties &lhs, const calculation_properties &rhs)

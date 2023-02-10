@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2020 Thomas Fussell
+// Copyright (c) 2014-2021 Thomas Fussell
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -14,7 +14,7 @@
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, WRISING FROM,
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE
 //
@@ -79,6 +79,7 @@ struct workbook_impl
         manifest_ = other.manifest_;
 
         sheet_title_rel_id_map_ = other.sheet_title_rel_id_map_;
+        sheet_hidden_ = other.sheet_hidden_;
         view_ = other.view_;
         code_name_ = other.code_name_;
         file_version_ = other.file_version_;
@@ -101,10 +102,12 @@ struct workbook_impl
             && manifest_ == other.manifest_
             && theme_ == other.theme_
             && images_ == other.images_
+            && binaries_ == other.binaries_
             && core_properties_ == other.core_properties_
             && extended_properties_ == other.extended_properties_
             && custom_properties_ == other.custom_properties_
             && sheet_title_rel_id_map_ == other.sheet_title_rel_id_map_
+            && sheet_hidden_ == other.sheet_hidden_
             && view_ == other.view_
             && code_name_ == other.code_name_
             && file_version_ == other.file_version_
@@ -118,7 +121,7 @@ struct workbook_impl
 
     std::list<worksheet_impl> worksheets_;
     std::unordered_map<rich_text, std::size_t, rich_text_hash> shared_strings_ids_;
-    std::map<std::size_t, rich_text> shared_strings_values_;
+    std::vector<rich_text> shared_strings_values_;
 
     optional<stylesheet> stylesheet_;
 
@@ -128,22 +131,28 @@ struct workbook_impl
     manifest manifest_;
     optional<theme> theme_;
     std::unordered_map<std::string, std::vector<std::uint8_t>> images_;
+    std::unordered_map<std::string, std::vector<std::uint8_t>> binaries_;
 
     std::vector<std::pair<xlnt::core_property, variant>> core_properties_;
     std::vector<std::pair<xlnt::extended_property, variant>> extended_properties_;
     std::vector<std::pair<std::string, variant>> custom_properties_;
 
     std::unordered_map<std::string, std::string> sheet_title_rel_id_map_;
+    std::vector<bool> sheet_hidden_;
 
     optional<workbook_view> view_;
     optional<std::string> code_name_;
 
-	struct file_version_t
-	{
-		std::string app_name;
-		std::size_t last_edited;
-		std::size_t lowest_edited;
-		std::size_t rup_build;
+    struct file_version_t
+    {
+        std::string app_name;
+        std::size_t last_edited;
+        std::size_t lowest_edited;
+        std::size_t rup_build;
+
+        file_version_t(): last_edited(0), lowest_edited(0), rup_build(0) {
+
+        }
 
         bool operator==(const file_version_t& rhs) const
         {
@@ -152,7 +161,7 @@ struct workbook_impl
                 && lowest_edited == rhs.lowest_edited
                 && rup_build == rhs.rup_build;
         }
-	};
+    };
 
     optional<file_version_t> file_version_;
     optional<calculation_properties> calculation_properties_;

@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2020 Thomas Fussell
+// Copyright (c) 2014-2021 Thomas Fussell
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -14,7 +14,7 @@
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, WRISING FROM,
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE
 //
@@ -122,8 +122,8 @@ const path constants::part_shared_strings()
 
 const std::unordered_map<std::string, std::string> &constants::namespaces()
 {
-    static const std::unordered_map<std::string, std::string> *namespaces =
-        new std::unordered_map<std::string, std::string>{
+    static const std::unordered_map<std::string, std::string> namespaces =
+        std::unordered_map<std::string, std::string>{
             {"spreadsheetml", "http://schemas.openxmlformats.org/spreadsheetml/2006/main"},
             {"content-types", "http://schemas.openxmlformats.org/package/2006/content-types"},
             {"relationships", "http://schemas.openxmlformats.org/package/2006/relationships"},
@@ -157,7 +157,7 @@ const std::unordered_map<std::string, std::string> &constants::namespaces()
 
             {"loext", "http://schemas.libreoffice.org/"}};
 
-    return *namespaces;
+    return namespaces;
 }
 
 const std::string &constants::ns(const std::string &id)

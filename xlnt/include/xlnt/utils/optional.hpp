@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2020 Thomas Fussell
+// Copyright (c) 2016-2021 Thomas Fussell
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -14,7 +14,7 @@
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, WRISING FROM,
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE
 //
@@ -38,7 +38,8 @@ namespace xlnt {
 template <typename T>
 class optional
 {
-#if defined(_MSC_VER) && _MSC_VER <= 1900 // v14, visual studio 2015
+#if ((defined(_MSC_VER) && _MSC_VER <= 1900) || (defined(__GNUC__) && __GNUC__ < 5))
+// Disable enhanced type checking on Visual Studio <= 2015 and GCC <5
 #define XLNT_NOEXCEPT_VALUE_COMPAT(...) (false)
 #else
 #define XLNT_NOEXCEPT_VALUE_COMPAT(...) (__VA_ARGS__)
