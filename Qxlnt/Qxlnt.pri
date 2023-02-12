@@ -1,13 +1,10 @@
 # Qxlnt.pri
 
 ########################################
-# NOTICE:
-# Check your compiler version. we need c++14 or higher version.
-# GCC has full support for the previous revision of the C++ standard,
-#  which was published in 2014.
-# See https://gcc.gnu.org/projects/cxx-status.html for more information.
+# C++ 1x or 2y
 
-CONFIG += c++14
+#CONFIG += c++14
+CONFIG += c++17
 
 ########################################
 # Setting for OS and Compiler

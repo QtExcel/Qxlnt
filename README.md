@@ -5,7 +5,7 @@
 <p align="center"><img src="https://github.com/QtExcel/Qxlnt/raw/master/markdown-data/Concept-QXlnt.jpg"></p>
 
 - Qxlnt is a helper project that allows xlnt to be used in Qt.
-- xlnt is xlsx library that using C++14. See 'License and links' for more information.
+- xlnt is xlsx library that using C++1x. See 'License and links' for more information.
 
 ## Why did you make it?
 
