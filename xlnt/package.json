@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@release-it/bumper": "^3.0.1",
-    "release-it": "^14.11.5"
+    "release-it": "^14.14.3"
   },
   "scripts": {
     "release": "release-it"
