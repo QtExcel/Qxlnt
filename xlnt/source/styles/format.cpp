@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2020 Thomas Fussell
+// Copyright (c) 2014-2021 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -15,7 +15,7 @@
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, WRISING FROM,
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE
 //
@@ -124,13 +124,28 @@ format format::font(const xlnt::font &new_font, optional<bool> applied)
 
 xlnt::number_format format::number_format() const
 {
-    if (number_format::is_builtin_format(d_->number_format_id.get()))
+    if (d_->number_format_id.is_set())
     {
-        return number_format::from_builtin_id(d_->number_format_id.get());
+        const auto number_format_id = d_->number_format_id.get();
+
+        if (number_format::is_builtin_format(number_format_id))
+        {
+            return number_format::from_builtin_id(number_format_id);
+        }
+
+        const auto it = std::find_if(d_->parent->number_formats.begin(),
+                                     d_->parent->number_formats.end(),
+                                     [number_format_id](const xlnt::number_format &nf)
+                                     {
+                                         return nf.id() == number_format_id;
+                                     });
+        if (it != d_->parent->number_formats.end())
+        {
+            return *it;
+        }
     }
 
-    return *std::find_if(d_->parent->number_formats.begin(), d_->parent->number_formats.end(),
-        [&](const xlnt::number_format nf) { return nf.id() == d_->number_format_id.get(); });
+    return xlnt::number_format();
 }
 
 format format::number_format(const xlnt::number_format &new_number_format, optional<bool> applied)

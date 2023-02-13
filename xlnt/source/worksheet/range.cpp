@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2020 Thomas Fussell
+// Copyright (c) 2014-2021 Thomas Fussell
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -14,7 +14,7 @@
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, WRISING FROM,
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE
 //
@@ -132,12 +132,9 @@ const cell_vector range::vector(std::size_t vector_index) const
     return cell_vector(ws_, cursor, ref_, order_, skip_null_, false);
 }
 
-bool range::contains(const cell_reference &ref)
+bool range::contains(const cell_reference &cell_ref)
 {
-    return ref_.top_left().column_index() <= ref.column_index()
-        && ref_.bottom_right().column_index() >= ref.column_index()
-        && ref_.top_left().row() <= ref.row()
-        && ref_.bottom_right().row() >= ref.row();
+    return ref_.contains(cell_ref);
 }
 
 range range::alignment(const xlnt::alignment &new_alignment)

@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2020 Thomas Fussell
+// Copyright (c) 2014-2021 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -15,7 +15,7 @@
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, WRISING FROM,
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE
 //
@@ -135,6 +135,13 @@ public:
     /// return a copy of the iterator before the decrement.
     /// </summary>
     cell_iterator operator++(int);
+
+    /// <summary>
+    /// When iterating over a range that doesn't ignore null cells, operator*()
+    /// will throw when trying to access the cells that are null. This method
+    /// checks the existence of a cell.
+    /// </summary>
+    bool has_value() const;
 
 private:
     /// <summary>
@@ -262,6 +269,13 @@ public:
     /// return a copy of the iterator before the decrement.
     /// </summary>
     const_cell_iterator operator++(int);
+
+    /// <summary>
+    /// When iterating over a range that doesn't ignore null cells, operator*()
+    /// will throw when trying to access the cells that are null. This method
+    /// checks the existence of a cell.
+    /// </summary>
+    bool has_value() const;
 
 private:
     /// <summary>

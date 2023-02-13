@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2020 Thomas Fussell
+// Copyright (c) 2014-2021 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -15,7 +15,7 @@
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, WRISING FROM,
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE
 //
@@ -29,11 +29,9 @@ namespace xlnt {
 page_setup::page_setup()
     : break_(xlnt::page_break::none),
       sheet_state_(xlnt::sheet_state::visible),
-      paper_size_(xlnt::paper_size::letter),
       fit_to_page_(false),
       fit_to_height_(false),
-      fit_to_width_(false),
-      scale_(1)
+      fit_to_width_(false)
 {
 }
 
@@ -59,12 +57,17 @@ void page_setup::sheet_state(xlnt::sheet_state sheet_state)
 
 paper_size page_setup::paper_size() const
 {
-    return paper_size_;
+    return paper_size_.get();
 }
 
 void page_setup::paper_size(xlnt::paper_size paper_size)
 {
     paper_size_ = paper_size;
+}
+
+bool page_setup::has_paper_size() const
+{
+    return this->paper_size_.is_set();
 }
 
 bool page_setup::fit_to_page() const
@@ -104,7 +107,27 @@ void page_setup::scale(double scale)
 
 double page_setup::scale() const
 {
-    return scale_;
+    return scale_.get();
+}
+
+bool page_setup::has_scale() const
+{
+    return this->scale_.is_set();
+}
+
+const std::string& page_setup::rel_id() const
+{
+    return this->rel_id_;
+}
+
+void page_setup::rel_id(const std::string& val)
+{
+    this->rel_id_ = val;
+}
+
+bool page_setup::has_rel_id() const
+{
+    return !rel_id_.empty();
 }
 
 bool page_setup::operator==(const page_setup &rhs) const
@@ -115,7 +138,9 @@ bool page_setup::operator==(const page_setup &rhs) const
         && fit_to_page_ == rhs.fit_to_page_
         && fit_to_height_ == rhs.fit_to_height_
         && fit_to_width_ == rhs.fit_to_width_
-        && detail::float_equals(scale_, rhs.scale_);
+        && scale_ == rhs.scale_
+        && paper_size_ == rhs.paper_size_
+        && rel_id_ == rhs.rel_id_;
 }
 
 } // namespace xlnt

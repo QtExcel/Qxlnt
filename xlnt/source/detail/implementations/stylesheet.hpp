@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2020 Thomas Fussell
+// Copyright (c) 2014-2021 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -15,7 +15,7 @@
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, WRISING FROM,
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE
 //
@@ -84,7 +84,7 @@ struct stylesheet
 	class style create_builtin_style(const std::size_t builtin_id)
 	{
 		// From Annex G.2
-		static const auto *names = new std::unordered_map<std::size_t , std::string>
+		static const auto names = std::unordered_map<std::size_t , std::string>
 		{
 			{ 0, "Normal" },
 			{ 1, "RowLevel_1" },
@@ -140,7 +140,7 @@ struct stylesheet
 			{ 53, "Explanatory Text" }
 		};
 
-		auto new_style = create_style(names->at(builtin_id));
+		auto new_style = create_style(names.at(builtin_id));
 		new_style.d_->builtin_id = builtin_id;
 
 		return new_style;

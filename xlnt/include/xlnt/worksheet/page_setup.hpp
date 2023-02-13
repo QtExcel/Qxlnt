@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2020 Thomas Fussell
+// Copyright (c) 2014-2021 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -15,7 +15,7 @@
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, WRISING FROM,
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE
 //
@@ -120,6 +120,11 @@ public:
     void paper_size(xlnt::paper_size paper_size);
 
     /// <summary>
+    /// Check if current paper setting has paper size setting
+    /// </summary>
+    bool has_paper_size() const;
+
+    /// <summary>
     /// Returns true if this worksheet should be scaled to fit on a single page during printing.
     /// </summary>
     bool fit_to_page() const;
@@ -160,6 +165,26 @@ public:
     double scale() const;
 
     /// <summary>
+    /// Check if current paper setting has scale setting
+    /// </summary>
+    bool has_scale() const;
+
+    /// <summary>
+    /// Gets reference relationship Id
+    /// </summary>
+    const std::string& rel_id() const;
+
+    /// <summary>
+    /// Sets reference relationship Id
+    /// </summary>
+    void rel_id(const std::string& val);
+
+    /// <summary>
+    /// Check if current paper setting has a reference relationship
+    /// </summary>
+    bool has_rel_id() const;
+
+    /// <summary>
     /// The orientation
     /// </summary>
     xlnt::optional<xlnt::orientation> orientation_;
@@ -176,6 +201,11 @@ public:
 
 private:
     /// <summary>
+    /// Relationship Id
+    /// </summary>
+    std::string rel_id_;
+
+    /// <summary>
     /// The break
     /// </summary>
     xlnt::page_break break_;
@@ -188,7 +218,7 @@ private:
     /// <summary>
     /// The paper size
     /// </summary>
-    xlnt::paper_size paper_size_;
+    xlnt::optional<xlnt::paper_size> paper_size_;
 
     /// <summary>
     /// Whether or not to fit to page
@@ -208,7 +238,7 @@ private:
     /// <summary>
     /// The amount to scale the worksheet
     /// </summary>
-    double scale_;
+    xlnt::optional<double> scale_;
 };
 
 } // namespace xlnt

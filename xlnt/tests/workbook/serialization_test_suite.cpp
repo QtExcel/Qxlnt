@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2020 Thomas Fussell
+// Copyright (c) 2014-2021 Thomas Fussell
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -14,7 +14,7 @@
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, WRISING FROM,
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE
 //
@@ -23,31 +23,7 @@
 
 #include <iostream>
 
-#include <xlnt/cell/comment.hpp>
-#include <xlnt/cell/hyperlink.hpp>
-#include <xlnt/cell/cell.hpp>
-#include <xlnt/styles/font.hpp>
-#include <xlnt/styles/style.hpp>
-#include <xlnt/styles/fill.hpp>
-#include <xlnt/styles/format.hpp>
-#include <xlnt/styles/number_format.hpp>
-#include <xlnt/styles/border.hpp>
-#include <xlnt/utils/date.hpp>
-#include <xlnt/utils/datetime.hpp>
-#include <xlnt/utils/time.hpp>
-#include <xlnt/utils/timedelta.hpp>
-#include <xlnt/utils/variant.hpp>
-#include <xlnt/workbook/streaming_workbook_reader.hpp>
-#include <xlnt/workbook/streaming_workbook_writer.hpp>
-#include <xlnt/workbook/workbook.hpp>
-#include <xlnt/workbook/metadata_property.hpp>
-#include <xlnt/worksheet/column_properties.hpp>
-#include <xlnt/worksheet/row_properties.hpp>
-#include <xlnt/worksheet/sheet_format_properties.hpp>
-#include <xlnt/worksheet/header_footer.hpp>
-#include <xlnt/worksheet/worksheet.hpp>
-#include <detail/cryptography/xlsx_crypto_consumer.hpp>
-#include <detail/serialization/vector_streambuf.hpp>
+#include <xlnt/xlnt.hpp>
 #include <helpers/path_helper.hpp>
 #include <helpers/temporary_file.hpp>
 #include <helpers/test_suite.hpp>
@@ -62,7 +38,7 @@ public:
         register_test(test_produce_simple_excel);
         register_test(test_save_after_sheet_deletion);
         register_test(test_write_comments_hyperlinks_formulae);
-        register_test(test_save_after_clear_all_formulae);
+        register_test(test_save_after_clear_formula);
         register_test(test_load_non_xlsx);
         register_test(test_decrypt_agile);
         register_test(test_decrypt_libre_office);
@@ -93,6 +69,10 @@ public:
         register_test(test_load_save_german_locale);
         register_test(test_Issue445_inline_str_load);
         register_test(test_Issue445_inline_str_streaming_read);
+        register_test(test_Issue492_stream_empty_row);
+        register_test(test_Issue503_external_link_load);
+        register_test(test_formatting);
+        register_test(test_active_sheet);
     }
 
     bool workbook_matches_file(xlnt::workbook &wb, const xlnt::path &file)
@@ -301,21 +281,20 @@ public:
         xlnt_assert(workbook_matches_file(wb, path));
     }
 
-    void test_save_after_clear_all_formulae()
+    void test_save_after_clear_formula()
     {
         xlnt::workbook wb;
-        const auto path = path_helper::test_file("10_comments_hyperlinks_formulae.xlsx");
+        const auto path = path_helper::test_file("18_formulae.xlsx");
         wb.load(path);
 
         auto ws1 = wb.sheet_by_index(0);
-        xlnt_assert(ws1.cell("C1").has_formula());
-        xlnt_assert_equals(ws1.cell("C1").formula(), "CONCATENATE(C2,C3)");
-        ws1.cell("C1").clear_formula();
-
-        auto ws2 = wb.sheet_by_index(1);
-        xlnt_assert(ws2.cell("C1").has_formula());
-        xlnt_assert_equals(ws2.cell("C1").formula(), "C2*C3");
-        ws2.cell("C1").clear_formula();
+        for (auto row : ws1)
+        {
+            for (auto cell : row)
+            {
+                cell.clear_formula();
+            }
+        }
 
         wb.save("clear_formulae.xlsx");
     }
@@ -363,18 +342,18 @@ public:
     {
 #ifdef _MSC_VER
         xlnt::workbook wb;
-        // L"/9_unicode_Λ.xlsx" doesn't use wchar_t(0x039B) for the capital lambda...
-        // L"/9_unicode_\u039B.xlsx" gives the corrct output
-        const auto path = LSTRING_LITERAL(XLNT_TEST_DATA_DIR) L"/9_unicode_\u039B.xlsx"; // L"/9_unicode_Λ.xlsx"
+        // L"/9_unicode_Λ_😇.xlsx" doesn't use wchar_t(0x039B) for the capital lambda...
+        // L"/9_unicode_\u039B_\U0001F607.xlsx" gives the correct output
+        const auto path = LSTRING_LITERAL(XLNT_TEST_DATA_DIR) L"/9_unicode_\u039B_\U0001F607.xlsx"; // L"/9_unicode_Λ_😇.xlsx"
         wb.load(path);
         xlnt_assert_equals(wb.active_sheet().cell("A1").value<std::string>(), u8"un\u00EFc\u00F4d\u0117!"); // u8"unïcôdė!"
 #endif
 
 #ifndef __MINGW32__
         xlnt::workbook wb2;
-        // u8"/9_unicode_Λ.xlsx" doesn't use 0xc3aa for the capital lambda...
-        // u8"/9_unicode_\u039B.xlsx" gives the corrct output
-        const auto path2 = U8STRING_LITERAL(XLNT_TEST_DATA_DIR) u8"/9_unicode_\u039B.xlsx"; // u8"/9_unicode_Λ.xlsx"
+        // u8"/9_unicode_Λ_😇.xlsx" doesn't use 0xC3AA for the capital lambda...
+        // u8"/9_unicode_\u039B_\U0001F607.xlsx" gives the correct output
+        const auto path2 = U8STRING_LITERAL(XLNT_TEST_DATA_DIR) u8"/9_unicode_\u039B_\U0001F607.xlsx"; // u8"/9_unicode_Λ_😇.xlsx"
         wb2.load(path2);
         xlnt_assert_equals(wb2.active_sheet().cell("A1").value<std::string>(), u8"un\u00EFc\u00F4d\u0117!"); // u8"unïcôdė!"
 #endif
@@ -422,20 +401,41 @@ public:
     void test_read_formulae()
     {
         xlnt::workbook wb;
-        const auto path = path_helper::test_file("10_comments_hyperlinks_formulae.xlsx");
+        const auto path = path_helper::test_file("18_formulae.xlsx");
         wb.load(path);
 
         auto ws1 = wb.sheet_by_index(0);
-        xlnt_assert(ws1.cell("C1").has_formula());
-        xlnt_assert_equals(ws1.cell("C1").formula(), "CONCATENATE(C2,C3)");
-        xlnt_assert_equals(ws1.cell("C2").value<std::string>(), "a");
-        xlnt_assert_equals(ws1.cell("C3").value<std::string>(), "b");
+        
+        // test has_formula
+        // A1:B3 are plain text cells
+        // C1:G3,I2,F4 have formulae
+        for (auto row = 1; row < 4; row++)
+        {
+            for (auto column = 1; column < 8; column++)
+            {
+                if (column < 3)
+                {
+                    xlnt_assert(!ws1.cell(column, row).has_formula());
+                }
+                else
+                {
+                    xlnt_assert(ws1.cell(column, row).has_formula());
+                }
+            }
+        }
 
-        auto ws2 = wb.sheet_by_index(1);
-        xlnt_assert(ws2.cell("C1").has_formula());
-        xlnt_assert_equals(ws2.cell("C1").formula(), "C2*C3");
-        xlnt_assert_equals(ws2.cell("C2").value<int>(), 2);
-        xlnt_assert_equals(ws2.cell("C3").value<int>(), 3);
+        xlnt_assert(ws1.cell("I2").has_formula());
+        xlnt_assert(ws1.cell("F4").has_formula());
+
+        xlnt_assert(!ws1.cell("C9").has_formula()); // empty cell
+        xlnt_assert(!ws1.cell("F5").has_formula()); // text cell
+        
+        xlnt_assert_equals(ws1.cell("C1").formula(), "B1^2"); // basic math with reference
+        xlnt_assert_equals(ws1.cell("D1").formula(), "CONCATENATE(A1,B1)"); // concat with ref
+        xlnt_assert_equals(ws1.cell("E1").formula(), "CONCATENATE($C$1,$D$1)"); // concat with absolute ref
+        xlnt_assert_equals(ws1.cell("F1").formula(), "1+1"); // basic math
+        xlnt_assert_equals(ws1.cell("G1").formula(), "PI()"); // constant
+        xlnt_assert_equals(ws1.cell("I2").formula(), "COS(C2)+IMAGINARY(SIN(B2))"); // fancy math
     }
 
     void test_read_headers_and_footers()
@@ -630,9 +630,9 @@ public:
 
     void test_round_trip_rw_unicode()
     {
-        // u8"/9_unicode_Λ.xlsx" doesn't use 0xc3aa for the capital lambda...
-        // u8"/9_unicode_\u039B.xlsx" gives the corrct output
-        xlnt_assert(round_trip_matches_rw(path_helper::test_file(u8"9_unicode_\u039B.xlsx")));
+        // u8"/9_unicode_Λ_😇.xlsx" doesn't use 0xC3AA for the capital lambda...
+        // u8"/9_unicode_\u039B_\U0001F607.xlsx" gives the correct output
+        xlnt_assert(round_trip_matches_rw(path_helper::test_file(u8"9_unicode_\u039B_\U0001F607.xlsx")));
     }
 
     void test_round_trip_rw_comments_hyperlinks_formulae()
@@ -654,7 +654,7 @@ public:
     {
         xlnt_assert(round_trip_matches_rw(path_helper::test_file("13_custom_heights_widths.xlsx")));
     }
-
+    
     void test_round_trip_rw_encrypted_agile()
     {
         xlnt_assert(round_trip_matches_rw(path_helper::test_file("5_encrypted_agile.xlsx"), "secret"));
@@ -714,7 +714,7 @@ public:
 
     void test_load_save_german_locale()
     {
-       /* std::locale current(std::locale::global(std::locale("de-DE")));
+        /* std::locale current(std::locale::global(std::locale("de-DE")));
         test_round_trip_rw_custom_heights_widths();
         std::locale::global(current);*/
     }
@@ -733,8 +733,81 @@ public:
         xlnt::streaming_workbook_reader wbr;
         wbr.open(path_helper::test_file("Issue445_inline_str.xlsx"));
         wbr.begin_worksheet("Sheet");
+        xlnt_assert(wbr.has_cell());
         auto cell = wbr.read_cell();
         xlnt_assert_equals(cell.value<std::string>(), std::string("a"));
     }
+
+    void test_Issue492_stream_empty_row()
+    {
+        xlnt::streaming_workbook_reader wbr;
+        wbr.open(path_helper::test_file("Issue492_empty_row.xlsx"));
+        wbr.begin_worksheet("BLS Data Series");
+        xlnt_assert(wbr.has_cell());
+        xlnt_assert_equals(wbr.read_cell().reference(), "A1");
+        xlnt_assert(wbr.has_cell());
+        xlnt_assert_equals(wbr.read_cell().reference(), "A2");
+        xlnt_assert(wbr.has_cell());
+        xlnt_assert_equals(wbr.read_cell().reference(), "A4");
+        xlnt_assert(wbr.has_cell());
+        xlnt_assert_equals(wbr.read_cell().reference(), "B4");
+        xlnt_assert(!wbr.has_cell());
+    }
+
+    void test_Issue503_external_link_load()
+    {
+        xlnt::workbook wb;
+        wb.load(path_helper::test_file("Issue503_external_link.xlsx"));
+        auto ws = wb.active_sheet();
+        auto cell = ws.cell("A1");
+        xlnt_assert_equals(cell.value<std::string>(), std::string("WDG_IC_00000003.aut"));
+    }
+    
+    void test_formatting()
+    {
+        xlnt::workbook wb;
+        wb.load(path_helper::test_file("excel_test_sheet.xlsx"));
+        auto ws = wb.active_sheet();
+        auto cell = ws.cell("A1");
+        
+        xlnt_assert_equals(cell.value<std::string>(), std::string("Bolder Text mixed with normal \ntext first line Bold And Underline"));
+        
+        auto rt = cell.value<xlnt::rich_text>();
+        xlnt_assert_equals(rt.runs().size(), 12);
+        
+        auto assert_run = [](xlnt::rich_text_run run, std::string text, std::string typeface, xlnt::color color, std::size_t size, bool bold, bool strike, xlnt::font::underline_style underline)
+        {
+            xlnt_assert_equals(run.first, text);
+            xlnt_assert(run.second.is_set());
+            auto font = run.second.get();
+            xlnt_assert_equals(font.name(), typeface);
+            xlnt_assert_equals(font.size(), size);
+            xlnt_assert_equals(font.bold(), bold);
+            xlnt_assert_equals(font.color(), color);
+            xlnt_assert_equals(font.strikethrough(), strike);
+            xlnt_assert_equals(font.underline(), underline);
+        };
+        
+        assert_run(rt.runs()[0], "Bolder", "Calibri (Body)", xlnt::theme_color(1), 12, true, false, xlnt::font::underline_style::none);
+        assert_run(rt.runs()[1], " Text ", "Calibri", xlnt::theme_color(1), 12, true, false, xlnt::font::underline_style::none);
+        assert_run(rt.runs()[2], "mixed ", "Calibri", xlnt::color::red(), 12, false, false, xlnt::font::underline_style::none);
+        assert_run(rt.runs()[3], "wit", "Calibri (Body)", xlnt::color::red(), 12, false, false, xlnt::font::underline_style::single);
+        assert_run(rt.runs()[4], "h", "Calibri", xlnt::color::red(), 12, false, false, xlnt::font::underline_style::single);
+        assert_run(rt.runs()[5], " ", "Calibri", xlnt::color::red(), 12, false, false, xlnt::font::underline_style::none);
+        assert_run(rt.runs()[6], "normal", "Calibri (Body)", xlnt::color::red(), 12, false, false, xlnt::font::underline_style::none);
+        assert_run(rt.runs()[7], " ", "Calibri", xlnt::color::red(), 12, false, false, xlnt::font::underline_style::none);
+        assert_run(rt.runs()[8], "\n", "Calibri", xlnt::theme_color(1), 12, false, false, xlnt::font::underline_style::none);
+        assert_run(rt.runs()[9], "text", "Helvetica Neue", xlnt::theme_color(1), 12, false, true, xlnt::font::underline_style::none);
+        assert_run(rt.runs()[10], " first line ", "Calibri", xlnt::theme_color(1), 12, true, false, xlnt::font::underline_style::none);
+        assert_run(rt.runs()[11], "Bold And Underline", "Calibri (Body)", xlnt::theme_color(1), 12, true, false, xlnt::font::underline_style::single);
+    }
+
+    void test_active_sheet()
+    {
+        xlnt::workbook wb;
+        wb.load(path_helper::test_file("20_active_sheet.xlsx"));
+        xlnt_assert_equals(wb.active_sheet(), wb[2]);
+    }
 };
+
 static serialization_test_suite x;

@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2020 Thomas Fussell
+// Copyright (c) 2014-2021 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -15,7 +15,7 @@
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, WRISING FROM,
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE
 //
@@ -45,6 +45,7 @@ class manifest;
 template<typename T>
 class optional;
 class path;
+class range_reference;
 class relationship;
 class streaming_workbook_reader;
 class variant;
@@ -55,6 +56,7 @@ namespace detail {
 
 class izstream;
 struct cell_impl;
+struct defined_name;
 struct worksheet_impl;
 
 /// <summary>
@@ -252,6 +254,11 @@ private:
 	/// </summary>
 	void read_image(const path &part);
 
+	/// <summary>
+	///
+	/// </summary>
+	void read_binary(const path &part);
+
     // Common Section Readers
 
     /// <summary>
@@ -412,11 +419,14 @@ private:
     bool streaming_ = false;
 
     std::unique_ptr<detail::cell_impl> streaming_cell_;
-
-    detail::cell_impl *current_cell_;
+    
+    std::unordered_map<int, std::string> shared_formulae_;
+    std::unordered_map<std::string, std::string> array_formulae_;
 
     detail::worksheet_impl *current_worksheet_;
     number_serialiser converter_;
+    
+    std::vector<defined_name> defined_names_;
 };
 
 } // namespace detail

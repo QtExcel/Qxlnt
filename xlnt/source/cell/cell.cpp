@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2020 Thomas Fussell
+// Copyright (c) 2014-2021 Thomas Fussell
 // Copyright (c) 2010-2015 openpyxl
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -15,7 +15,7 @@
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, WRISING FROM,
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE
 //
@@ -154,7 +154,7 @@ namespace xlnt {
 
 const std::unordered_map<std::string, int> &cell::error_codes()
 {
-    static const auto *codes = new std::unordered_map<std::string, int>{
+    static const auto codes = std::unordered_map<std::string, int>{
         {"#NULL!", 0},
         {"#DIV/0!", 1},
         {"#VALUE!", 2},
@@ -163,7 +163,7 @@ const std::unordered_map<std::string, int> &cell::error_codes()
         {"#NUM!", 5},
         {"#N/A!", 6}};
 
-    return *codes;
+    return codes;
 }
 
 std::string cell::check_string(const std::string &to_check)

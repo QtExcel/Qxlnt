@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2020 Thomas Fussell
+// Copyright (c) 2014-2021 Thomas Fussell
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -14,7 +14,7 @@
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, WRISING FROM,
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE
 //
@@ -117,9 +117,11 @@ public:
 
     void test_weekday()
     {
-        xlnt_assert_equals(xlnt::date(2000, 1, 1).weekday(), 6);
-        xlnt_assert_equals(xlnt::date(2016, 7, 15).weekday(), 5);
-        xlnt_assert_equals(xlnt::date(2018, 10, 29).weekday(), 1);
+        xlnt_assert_equals(xlnt::date(2000, 1, 1).weekday(), 6); // January 1st 2000 was a Saturday
+        xlnt_assert_equals(xlnt::date(2016, 7, 15).weekday(), 5); // July 15th 2016 was a Friday
+        xlnt_assert_equals(xlnt::date(2018, 10, 29).weekday(), 1); // October 29th 2018 was Monday
+        xlnt_assert_equals(xlnt::date(1970, 1, 1).weekday(), 4); // January 1st 1970 was a Thursday
     }
 };
+
 static datetime_test_suite x;
