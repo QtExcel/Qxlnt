@@ -20,20 +20,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # Set environment values for Qxlnt. You may use default values.
 
 msvc{
-message('Visual C++ TYPE')
-DEFINES+=XLNT_IMPORT
-INCLUDEPATH += ../xlnt/include
+	message('Visual C++ TYPE')
+	DEFINES+=XLNT_IMPORT
+	INCLUDEPATH += ../xlnt/include
+	CONFIG(debug, debug|release) {
+		LIBS += -L../QXlnt/debug
+		LIBS += -lQxlnt
+	} else {
+		LIBS += -L../QXlnt/release
+		LIBS += -lQxlnt
+	}
 } else {
 message('non-Visual C++ TYPE')
 include(../Qxlnt/Qxlnt.pri)
-}
-
-msvc:CONFIG(debug, debug|release) {
-LIBS += -L../QXlnt/debug
-LIBS += -lQxlnt
-} else {
-LIBS += -L../QXlnt/release
-LIBS += -lQxlnt
 }
 
 msvc{
