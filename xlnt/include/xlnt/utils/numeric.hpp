@@ -165,6 +165,8 @@ public:
 
     double deserialise(const std::string &s, ptrdiff_t *len_converted) const
     {
+        std::locale saved_locale(setlocale(LC_NUMERIC, NULL));
+        setlocale(LC_NUMERIC, "C");
         assert(!s.empty());
         assert(len_converted != nullptr);
         char *end_of_convert;
@@ -172,6 +174,7 @@ public:
         {
             double d = strtod(s.c_str(), &end_of_convert);
             *len_converted = end_of_convert - s.c_str();
+            setlocale(LC_NUMERIC, saved_locale.name().c_str());
             return d;
         }
         char buf[30];
@@ -180,6 +183,7 @@ public:
         convert_pt_to_comma(buf, static_cast<size_t>(copy_end - buf));
         double d = strtod(buf, &end_of_convert);
         *len_converted = end_of_convert - buf;
+        setlocale(LC_NUMERIC, saved_locale.name().c_str());
         return d;
     }
 
